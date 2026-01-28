@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CONFIGURATION DU THEME SOMBRE */
+:root {
+  --bg-color: #f8f1ea;
+  --text-main: rgb(57, 57, 57);
+  --text-sub: #5a5a5a;
+  --white-to-dark: #fdeedf;
+  --inner-avatar: #e3d2c2;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-main: #f8f1ea;
+  --text-sub: #cccccc;
+  --white-to-dark: #222222;
+  --inner-avatar: #404040;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
+}
+
+/* Tes animations (Inchangées) */
+@keyframes waveSlow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -20px); } }
+@keyframes waveMid { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-90px, 40px); } }
+@keyframes waveFast { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(90px, 40px); } }
+@keyframes waveCrea { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-80px, -90px); } }
+
+.cloud-top-1 { animation: waveSlow 10s ease-in-out infinite; }
+.cloud-top-2 { animation: waveMid 8s ease-in-out infinite; }
+.cloud-top-3 { animation: waveFast 12s ease-in-out infinite; }
+.cloud-top-4 { animation: waveCrea 6s ease-in-out infinite; }
+.cloud-bot-1 { animation: waveSlow 10s ease-in-out infinite; }
+.cloud-bot-2 { animation: waveMid 8s ease-in-out infinite; }
+.cloud-bot-3 { animation: waveFast 12s ease-in-out infinite; }
+.cloud-bot-4 { animation: waveCrea 6s ease-in-out infinite; }
+
+.cloud-layer { will-change: transform; display: block; }
+
+/* GESTION NAVBAR RESPONSIVE (Inchangée) */
+.nav-links-pc { display: flex !important; }
+.hamburger-btn { display: none !important; }
+
+@media (max-width: 1024px) {
+  .nav-links-pc { display: none !important; }
+  .hamburger-btn {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px; height: 20px;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .hamburger-btn span {
+    width: 100%; height: 3px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+  }
+  .hero-section {
+    height: auto !important; min-height: 100vh;
+    padding: 80px 5% 40px !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+  .hero-grid { grid-template-columns: 1fr !important; text-align: center !important; }
+  .avatar-container, .avatar-frame { width: 260px !important; height: 280px !important; margin: 0 auto !important; }
+}
+
+@media (max-width: 1024px) {
+  .hero-section { padding: 100px 5% 50px !important; display: block !important; }
+  .hero-grid { display: flex !important; flex-direction: column !important; gap: 3rem; }
+  .hero-title { font-size: 3rem !important; margin-bottom: 1rem !important; }
+  .hero-description { max-width: 100% !important; font-size: 1rem !important; margin: 0 auto 2rem !important; }
+  .avatar-frame, .avatar-container { width: 280px !important; height: 310px !important; }
+  .avatar-frame { transform: translate(10px, 10px) !important; }
+}
+/* app/globals.css */
+:root {
+  --about-bg: #fdeedf;
+  --about-star: #775535;
+}
+
+body.dark-mode {
+  --about-bg: #222222;
+  --about-star: #d4b5a0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.3); }
+}
+
+/* Animation de flottement (mouvement des étoiles) */
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(15px, -10px); }
+  66% { transform: translate(-10px, 15px); }
+  100% { transform: translate(0, 0); }
+}
+
+.star-base {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--about-star);
+  transition: background-color 0.5s ease;
+  /* On combine scintillement et mouvement */
+  animation: twinkle var(--twinkle-dur) infinite ease-in-out, 
+             float 1s infinite ease-in-out;
+}
+/* --- RESPONSIVE NAVBAR --- */
+
+/* Par défaut (PC) : Le menu PC est flexible, le burger est caché */
+.nav-links-pc {
+  display: flex !important;
+}
+.hamburger-btn {
+  display: none !important;
+}
+
+/* Sur Mobile (écrans < 768px) */
+@media (max-width: 768px) {
+  /* On cache le menu PC */
+  .nav-links-pc {
+    display: none !important;
+  }
+  /* On affiche le burger */
+  .hamburger-btn {
+    display: block !important;
+  }
+}
+/* --- ANIMATIONS ABOUT & ETOILES --- */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(10px, -15px); }
+  100% { transform: translate(0, 0); }
+}
+
+.star-base {
+  animation: twinkle 3s infinite ease-in-out, float 6s infinite ease-in-out;
+}
+
+/* --- BOUTONS STYLÉS --- */
+.btn-primary {
+  background-color: #a68064;
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 2px solid #a68064;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: #a68064;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(166, 128, 100, 0.3);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-main, #333);
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  border: 2px solid var(--text-main, #333);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline:hover {
+  background-color: var(--text-main, #333);
+  color: var(--bg-color, #fff);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* --- EFFET GLASSMORPHISM --- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05); /* Très transparent */
+  backdrop-filter: blur(10px); /* L'effet de flou magique */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
