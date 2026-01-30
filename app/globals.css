@@ -6,7 +6,7 @@
 :root {
   --bg-color: #f8f1ea;
   --text-main: rgb(57, 57, 57);
-  --text-sub: #5a5a5a;
+  --text-sub: #333333;
   --white-to-dark: #fdeedf;
   --inner-avatar: #e3d2c2;
 }
