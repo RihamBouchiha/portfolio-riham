@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
+import EducationSection from '@/components/EducationSection';
+import PortfolioSection from '@/components/PortfolioSection';
 
 export default function Home() {
   // L'état est ici pour que Navbar et HeroSection puissent le voir
@@ -18,6 +20,9 @@ export default function Home() {
       
       <AboutSection />
       <SkillsSection />
+      <EducationSection />
+      <PortfolioSection />
+      
     </main>
   );
 }
