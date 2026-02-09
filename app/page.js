@@ -6,7 +6,9 @@ import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import EducationSection from '@/components/EducationSection';
 import PortfolioSection from '@/components/PortfolioSection';
-
+import CertificationsSection from '@/components/CertificationsSection';
+import ExperiencesSection from '@/components/ExperiencesSection';
+import ContactSection from '@/components/ContactSection';
 export default function Home() {
   // L'état est ici pour que Navbar et HeroSection puissent le voir
   const [activeItem, setActiveItem] = useState('Home');
@@ -22,6 +24,9 @@ export default function Home() {
       <SkillsSection />
       <EducationSection />
       <PortfolioSection />
+        <CertificationsSection />
+        <ExperiencesSection />
+        <ContactSection />
       
     </main>
   );

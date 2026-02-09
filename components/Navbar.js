@@ -6,7 +6,7 @@ export default function Navbar({ activeItem, setActiveItem }) {
   const [isDark, setIsDark] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const menuItems = ['Home', 'About', 'Skills', 'Education', 'Portfolio','Certifications', 'Contact'];
+  const menuItems = ['Home', 'About', 'Skills', 'Education', 'Portfolio','Certifications','Experiences', 'Contact'];
 
   const playSwitchSound = () => {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
