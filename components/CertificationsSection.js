@@ -54,27 +54,91 @@ export default function CertificationsSection() {
     <section 
       id="certifications" 
       style={{ 
-        /* --- CHANGEMENTS ICI --- */
-        minHeight: '100vh',          // Force la hauteur à 100% de l'écran
+        minHeight: '100vh',
         width: '100%',
-        display: 'flex',             // Utilise Flexbox...
-        flexDirection: 'column',     // ...en colonne
-        justifyContent: 'center',    // ...pour centrer verticalement le contenu
-        alignItems: 'center',        // ...et horizontalement
-        background: 'var(--bg-color)',
-        padding: '0 5%',             // Un peu de marge sur les côtés, mais 0 en haut/bas
-        boxSizing: 'border-box'
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'var(--bg-color)', // Fond de base
+        padding: '0 5%',
+        boxSizing: 'border-box',
+        position: 'relative', // Nécessaire pour contenir l'animation
+        overflow: 'hidden'    // Cache les formes qui sortent du cadre
       }}
     >
       
+      {/* --- CSS ET ANIMATIONS --- */}
       <style dangerouslySetInnerHTML={{__html: `
+        /* 1. ANIMATION KEYFRAMES */
+        @keyframes moveOrb {
+          0% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.6; }
+        }
+
+        /* 2. FORMES FLOTTANTES (BLOBS) */
+        .anim-blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(80px); /* Le flou crée l'effet de lueur */
+          z-index: 0; /* Derrière le contenu */
+          animation: moveOrb 15s infinite ease-in-out;
+        }
+
+        .blob-1 {
+          top: -10%;
+          left: -10%;
+          width: 500px;
+          height: 500px;
+          background: #a68064; /* Votre couleur accent (Marron/Or) */
+          opacity: 0.15;
+        }
+
+        .blob-2 {
+          bottom: -10%;
+          right: -10%;
+          width: 600px;
+          height: 600px;
+          background: #4a5568; /* Une couleur secondaire (Gris bleuté) */
+          opacity: 0.15;
+          animation-delay: -5s; /* Décale l'animation */
+          animation-duration: 20s;
+        }
+
+        .blob-3 {
+          top: 40%;
+          left: 40%;
+          width: 300px;
+          height: 300px;
+          background: #683612;
+          opacity: 0.1;
+          animation: pulse 8s infinite ease-in-out;
+        }
+
+        /* 3. CONTENU (doit être au-dessus du fond) */
+        .content-wrapper {
+          position: relative;
+          z-index: 2; 
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        /* 4. LE STYLE ACCORDÉON EXISTANT */
         .accordion-container {
           display: flex;
           width: 100%;
           max-width: 1200px;
           height: 450px;
           gap: 10px;
-          /* Pas de margin auto ici car le parent gère le centrage */
         }
 
         .panel {
@@ -89,11 +153,13 @@ export default function CertificationsSection() {
           transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), filter 0.3s ease;
           overflow: hidden;
           filter: grayscale(100%);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .panel.active {
           flex: 5;
           filter: grayscale(0%);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .panel-overlay {
@@ -131,6 +197,7 @@ export default function CertificationsSection() {
           transition: opacity 0.3s;
           text-transform: uppercase;
           letter-spacing: 2px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .panel.active .vertical-title { opacity: 0; }
@@ -172,42 +239,53 @@ export default function CertificationsSection() {
         }
       `}} />
 
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '2.5rem', fontFamily: 'serif', color: 'var(--text-main)' }}>
-          Parcours & Certifications
-        </h2>
-      </div>
+      {/* --- ELEMENTS D'ARRIÈRE PLAN --- */}
+      <div className="anim-blob blob-1"></div>
+      <div className="anim-blob blob-2"></div>
+      <div className="anim-blob blob-3"></div>
 
-      <div className="accordion-container">
-        {certs.map((cert) => (
-          <div 
-            key={cert.id} 
-            className={`panel ${activeId === cert.id ? 'active' : ''}`}
-            onMouseEnter={() => setActiveId(cert.id)}
-            onClick={() => handlePanelClick(cert.image)}
-            style={{ backgroundImage: `url(${cert.image})` }}
-          >
-            <div className="panel-overlay"></div>
-            
-            <div className="vertical-title">
-              {cert.date} • {cert.title}
-            </div>
+      {/* --- CONTENU PRINCIPAL WRAPPED --- */}
+      <div className="content-wrapper">
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <h2 style={{ fontSize: '2.5rem', fontFamily: 'serif', color: 'var(--text-main)', margin: 0 }}>
+            Parcours & Certifications
+          </h2>
+          <p style={{ color: 'var(--text-main)', opacity: 0.6, marginTop: '0.5rem' }}>
+            Reconnaissances et événements clés
+          </p>
+        </div>
 
-            <div className="panel-content">
-              <span className="meta-tag">{cert.date}</span>
-              <h3 style={{ fontSize: '2rem', margin: '5px 0', fontFamily: 'serif' }}>
-                {cert.subtitle}
-              </h3>
-              <p style={{ fontSize: '1rem', opacity: 0.9 }}>
-                {cert.org}
-              </p>
+        <div className="accordion-container">
+          {certs.map((cert) => (
+            <div 
+              key={cert.id} 
+              className={`panel ${activeId === cert.id ? 'active' : ''}`}
+              onMouseEnter={() => setActiveId(cert.id)}
+              onClick={() => handlePanelClick(cert.image)}
+              style={{ backgroundImage: `url(${cert.image})` }}
+            >
+              <div className="panel-overlay"></div>
+              
+              <div className="vertical-title">
+                {cert.date} • {cert.title}
+              </div>
 
-              <div className="view-btn">
-                Voir le certificat <span>↗</span>
+              <div className="panel-content">
+                <span className="meta-tag">{cert.date}</span>
+                <h3 style={{ fontSize: '2rem', margin: '5px 0', fontFamily: 'serif' }}>
+                  {cert.subtitle}
+                </h3>
+                <p style={{ fontSize: '1rem', opacity: 0.9 }}>
+                  {cert.org}
+                </p>
+
+                <div className="view-btn">
+                  Voir le certificat <span>↗</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
     </section>

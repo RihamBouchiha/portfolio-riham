@@ -13,7 +13,7 @@ export default function EducationSection() {
       year: "2024 - Present",
       image: "eniad.png", 
       color: "#a68064",
-      link: "https://eniad.ump.ma/" // Lien ajouté
+      link: "https://eniad.ump.ma/"
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ export default function EducationSection() {
       year: "2022 - 2024",
       image: "estf.png",
       color: "#8b6b52",
-      link: "https://www.est-usmba.ac.ma/" // Lien ajouté
+      link: "https://www.est-usmba.ac.ma/"
     },
     {
       id: 3,
@@ -31,7 +31,7 @@ export default function EducationSection() {
       year: "2021 - 2022",
       image: "image.png",
       color: "#775535",
-      link: "https://med.unistra.fr/" // Lien ajouté
+      link: "https://med.unistra.fr/"
     },
     {
       id: 4,
@@ -40,7 +40,7 @@ export default function EducationSection() {
       year: "2021 - 2022",
       image: "unistra.png",
       color: "#634329",
-      link: "https://www.unistra.fr/fr" // Lien ajouté
+      link: "https://www.unistra.fr/fr"
     },
     {
       id: 5,
@@ -49,7 +49,7 @@ export default function EducationSection() {
       year: "2020 - 2021",
       image: "lycee.png",
       color: "#4e3422",
-      link: "#" // Lien ajouté (à modifier si besoin)
+      link: "#"
     }
   ];
 
@@ -76,20 +76,21 @@ export default function EducationSection() {
     <section 
       id="education" 
       ref={sectionRef}
+      className="education-section" // Classe ajoutée pour le responsive du padding
       style={{
         minHeight: '100vh',
         width: '100vw',
         backgroundColor: 'var(--about-bg)',
         position: 'relative',
-        padding: '6rem 5%',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
+        // J'ai déplacé le padding dans le CSS en bas pour gérer le mobile
       }}
     >
       {/* Titre Stylisé */}
-      <div style={{ textAlign: 'center', marginBottom: '5rem', zIndex: 2 }}>
+      <div style={{ textAlign: 'center', marginBottom: '4rem', zIndex: 2, padding: '0 1rem' }}>
         <h3 style={{ 
           fontSize: '1rem', 
           textTransform: 'uppercase', 
@@ -99,11 +100,11 @@ export default function EducationSection() {
         }}>
           My Academic Journey
         </h3>
-        <h2 style={{ 
-          fontSize: '3.5rem', 
+        <h2 className="section-title" style={{ 
           fontFamily: 'serif', 
           color: 'var(--about-star)', 
-          margin: 0 
+          margin: 0,
+          lineHeight: 1.1
         }}>
           Education
         </h2>
@@ -143,14 +144,10 @@ export default function EducationSection() {
                 transition: 'all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1)'
               }}
             >
-              {/* MODIFICATION ICI : 
-                 J'ai remplacé la <div> par une <a> (ancre) pour rendre le tout cliquable.
-                 J'ai ajouté textDecoration: 'none' et color: 'inherit' pour ne pas casser le style.
-              */}
               <a 
                 href={item.link}
-                target="_blank" // Ouvre dans un nouvel onglet
-                rel="noopener noreferrer" // Sécurité
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: 'flex',
                   flexDirection: isEven ? 'row' : 'row-reverse',
@@ -158,8 +155,8 @@ export default function EducationSection() {
                   width: '100%',
                   maxWidth: '900px', 
                   gap: '2rem',
-                  textDecoration: 'none', // Important : enlève le soulignement bleu
-                  color: 'inherit', // Important : garde tes couleurs de texte
+                  textDecoration: 'none',
+                  color: 'inherit',
                   cursor: 'pointer'
                 }} 
                 className="edu-card-container"
@@ -234,7 +231,7 @@ export default function EducationSection() {
                   alignItems: isEven ? 'flex-start' : 'flex-end'
                 }}>
                   
-                  {/* --- LE BOUTON (POINT) --- */}
+                  {/* Point de couleur */}
                   <div style={{
                     width: '14px',
                     height: '14px',
@@ -278,7 +275,7 @@ export default function EducationSection() {
                   </h4>
 
                   {/* Numéro en fond */}
-                  <div style={{
+                  <div className="bg-number" style={{
                     position: 'absolute',
                     bottom: '10px',
                     [isEven ? 'right' : 'left']: '20px',
@@ -300,41 +297,63 @@ export default function EducationSection() {
       </div>
 
       <style jsx>{`
-        @media (max-width: 1024px) {
-          .edu-card-container {
-            max-width: 100% !important;
-            padding: 0 20px;
-          }
+        /* Style de base (Desktop) */
+        .education-section {
+          padding: 6rem 5%;
+        }
+        .section-title {
+          font-size: 3.5rem;
         }
 
+        /* --- RESPONSIVE MOBILE (< 768px) --- */
         @media (max-width: 768px) {
+          .education-section {
+            padding: 4rem 1rem !important;
+          }
+          
           .central-line {
             display: none !important;
+          }
+
+          .section-title {
+            font-size: 2.5rem !important;
           }
           
           .edu-item {
             justify-content: center !important;
-            margin-bottom: 4rem !important;
+            margin-bottom: 3rem !important; /* Moins d'espace entre les items */
           }
 
+          /* Force la disposition en colonne verticale */
           .edu-card-container {
-            flex-direction: column !important;
+            flex-direction: column !important; 
             gap: 1.5rem !important;
             align-items: center !important;
+            max-width: 100% !important;
           }
 
+          /* Ajustement de l'image polaroid sur mobile */
           .img-wrapper {
-            width: 200px !important;
-            height: 250px !important;
-            transform: rotate(0deg) !important;
+            width: 220px !important;
+            height: 275px !important;
+            transform: rotate(0deg) !important; /* Plus de rotation */
             margin-top: 0 !important;
           }
 
+          /* Ajustement de la carte texte */
           .glass-card {
-            text-align: center !important;
             width: 100% !important;
+            text-align: center !important;
             align-items: center !important;
-            transform: none !important;
+            transform: none !important; /* Enlève l'effet de glissement latéral */
+            padding: 1.5rem !important;
+          }
+          
+          /* Le numéro en fond : centré ou caché si ça gêne */
+          .bg-number {
+             left: auto !important;
+             right: 10px !important;
+             font-size: 3rem !important;
           }
         }
       `}</style>
