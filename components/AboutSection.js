@@ -103,7 +103,7 @@ export default function AboutSection() {
 
         {/* 4. LES DEUX BOUTONS */}
         <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="/cv.pdf" target="_blank" className="btn-primary">
+          <a href="cv_riham_bouchiha.pdf" target="_blank" className="btn-primary">
             Download CV
           </a>
           <a href="#contact" className="btn-outline">
