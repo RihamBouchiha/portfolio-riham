@@ -12,7 +12,7 @@ export default function CertificationsSection() {
   const certs = [
     {
       id: 1,
-      title: 'Hackathon 1',
+      title: '** Hackathon 1',
       subtitle: 'OrientalHack 1.0',
       org: 'ENCG Oujda',
       image: '/encg.png', 
@@ -20,7 +20,7 @@ export default function CertificationsSection() {
     },
     {
       id: 2,
-      title: 'Public Speaker',
+      title: '***** Public Speaker',
       subtitle: 'Girl in ICT',
       org: 'Majal Berkane',
       image: '/ict.png',
@@ -28,7 +28,7 @@ export default function CertificationsSection() {
     },
     {
       id: 3,
-      title: 'Hackathon 2',
+      title: '** Hackathon 2',
       subtitle: 'Esisa senior developers hackathon',
       org: 'ESISA FES',
       image: '/esisa.png',
@@ -36,7 +36,7 @@ export default function CertificationsSection() {
     },
     {
       id: 4,
-      title: 'Organisation',
+      title: '**Organisation',
       subtitle: 'INNOVERSE Team',
       org: 'ENIAD Berkane',
       image: '/inno.png',

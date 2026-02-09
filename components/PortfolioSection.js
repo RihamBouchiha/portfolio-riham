@@ -14,7 +14,7 @@ export default function PortfolioSection() {
       id: 1,
       title: "RHK-Hotel",
       category: "Hotel Management Platform",
-      description: "Une solution complète de gestion hôtelière permettant les réservations en ligne, la gestion des chambres et l'administration du personnel.",
+      description: "Une solution complète de gestion hôtelière permettant les réservations en ligne, la gestion des chambres, reservation des salles, spa et l'administration du personnel.",
       role: "Full Stack Dev",
       image: "r.png", 
       link: "https://rihambouchiha.github.io/PFE-HOTEL-RHK-Riham/riham/indexRiham1.html",
@@ -25,7 +25,7 @@ export default function PortfolioSection() {
       title: "Gusto Rh",
       category: "Human Resources Web App",
       description: "Plateforme RH intuitive pour la gestion des employés, des congés et de la paie, optimisant les processus internes.",
-      role: "UI/UX & Frontend",
+      role: "MERN Stack",
       image: "gusto2.png",
       link: "https://github.com/RihamBouchiha/grh",
       github: "https://github.com/RihamBouchiha/grh"
@@ -35,7 +35,7 @@ export default function PortfolioSection() {
       title: "L'oisis Intime",
       category: "Guesthouse Website",
       description: "Site vitrine élégant pour une maison d'hôtes, mettant en valeur les espaces et facilitant la prise de contact.",
-      role: "Design & Dev",
+      role: "Front-end Dev",
       image: "oasis.png",
       link: "https://rihambouchiha.github.io/maison-d-h-tes-/",
       github: "https://github.com/RihamBouchiha"

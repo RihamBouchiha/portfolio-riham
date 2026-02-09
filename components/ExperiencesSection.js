@@ -9,40 +9,40 @@ export default function ExperiencesSection() {
     {
       id: 1,
       company: "Commune de Tanger",
-      role: "Stagiaire Mobile",
+      role: "Technical Internship",
       period: "2025",
-      desc: "Développement d'une app Flutter pour la gestion de l'éclairage urbain avec géolocalisation.",
-      tags: ["Flutter", "Firebase"],
+      desc: "Development of a Flutter app for urban lighting management with geolocation.",
+      tags: ["React Native", "PostgreSQL"], // Note: La description dit Flutter mais le tag React Native, vérifiez lequel est le bon.
       image: "commune.png",
       link: "https://fr.tanger.ma/"
     },
     {
       id: 2,
       company: "Activ Digital",
-      role: "Full Stack Dev",
+      role: "Technical Internship",
       period: "2024",
-      desc: "Dashboard ERP RH : Analytics, gestion de paie, congés et rôles utilisateurs.",
-      tags: ["React", "Node.js", "MongoDB"],
+      desc: "HR application for managing employees, leave, and payroll, optimizing internal processes.",
+      tags: ["React", "Node.js", "MongoDB","Express.js"],
       image: "activ.png",
       link: "https://activdigital.ma/#hero"
     },
     {
       id: 3,
       company: "ESTF",
-      role: "Projet Académique",
+      role: "Academic Project",
       period: "2023-24",
-      desc: "Architecture d'une plateforme de réservation hôtelière temps réel.",
-      tags: ["Laravel", "MySQL"],
+      desc: "Architecture of a real-time hotel booking platform.",
+      tags: ["html","css","javascript","JQuery", "MySQL"],
       image: "estf.png",
       link: "http://www.est-usmba.ac.ma/"
     },
     {
       id: 4,
       company: "D3 Soft",
-      role: "Back-end Dev",
+      role: "Introductory Internship",
       period: "2023",
-      desc: "Sécurisation d'API REST pour transactions bancaires.",
-      tags: ["Spring Boot", "PostgreSQL"],
+      desc: "Payroll management application for companies, including payslip generation and employee management.",
+      tags: ["Windev", "MariaDB"],
       image: "d.png",
       link: "https://www.d3soft.ma/"
     }

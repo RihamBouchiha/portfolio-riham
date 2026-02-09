@@ -63,7 +63,7 @@ export default function EducationSection() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 } // Seuil légèrement réduit pour le mobile
     );
 
     const items = document.querySelectorAll('.edu-item');
@@ -76,17 +76,16 @@ export default function EducationSection() {
     <section 
       id="education" 
       ref={sectionRef}
-      className="education-section" // Classe ajoutée pour le responsive du padding
+      className="education-section"
       style={{
         minHeight: '100vh',
         width: '100vw',
-        backgroundColor: 'var(--about-bg)',
+        backgroundColor: 'var(--about-bg)', // Assurez-vous que cette var existe, sinon mettez une couleur hex
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
-        // J'ai déplacé le padding dans le CSS en bas pour gérer le mobile
       }}
     >
       {/* Titre Stylisé */}
@@ -95,14 +94,14 @@ export default function EducationSection() {
           fontSize: '1rem', 
           textTransform: 'uppercase', 
           letterSpacing: '4px', 
-          color: 'var(--text-sub)',
+          color: 'var(--text-sub, #888)',
           marginBottom: '0.5rem'
         }}>
           My Academic Journey
         </h3>
         <h2 className="section-title" style={{ 
           fontFamily: 'serif', 
-          color: 'var(--about-star)', 
+          color: 'var(--about-star, #333)', 
           margin: 0,
           lineHeight: 1.1
         }}>
@@ -110,8 +109,8 @@ export default function EducationSection() {
         </h2>
       </div>
 
-      {/* Ligne centrale décorative (Arrière-plan) */}
-      <div style={{
+      {/* Ligne centrale décorative (Masquée sur mobile via CSS) */}
+      <div className="central-line" style={{
         position: 'absolute',
         top: '200px',
         bottom: '100px',
@@ -121,7 +120,7 @@ export default function EducationSection() {
         opacity: 0.2,
         transform: 'translateX(-50%)',
         zIndex: 0
-      }} className="central-line" />
+      }} />
 
       {/* Conteneur des items */}
       <div style={{ width: '100%', maxWidth: '1200px', position: 'relative', zIndex: 1 }}>
@@ -136,11 +135,13 @@ export default function EducationSection() {
               data-index={index}
               style={{
                 display: 'flex',
+                // Le justify-content sera écrasé par le CSS mobile
                 justifyContent: isEven ? 'flex-start' : 'flex-end',
                 marginBottom: '6rem',
                 position: 'relative',
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(100px)',
+                // On garde l'animation Y ici, l'animation X est gérée dans la carte
+                transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
                 transition: 'all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1)'
               }}
             >
@@ -148,8 +149,10 @@ export default function EducationSection() {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="edu-card-container"
                 style={{
                   display: 'flex',
+                  // Inline style par défaut (Desktop)
                   flexDirection: isEven ? 'row' : 'row-reverse',
                   alignItems: 'flex-start',
                   width: '100%',
@@ -159,7 +162,6 @@ export default function EducationSection() {
                   color: 'inherit',
                   cursor: 'pointer'
                 }} 
-                className="edu-card-container"
               >
                 
                 {/* 1. L'IMAGE (Polaroid) */}
@@ -170,6 +172,7 @@ export default function EducationSection() {
                   backgroundColor: '#fff',
                   padding: '10px 10px 40px 10px',
                   boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
+                  // Rotation conditionnelle (Desktop)
                   transform: isVisible ? `rotate(${isEven ? '-3deg' : '3deg'}) scale(1)` : 'scale(0.8)',
                   transition: 'transform 0.5s ease 0.2s',
                   zIndex: 2,
@@ -187,7 +190,6 @@ export default function EducationSection() {
                       src={item.image} 
                       alt={item.school}
                       onError={(e) => {
-                        e.target.onerror = null; 
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'flex';
                       }}
@@ -218,12 +220,14 @@ export default function EducationSection() {
                   flexGrow: 1,
                   padding: '2.5rem',
                   position: 'relative',
+                  // Alignement Desktop
                   textAlign: isEven ? 'left' : 'right',
                   backdropFilter: 'blur(12px)',
                   backgroundColor: 'rgba(255, 255, 255, 0.03)',
                   boxShadow: '0 8px 32px rgba(31, 38, 135, 0.05)',
                   borderRadius: '16px',
                   border: '1px solid rgba(255,255,255,0.1)',
+                  // Animation latérale (Desktop seulement, sera écrasée sur mobile)
                   transform: isVisible ? 'translateX(0)' : `translateX(${isEven ? '-50px' : '50px'})`,
                   transition: 'transform 0.8s ease 0.1s',
                   display: 'flex',
@@ -237,7 +241,7 @@ export default function EducationSection() {
                     height: '14px',
                     borderRadius: '50%',
                     backgroundColor: item.color,
-                    boxShadow: `0 0 0 4px var(--about-bg), 0 0 10px ${item.color}`,
+                    boxShadow: `0 0 0 4px var(--about-bg, #fff), 0 0 10px ${item.color}`,
                     marginBottom: '1.5rem'
                   }}></div>
 
@@ -256,7 +260,7 @@ export default function EducationSection() {
                   
                   <h3 style={{ 
                     fontSize: '1.8rem', 
-                    color: 'var(--text-main)', 
+                    color: 'var(--text-main, #000)', 
                     marginBottom: '0.5rem',
                     fontFamily: 'serif',
                     lineHeight: 1.2
@@ -266,7 +270,7 @@ export default function EducationSection() {
                   
                   <h4 style={{ 
                     fontSize: '1.1rem', 
-                    color: 'var(--text-sub)', 
+                    color: 'var(--text-sub, #555)', 
                     fontWeight: '400',
                     fontStyle: 'italic',
                     opacity: 0.8
@@ -311,6 +315,7 @@ export default function EducationSection() {
             padding: 4rem 1rem !important;
           }
           
+          /* On cache la ligne centrale */
           .central-line {
             display: none !important;
           }
@@ -319,12 +324,13 @@ export default function EducationSection() {
             font-size: 2.5rem !important;
           }
           
+          /* On centre l'item global */
           .edu-item {
             justify-content: center !important;
-            margin-bottom: 3rem !important; /* Moins d'espace entre les items */
+            margin-bottom: 4rem !important;
           }
 
-          /* Force la disposition en colonne verticale */
+          /* Important : On force la colonne et on écrase le style inline row/reverse */
           .edu-card-container {
             flex-direction: column !important; 
             gap: 1.5rem !important;
@@ -332,28 +338,30 @@ export default function EducationSection() {
             max-width: 100% !important;
           }
 
-          /* Ajustement de l'image polaroid sur mobile */
+          /* Reset de l'image (plus de rotation, taille adaptée) */
           .img-wrapper {
-            width: 220px !important;
-            height: 275px !important;
-            transform: rotate(0deg) !important; /* Plus de rotation */
+            width: 200px !important;
+            height: 250px !important;
+            transform: none !important; /* Annule la rotation et le scale */
             margin-top: 0 !important;
           }
 
-          /* Ajustement de la carte texte */
+          /* Reset de la carte texte */
           .glass-card {
             width: 100% !important;
             text-align: center !important;
             align-items: center !important;
-            transform: none !important; /* Enlève l'effet de glissement latéral */
-            padding: 1.5rem !important;
+            /* Annule le translateX de l'animation d'entrée latérale pour éviter le scroll horizontal */
+            transform: none !important; 
+            padding: 2rem 1.5rem !important;
           }
           
-          /* Le numéro en fond : centré ou caché si ça gêne */
+          /* Repositionnement du numéro de fond */
           .bg-number {
              left: auto !important;
              right: 10px !important;
              font-size: 3rem !important;
+             bottom: 5px !important;
           }
         }
       `}</style>

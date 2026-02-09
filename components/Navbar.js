@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Navbar({ activeItem, setActiveItem }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,6 +7,25 @@ export default function Navbar({ activeItem, setActiveItem }) {
   const [isPressed, setIsPressed] = useState(false);
 
   const menuItems = ['Home', 'About', 'Skills', 'Education', 'Portfolio','Certifications','Experiences', 'Contact'];
+
+  // --- Détection du scroll ---
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150; 
+      menuItems.forEach((item) => {
+        const section = document.getElementById(item.toLowerCase());
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            setActiveItem(item);
+          }
+        }
+      });
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [activeItem, setActiveItem]); 
 
   const playSwitchSound = () => {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -31,6 +50,24 @@ export default function Navbar({ activeItem, setActiveItem }) {
     document.body.classList.toggle('dark-mode');
   };
 
+  // Composant Bouton Toggle réutilisable (pour éviter de répéter le code)
+  const ThemeToggleBtn = () => (
+    <div onClick={toggleTheme} style={{ 
+      width: '65px', height: '32px', 
+      backgroundColor: isDark ? '#2c2c2c' : '#a68064', 
+      borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '0 6px', 
+      cursor: 'pointer', position: 'relative', justifyContent: isDark ? 'flex-end' : 'flex-start',
+      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+      transform: isPressed ? 'scale(0.9)' : 'scale(1)',
+      boxShadow: isDark ? '0 0 15px rgba(0,0,0,0.5)' : '0 4px 10px rgba(166, 128, 100, 0.3)'
+    }}>
+      <span style={{ position: 'absolute', left: isDark ? '12px' : 'auto', right: isDark ? 'auto' : '12px', fontSize: '14px' }}>
+        {isDark ? '🌙' : '☀️'}
+      </span>
+      <div style={{ width: '22px', height: '22px', backgroundColor: 'white', borderRadius: '50%', zIndex: 2 }}></div>
+    </div>
+  );
+
   return (
     <nav style={{
       position: 'fixed', top: 0, width: '100%', zIndex: 100,
@@ -42,8 +79,7 @@ export default function Navbar({ activeItem, setActiveItem }) {
         RIHAM BOUCHIHA
       </div>
       
-      {/* Conteneur Menu PC + Theme Switch */}
-      {/* La classe .nav-links-pc est gérée dans globals.css maintenant */}
+      {/* Conteneur Menu PC */}
       <div className="nav-links-pc" style={{ alignItems: 'center', gap: '2.5rem' }}>
         <ul style={{ display: 'flex', gap: '1.5rem', listStyle: 'none', alignItems: 'center', margin: 0, padding: 0 }}>
           {menuItems.map((item) => {
@@ -71,29 +107,18 @@ export default function Navbar({ activeItem, setActiveItem }) {
           })}
         </ul>
 
-        <div onClick={toggleTheme} style={{ 
-            width: '65px', height: '32px', 
-            backgroundColor: isDark ? '#2c2c2c' : '#a68064', 
-            borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '0 6px', 
-            cursor: 'pointer', position: 'relative', justifyContent: isDark ? 'flex-end' : 'flex-start',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            transform: isPressed ? 'scale(0.9)' : 'scale(1)',
-            boxShadow: isDark ? '0 0 15px rgba(0,0,0,0.5)' : '0 4px 10px rgba(166, 128, 100, 0.3)'
-          }}>
-          <span style={{ position: 'absolute', left: isDark ? '12px' : 'auto', right: isDark ? 'auto' : '12px', fontSize: '14px' }}>
-            {isDark ? '🌙' : '☀️'}
-          </span>
-          <div style={{ width: '22px', height: '22px', backgroundColor: 'white', borderRadius: '50%', zIndex: 2 }}></div>
-        </div>
+        {/* Toggle Theme (Desktop) */}
+        <ThemeToggleBtn />
       </div>
 
-      {/* Bouton Hamburger : La visibilité est gérée par globals.css */}
-      <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)} style={{ zIndex: 102, background: 'none', border: 'none' }}>
+      {/* Bouton Hamburger */}
+      <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)} style={{ zIndex: 102, background: 'none', border: 'none', cursor: 'pointer' }}>
         <span style={{ display:'block', width:'25px', height:'2px', backgroundColor:'var(--text-main)', margin:'5px 0', transform: isOpen ? 'rotate(45deg) translate(5px, 6px)' : 'none', transition: '0.3s' }}></span>
         <span style={{ display:'block', width:'25px', height:'2px', backgroundColor:'var(--text-main)', margin:'5px 0', opacity: isOpen ? 0 : 1, transition: '0.3s' }}></span>
         <span style={{ display:'block', width:'25px', height:'2px', backgroundColor:'var(--text-main)', margin:'5px 0', transform: isOpen ? 'rotate(-45deg) translate(5px, -7px)' : 'none', transition: '0.3s' }}></span>
       </button>
 
+      {/* --- MENU MOBILE --- */}
       {isOpen && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
@@ -107,6 +132,14 @@ export default function Navbar({ activeItem, setActiveItem }) {
               {item}
             </a>
           ))}
+
+          {/* AJOUT : Séparateur visuel */}
+          <div style={{ width: '50px', height: '2px', backgroundColor: 'var(--text-main)', opacity: 0.2 }}></div>
+
+          {/* AJOUT : Toggle Theme (Mobile) */}
+          <div style={{ transform: 'scale(1.2)' }}> {/* J'ai grossi un peu le bouton pour le tactile mobile */}
+            <ThemeToggleBtn />
+          </div>
         </div>
       )}
     </nav>
