@@ -1,13 +1,10 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 export default function ExperiencesSection() {
-  const [mounted, setMounted] = useState(false);
-  // On garde en mémoire l'ID de l'expérience survolée (la 1ère par défaut)
   const [activeExpId, setActiveExpId] = useState(1);
   const sectionRef = useRef(null);
 
-  // Données des expériences AVEC PHOTOS
   const experiences = [
     {
       id: 1,
@@ -16,8 +13,7 @@ export default function ExperiencesSection() {
       period: "2025",
       desc: "Développement d'une app Flutter pour la gestion de l'éclairage urbain avec géolocalisation.",
       tags: ["Flutter", "Firebase"],
-      // REMPLACE PAR TES VRAIES IMAGES (ex: /images/tanger.jpg)
-      image: "https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=1931&auto=format&fit=crop",
+      image: "commune.png",
       link: "https://fr.tanger.ma/"
     },
     {
@@ -27,8 +23,8 @@ export default function ExperiencesSection() {
       period: "2024",
       desc: "Dashboard ERP RH : Analytics, gestion de paie, congés et rôles utilisateurs.",
       tags: ["React", "Node.js", "MongoDB"],
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
-      link: "https://www.linkedin.com/company/activ-digital/"
+      image: "activ.png",
+      link: "https://activdigital.ma/#hero"
     },
     {
       id: 3,
@@ -36,8 +32,8 @@ export default function ExperiencesSection() {
       role: "Projet Académique",
       period: "2023-24",
       desc: "Architecture d'une plateforme de réservation hôtelière temps réel.",
-      stack: ["Laravel", "MySQL"],
-      image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop",
+      tags: ["Laravel", "MySQL"],
+      image: "estf.png",
       link: "http://www.est-usmba.ac.ma/"
     },
     {
@@ -47,261 +43,333 @@ export default function ExperiencesSection() {
       period: "2023",
       desc: "Sécurisation d'API REST pour transactions bancaires.",
       tags: ["Spring Boot", "PostgreSQL"],
-      image: "https://images.unsplash.com/photo-1556742049-0c29bc35193f?q=80&w=2070&auto=format&fit=crop",
-      link: "https://d3soft.ma/"
+      image: "d.png",
+      link: "https://www.d3soft.ma/"
     }
   ];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Génération des particules pour le background animé
-  const particles = mounted ? Array.from({ length: 30 }).map((_, i) => ({
-    id: i,
-    left: Math.random() * 100 + '%',
-    size: Math.random() * 4 + 2 + 'px',
-    duration: Math.random() * 20 + 10 + 's',
-    delay: Math.random() * -20 + 's',
-    opacity: Math.random() * 0.5 + 0.1
-  })) : [];
-
-  // Trouver l'expérience active pour afficher son image
-  const activeExperience = experiences.find(exp => exp.id === activeExpId);
-
-  if (!mounted) return null;
+  // Expérience active
+  const activeExperience = experiences.find(exp => exp.id === activeExpId) || experiences[0];
 
   return (
-    <section id="experiences" className="cinematic-section" ref={sectionRef}>
+    <section id="experiences" className="exp-section">
       
-      {/* --- 1. BACKGROUND ANIMÉ (Particules) --- */}
-      <div className="animated-bg">
-        {particles.map(p => (
-          <div key={p.id} className="particle" style={{
-            left: p.left,
-            width: p.size,
-            height: p.size,
-            animationDuration: p.duration,
-            animationDelay: p.delay,
-            opacity: p.opacity
-          }}></div>
-        ))}
-      </div>
+      {/* Fond subtil (Grille sombre) */}
+      <div className="bg-grid"></div>
 
-      <div className="container content-wrapper">
-        {/* --- 2. COLONNE GAUCHE : LA LISTE --- */}
-        <div className="list-column">
-          <h2 className="section-title">Career Journey</h2>
-          <p className="section-subtitle">Survolez pour voir les projets.</p>
+      <div className="exp-container">
+        
+        {/* En-tête */}
+        <div className="exp-header">
+          <h4 className="exp-subtitle">MY PATH</h4>
+          <h2 className="exp-title">Professional Experience</h2>
+        </div>
+
+        <div className="exp-layout">
           
+          {/* COLONNE GAUCHE : LISTE */}
           <div className="exp-list">
             {experiences.map((exp) => (
               <div 
                 key={exp.id} 
-                className={`exp-item ${activeExpId === exp.id ? 'active' : ''}`}
+                className={`exp-card ${activeExpId === exp.id ? 'active' : ''}`}
                 onMouseEnter={() => setActiveExpId(exp.id)}
                 onClick={() => window.open(exp.link, '_blank')}
               >
-                <span className="exp-period">{exp.period}</span>
-                <div className="exp-info">
+                <div className="exp-card-left">
+                  <span className="exp-period">{exp.period}</span>
+                  {/* Ligne verticale connectrice */}
+                  <div className="line-connector"></div>
+                </div>
+                
+                <div className="exp-card-content">
                   <h3 className="exp-role">{exp.role}</h3>
                   <span className="exp-company">@ {exp.company}</span>
-                  {activeExpId === exp.id && (
-                     <p className="exp-desc-mobile">{exp.desc}</p>
-                  )}
+                  
+                  <div className="exp-tags">
+                    {exp.tags && exp.tags.map(tag => (
+                      <span key={tag} className="exp-tag">{tag}</span>
+                    ))}
+                  </div>
+                  
+                  {/* Visible uniquement sur mobile */}
+                  <p className="exp-desc-mobile">{exp.desc}</p>
                 </div>
-                <div className="exp-indicator">→</div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* --- 3. COLONNE DROITE : LE PROJECTEUR (Image) --- */}
-        <div className="stage-column">
-           <div className="image-stage">
-              {experiences.map((exp) => (
-                <img 
-                  key={exp.id}
-                  src={exp.image} 
-                  alt={exp.company}
-                  className={`stage-image ${activeExpId === exp.id ? 'visible' : ''}`}
-                />
-              ))}
-              
-              {/* Overlay d'infos sur l'image */}
-              <div className="stage-overlay">
-                <h3>{activeExperience.company} — {activeExperience.role}</h3>
-                <p>{activeExperience.desc}</p>
+          {/* COLONNE DROITE : PREVIEW FIXE (STICKY) */}
+          <div className="exp-preview-col">
+            <div className="preview-card">
+              <div className="preview-image-wrapper">
+                 <img 
+                   src={activeExperience.image} 
+                   alt={activeExperience.company}
+                   className="preview-image"
+                 />
+                 {/* Overlay pour assombrir l'image légèrement */}
+                 <div className="img-overlay"></div>
               </div>
-           </div>
+              
+              <div className="preview-details">
+                 <h3>{activeExperience.role}</h3>
+                 <p>{activeExperience.desc}</p>
+                 
+                 <button className="visit-btn">
+                    Visit Website <span>→</span>
+                 </button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-
-      {/* --- CSS INTERNE --- */}
+      {/* STYLE CSS */}
       <style dangerouslySetInnerHTML={{__html: `
-        .cinematic-section {
+        /* --- VARIABLES DE VOTRE THÈME --- */
+        .exp-section {
+          --accent: #a68064;          /* Votre Marron/Or */
+          --bg-main: var(--bg-color); /* Fond global (noir) */
+          --text-main: var(--text-main); /* Texte principal (blanc) */
+          --text-sub:#a68064;
+          --glass-bg: rgba(255, 255, 255, 0.03);
+          --glass-border: rgba(255, 255, 255, 0.08);
+          
+          background-color: var(--bg-main);
           min-height: 100vh;
-          background-color: var(--bg-color); /* Fond de base */
+          padding: 6rem 5%;
+          font-family: sans-serif;
+          color: var(--text-main);
           position: relative;
           overflow: hidden;
-          padding: 6rem 5%;
-          display: flex;
-          align-items: center;
         }
 
-        /* --- ANIMATED BACKGROUND --- */
-        .animated-bg {
+        .bg-grid {
           position: absolute;
           inset: 0;
+          background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 40px 40px;
+          opacity: 0.5;
           pointer-events: none;
-          z-index: 0;
-          /* Un léger dégradé sombre pour faire ressortir les particules */
-          background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
         }
 
-        .particle {
-          position: absolute;
-          bottom: -10px;
-          background: #a68064; /* Couleur or/terre */
-          border-radius: 50%;
-          box-shadow: 0 0 10px #a68064, 0 0 20px rgba(166, 128, 100, 0.5);
-          animation: riseUp linear infinite;
+        .exp-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          position: relative;
+          z-index: 2;
         }
 
-        @keyframes riseUp {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
-          50% { opacity: 1; transform: translateX(20px); }
-          100% { transform: translateY(-120vh) translateX(-20px); opacity: 0; }
+        /* --- HEADER --- */
+        .exp-header { margin-bottom: 4rem; }
+        .exp-subtitle {
+          color: var(--accent);
+          font-size: 0.8rem;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          margin-bottom: 0.5rem;
+        }
+        .exp-title {
+          font-size: 3rem;
+          font-family: serif;
+          margin: 0;
+          color: var(--text-main);
         }
 
         /* --- LAYOUT --- */
-        .content-wrapper {
-          position: relative;
-          z-index: 2;
+        .exp-layout {
           display: grid;
-          grid-template-columns: 1fr 1.5fr; /* Gauche plus petite que droite */
+          grid-template-columns: 1fr 1fr;
           gap: 4rem;
-          width: 100%;
-          max-width: 1400px;
-          margin: 0 auto;
-          align-items: center;
+          align-items: start;
         }
 
-        /* --- GAUCHE : LISTE --- */
-        .section-title {
-          font-family: serif;
-          font-size: 3.5rem;
-          color: var(--text-main);
-          margin-bottom: 0.5rem;
-        }
-        .section-subtitle {
-            color: var(--text-sub);
-            margin-bottom: 3rem;
-        }
-
-        .exp-item {
+        /* --- LISTE --- */
+        .exp-list {
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .exp-card {
+          display: flex;
           padding: 1.5rem;
-          border-bottom: 1px solid rgba(166, 128, 100, 0.2);
+          border-radius: 12px;
           cursor: pointer;
+          border: 1px solid transparent; /* Bordure invisible par défaut */
           transition: all 0.3s ease;
-          opacity: 0.6;
+          background: transparent;
         }
 
-        .exp-item:hover, .exp-item.active {
-          opacity: 1;
-          background: rgba(166, 128, 100, 0.05);
-          padding-left: 2rem;
-          border-color: #a68064;
+        .exp-card:hover {
+          background: var(--glass-bg);
+          border-color: var(--glass-border);
+          transform: translateX(10px);
         }
 
+        .exp-card.active {
+          background: linear-gradient(90deg, rgba(166, 128, 100, 0.1) 0%, transparent 100%);
+          border-left: 2px solid var(--accent);
+          border-color: var(--accent); /* Bordure colorée si actif */
+          transform: translateX(10px);
+        }
+
+        /* Gauche de la carte (Date) */
+        .exp-card-left {
+          min-width: 80px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-right: 1.5rem;
+        }
         .exp-period {
           font-family: monospace;
           font-weight: bold;
-          color: #a68064;
-          margin-right: 2rem;
+          color: var(--text-sub);
+          font-size: 0.9rem;
+        }
+        .exp-card.active .exp-period { color: var(--accent); }
+
+        .line-connector {
+          width: 1px;
+          flex-grow: 1;
+          background: var(--glass-border);
+          margin-top: 10px;
+          margin-left: 5px; /* Centrer sous la date */
         }
 
-        .exp-info { flex-grow: 1; }
-
+        /* Droite de la carte (Infos) */
+        .exp-card-content { flex: 1; }
+        
         .exp-role {
-          font-size: 1.4rem;
-          margin: 0;
-          color: #2f1d0b;
+          margin: 0 0 0.25rem 0;
+          font-size: 1.3rem;
+          color: var(--text-main);
         }
+        
         .exp-company {
-            font-weight: bold;
-            color: #775535;
+          font-size: 0.95rem;
+          color: var(--text-sub);
+          font-style: italic;
         }
-        .exp-desc-mobile { display: none; }
 
-        .exp-indicator {
+        .exp-tags {
+          margin-top: 1rem;
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        
+        .exp-tag {
+          font-size: 0.7rem;
+          padding: 4px 10px;
+          background: rgba(166, 128, 100, 0.15); /* Fond marron très transparent */
+          color: var(--accent);
+          border: 1px solid rgba(166, 128, 100, 0.3);
+          border-radius: 20px;
+        }
+
+        .exp-desc-mobile { display: none; margin-top: 1rem; color: var(--text-sub); font-size: 0.9rem; line-height: 1.5; }
+
+        /* --- PREVIEW COLONNE --- */
+        .exp-preview-col {
+          position: sticky;
+          top: 100px;
+        }
+
+        .preview-card {
+          background: var(--glass-bg);
+          backdrop-filter: blur(10px);
+          border: 1px solid var(--glass-border);
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .preview-image-wrapper {
+          height: 250px;
+          position: relative;
+          background: #000;
+        }
+        
+        .preview-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.8;
+          transition: opacity 0.5s ease;
+        }
+        
+        .img-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, var(--bg-main) 0%, transparent 100%);
+        }
+
+        .preview-details {
+          padding: 2rem;
+          border-top: 1px solid var(--glass-border);
+        }
+        
+        .preview-details h3 {
+          margin: 0 0 1rem 0;
           font-size: 1.5rem;
-          color: #a68064;
-          opacity: 0;
-          transform: translateX(-10px);
-          transition: all 0.3s ease;
+          font-family: serif;
+          color: var(--text-main);
         }
-        .exp-item.active .exp-indicator {
-          opacity: 1;
-          transform: translateX(0);
-        }
-
-        /* --- DROITE : LA SCÈNE (IMAGES) --- */
-        .stage-column {
-            height: 600px;
-            position: relative;
+        
+        .preview-details p {
+          color: var(--text-sub);
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
         }
 
-        .image-stage {
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-            border: 2px solid rgba(255,255,255,0.1);
+        .visit-btn {
+          background: transparent;
+          color: var(--accent);
+          border: 1px solid var(--accent);
+          padding: 10px 24px;
+          border-radius: 50px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .visit-btn:hover {
+          background: var(--accent);
+          color: white; /* ou noir selon votre préférence */
         }
 
-        /* Superposition des images pour le crossfade */
-        .stage-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transform: scale(1.1);
-            transition: opacity 0.7s ease, transform 7s ease;
-            filter: brightness(0.7) sepia(0.2); /* Look un peu cinéma */
-        }
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 900px) {
+          .exp-section { padding: 4rem 1.5rem; }
+          .exp-title { font-size: 2.2rem; }
+          
+          .exp-layout { grid-template-columns: 1fr; gap: 2rem; }
+          .exp-preview-col { display: none; } /* Cache la colonne droite */
 
-        .stage-image.visible {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 1;
-        }
+          .exp-card {
+            flex-direction: column;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 1rem;
+            transform: none !important;
+          }
+          
+          .exp-card.active { transform: none; border-left: 1px solid var(--glass-border); }
 
-        .stage-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-            z-index: 2;
-        }
-        .stage-overlay h3 { font-family: serif; font-size: 1.8rem; margin: 0 0 10px 0; }
-        .stage-overlay p { opacity: 0.9; max-width: 80%; }
-
-        /* --- MOBILE --- */
-        @media (max-width: 1024px) {
-            .content-wrapper { grid-template-columns: 1fr; gap: 2rem; }
-            .stage-column { display: none; /* On cache la grande image sur mobile */ }
-            .exp-item.active { background: transparent; padding-left: 1.5rem; }
-            .exp-desc-mobile { display: block; margin-top: 1rem; color: #555; }
-            .exp-indicator { display: none; }
+          .line-connector { display: none; }
+          .exp-card-left { margin-bottom: 0.5rem; }
+          
+          .exp-desc-mobile {
+            display: block; /* Affiche la description sur mobile */
+          }
         }
       `}} />
     </section>

@@ -17,8 +17,14 @@ export default function ContactSection() {
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
-    // REMPLACER PAR VOS CLES EMAILJS
-    emailjs.sendForm('service_id', 'template_id', form.current, 'public_key')
+
+    // 👇 CONFIGURATION EMAILJS
+    emailjs.sendForm(
+        'service_s9ifgkf',      // ✅ Ton Service ID
+        'template_cter9zv',     // ⚠️ REMPLACE PAR TON TEMPLATE ID (ex: template_abc123)
+        form.current, 
+        'R_GxkHkcRIYCfvqdf'     // ✅ Ta Public Key
+    )
       .then(() => {
           setLoading(false); 
           setStatus('success'); 
@@ -33,7 +39,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" style={{
-        // UTILISATION DES VARIABLES GLOBALES (comme dans Hero/Skills)
+        // UTILISATION DES VARIABLES GLOBALES
         backgroundColor: 'var(--bg-color)', 
         color: 'var(--text-main)',
         
@@ -42,7 +48,7 @@ export default function ContactSection() {
         padding: '6rem 5%',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
         fontFamily: "'Courier New', monospace",
-        transition: 'background-color 0.3s ease, color 0.3s ease' // Transition fluide lors du toggle
+        transition: 'background-color 0.3s ease, color 0.3s ease'
     }}>
       
       <div className="cc-container">
@@ -50,7 +56,6 @@ export default function ContactSection() {
         {/* --- INFO PANEL --- */}
         <div className="cc-panel info-panel">
           <div>
-            {/* Le titre utilise la couleur du texte global */}
             <h2 className="cc-title" style={{ color: 'var(--text-main)' }}>
               CONTACT<span className="blink" style={{ color: BROWN_COLOR }}>_</span>
             </h2>
@@ -71,10 +76,10 @@ export default function ContactSection() {
           </div>
 
           <div className="cc-socials">
-            <a href="https://www.linkedin.com/in/riham-bouchiha" target="_blank" className="social-icon">
+            <a href="https://www.linkedin.com/in/riham-bouchiha-138419274/" target="_blank" className="social-icon">
               <SiLinkedin /><span>LinkedIn</span>
             </a>
-            <a href="https://github.com/" target="_blank" className="social-icon">
+            <a href="https://github.com/RihamBouchiha" target="_blank" className="social-icon">
               <SiGithub /><span>GitHub</span>
             </a>
           </div>
@@ -137,9 +142,7 @@ export default function ContactSection() {
           padding: 2.5rem;
           display: flex; flex-direction: column; justify-content: space-between;
           border-radius: 12px;
-          /* On utilise une bordure subtile basée sur la couleur du texte secondaire */
           border: 1px solid var(--text-sub); 
-          /* Fond très légèrement visible pour l'effet carte */
           background: rgba(125, 125, 125, 0.05);
           backdrop-filter: blur(5px);
           transition: all 0.3s ease;
