@@ -1,16 +1,22 @@
-'use client'; // Ajoute ceci en haut pour gérer l'état
 import './globals.css'
-import { useState } from 'react'
+
+// C'est ici qu'on définit le Favicon et le Titre de l'onglet
+export const metadata = {
+  title: 'Riham Bouchiha - Portfolio',
+  description: 'Portfolio de Riham Bouchiha',
+  icons: {
+    icon: 'logo.png', // Assure-toi d'avoir ton image nommée favicon.ico dans le dossier 'public' ou 'app'
+    // Ou si tu as un PNG : icon: '/mon-logo.png',
+  },
+}
 
 export default function RootLayout({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
   return (
     <html lang="fr">
-      {/* On applique une classe "dark-mode" au body si isDarkMode est vrai */}
-      <body suppressHydrationWarning={true} className={isDarkMode ? 'dark-mode' : ''}>
-        {/* On passe la fonction de switch à tes composants via un artifice simple ou un contexte, 
-            mais ici on va juste utiliser le CSS global pour faire simple */}
+      {/* On ajoute suppressHydrationWarning pour éviter les erreurs 
+        si une extension de navigateur modifie le code HTML 
+      */}
+      <body suppressHydrationWarning={true}>
         {children}
       </body>
     </html>
