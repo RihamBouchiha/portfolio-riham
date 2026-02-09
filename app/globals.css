@@ -207,3 +207,118 @@ body.dark-mode {
   padding: 3rem;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
 }
+/* --- STYLE SECTION CONTACT (À ajouter dans globals.css) --- */
+
+.cyber-contact {
+  position: relative;
+  overflow: hidden;
+  font-family: 'Courier New', monospace; /* Style code/hacker */
+}
+
+/* Grille de fond animée */
+.grid-horizon {
+  position: absolute; inset: 0; perspective: 300px; z-index: 0; pointer-events: none;
+}
+.grid-plane {
+  position: absolute; top: 50%; left: -50%; width: 200%; height: 200%;
+  background-image: 
+    linear-gradient(0deg, transparent 24%, var(--text-secondary) 25%, var(--text-secondary) 26%, transparent 27%, transparent 74%, var(--text-secondary) 75%, var(--text-secondary) 76%, transparent 77%, transparent),
+    linear-gradient(90deg, transparent 24%, var(--text-secondary) 25%, var(--text-secondary) 26%, transparent 27%, transparent 74%, var(--text-secondary) 75%, var(--text-secondary) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+  transform: rotateX(70deg);
+  animation: moveGrid 6s linear infinite;
+  opacity: 0.15;
+}
+
+.bg-fade-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to bottom, var(--bg-color) 0%, transparent 40%, transparent 60%, var(--bg-color) 100%);
+  pointer-events: none;
+}
+
+/* Particules */
+.particles-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.ember { position: absolute; bottom: -20px; background-color: var(--accent); border-radius: 50%; animation: floatUp linear infinite; }
+
+/* Layout Principal */
+.cc-container {
+  position: relative; z-index: 10; width: 100%; max-width: 1100px; margin: 0 auto; 
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem;
+}
+
+/* Panneaux (Cartes) */
+.cc-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  transition: all 0.4s ease;
+}
+
+/* Typographie */
+.cc-title { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -1px; }
+.blink { animation: blink 1s infinite; color: var(--accent); }
+.cc-subtitle { color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 2rem; }
+
+/* Détails Contact */
+.cc-details { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+.cc-block { display: flex; flex-direction: column; }
+.cc-label { font-size: 0.7rem; opacity: 0.6; margin-bottom: 5px; }
+.cc-value { font-size: 1.1rem; font-weight: 600; text-decoration: none; color: inherit; }
+.link-effect:hover { color: var(--accent); text-decoration: underline; }
+
+/* Réseaux Sociaux */
+.cc-socials { display: flex; gap: 1rem; }
+.social-icon { 
+  display: flex; align-items: center; gap: 8px; padding: 10px 20px; 
+  border: 1px solid var(--border-color); color: inherit; text-decoration: none; 
+  font-size: 0.9rem; font-weight: bold; transition: 0.2s; border-radius: 6px; 
+}
+.social-icon:hover { border-color: var(--accent); color: var(--accent); background: rgba(166, 128, 100, 0.1); }
+
+/* Formulaire */
+.form-header { font-size: 1.2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px; display: inline-block; }
+.cyber-input-group { position: relative; margin-bottom: 1.5rem; }
+
+.cyber-input-group input, .cyber-input-group textarea {
+  width: 100%; padding: 15px; 
+  background: rgba(125,125,125, 0.05); /* Fond gris très léger transparent */
+  border: 1px solid var(--border-color); 
+  color: var(--text-main);
+  font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.3s;
+  border-radius: 4px;
+}
+
+.cyber-input-group textarea { resize: vertical; min-height: 100px; }
+.cyber-line { position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+.cyber-input-group input:focus ~ .cyber-line, .cyber-input-group textarea:focus ~ .cyber-line { width: 100%; }
+
+.cyber-btn {
+  width: 100%; padding: 18px; border: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+  background: var(--accent);
+  color: white;
+  transition: transform 0.2s;
+  border-radius: 4px;
+}
+.cyber-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+.cyber-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.form-status { margin-top: 1rem; text-align: center; font-weight: bold; }
+.success { color: #10b981; } 
+.error { color: #ef4444; }
+
+.cc-footer { margin-top: 3rem; text-align: center; opacity: 0.5; font-size: 0.8rem; }
+
+/* Animations Keyframes */
+@keyframes floatUp { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: var(--p-opacity); } 100% { transform: translateY(-120vh) translateX(50px); opacity: 0; } }
+@keyframes moveGrid { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Responsive */
+@media (max-width: 900px) { 
+  .cc-container { grid-template-columns: 1fr; gap: 2rem; } 
+  .cc-panel { padding: 1.5rem; } 
+}
