@@ -300,71 +300,7 @@ export default function EducationSection() {
         })}
       </div>
 
-      <style jsx>{`
-        /* Style de base (Desktop) */
-        .education-section {
-          padding: 6rem 5%;
-        }
-        .section-title {
-          font-size: 3.5rem;
-        }
 
-        /* --- RESPONSIVE MOBILE (< 768px) --- */
-        @media (max-width: 768px) {
-          .education-section {
-            padding: 4rem 1rem !important;
-          }
-          
-          /* On cache la ligne centrale */
-          .central-line {
-            display: none !important;
-          }
-
-          .section-title {
-            font-size: 2.5rem !important;
-          }
-          
-          /* On centre l'item global */
-          .edu-item {
-            justify-content: center !important;
-            margin-bottom: 4rem !important;
-          }
-
-          /* Important : On force la colonne et on écrase le style inline row/reverse */
-          .edu-card-container {
-            flex-direction: column !important; 
-            gap: 1.5rem !important;
-            align-items: center !important;
-            max-width: 100% !important;
-          }
-
-          /* Reset de l'image (plus de rotation, taille adaptée) */
-          .img-wrapper {
-            width: 200px !important;
-            height: 250px !important;
-            transform: none !important; /* Annule la rotation et le scale */
-            margin-top: 0 !important;
-          }
-
-          /* Reset de la carte texte */
-          .glass-card {
-            width: 100% !important;
-            text-align: center !important;
-            align-items: center !important;
-            /* Annule le translateX de l'animation d'entrée latérale pour éviter le scroll horizontal */
-            transform: none !important; 
-            padding: 2rem 1.5rem !important;
-          }
-          
-          /* Repositionnement du numéro de fond */
-          .bg-number {
-             left: auto !important;
-             right: 10px !important;
-             font-size: 3rem !important;
-             bottom: 5px !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

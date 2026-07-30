@@ -39,27 +39,23 @@ export default function ContactSection() {
 
   return (
     <section id="contact" style={{
-        // UTILISATION DES VARIABLES GLOBALES
-        backgroundColor: 'var(--bg-color)', 
+        background: 'transparent', 
         color: 'var(--text-main)',
-        
         position: 'relative',
         minHeight: '100vh',
         padding: '6rem 5%',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        fontFamily: "'Courier New', monospace",
         transition: 'background-color 0.3s ease, color 0.3s ease'
     }}>
       
       <div className="cc-container">
-        
-        {/* --- INFO PANEL --- */}
-        <div className="cc-panel info-panel">
+        <div className="cc-panel info-panel" style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)' }}>
           <div>
+            <span className="pill" style={{ marginBottom: '0.8rem' }}>Contact</span>
             <h2 className="cc-title" style={{ color: 'var(--text-main)' }}>
-              CONTACT<span className="blink" style={{ color: BROWN_COLOR }}>_</span>
+              LET'S BUILD<span className="blink" style={{ color: BROWN_COLOR }}>_</span>
             </h2>
-            <p className="cc-subtitle" style={{ color: BROWN_COLOR }}>Let's build something unique.</p>
+            <p className="cc-subtitle" style={{ color: BROWN_COLOR }}>Something memorable.</p>
           </div>
 
           <div className="cc-details">
@@ -85,8 +81,7 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* --- FORM PANEL --- */}
-        <div className="cc-panel form-panel">
+        <div className="cc-panel form-panel" style={{ background: 'var(--surface-strong)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)' }}>
           <h3 className="form-header" style={{ borderBottomColor: BROWN_COLOR, color: 'var(--text-main)' }}>
             SEND MESSAGE
           </h3>
@@ -131,86 +126,6 @@ export default function ContactSection() {
       
       <div className="cc-footer" style={{ color: 'var(--text-sub)' }}>© 2026 Riham Bouchiha</div>
 
-      <style jsx>{`
-        /* LAYOUT & RESPONSIVE */
-        .cc-container { 
-          position: relative; z-index: 10; width: 100%; max-width: 1100px; margin: 0 auto; 
-          display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; 
-        }
-
-        .cc-panel {
-          padding: 2.5rem;
-          display: flex; flex-direction: column; justify-content: space-between;
-          border-radius: 12px;
-          border: 1px solid var(--text-sub); 
-          background: rgba(125, 125, 125, 0.05);
-          backdrop-filter: blur(5px);
-          transition: all 0.3s ease;
-        }
-
-        /* TYPOGRAPHIE */
-        .cc-title { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -1px; }
-        .blink { animation: blink 1s infinite; } 
-        .cc-subtitle { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 2rem; }
-        
-        .cc-details { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
-        .cc-block { display: flex; flex-direction: column; }
-        .cc-label { font-size: 0.7rem; opacity: 0.8; margin-bottom: 5px; font-weight: bold; }
-        .cc-value { font-size: 1.1rem; font-weight: 600; text-decoration: none; color: inherit; }
-        
-        .link-effect:hover { color: var(--hover-color) !important; text-decoration: underline; }
-        
-        /* SOCIALS */
-        .cc-socials { display: flex; gap: 1rem; }
-        .social-icon { 
-          display: flex; align-items: center; gap: 8px; padding: 10px 20px; 
-          border: 1px solid var(--text-sub); 
-          color: inherit; text-decoration: none; font-size: 0.9rem; font-weight: bold; 
-          transition: 0.2s; border-radius: 6px; 
-        }
-        .social-icon:hover { border-color: #a68064 !important; color: #a68064; background: rgba(166, 128, 100, 0.1); }
-        
-        /* FORM STYLES */
-        .form-header { font-size: 1.2rem; margin-bottom: 2rem; border-bottom: 2px solid; padding-bottom: 10px; display: inline-block; }
-        
-        .cyber-input-group { position: relative; margin-bottom: 2rem; }
-        .cyber-input-group input, .cyber-input-group textarea {
-          width: 100%; padding: 15px 0; 
-          background: transparent;
-          border: none;
-          border-bottom: 1px solid;
-          font-family: inherit; font-size: 1rem; outline: none; transition: 0.3s;
-          border-radius: 0;
-        }
-        .cyber-input-group textarea { resize: vertical; min-height: 80px; }
-        
-        /* Ligne animée sous l'input */
-        .cyber-line { position: absolute; bottom: 0; left: 0; width: 0; height: 2px; transition: width 0.3s; }
-        .cyber-input-group input:focus ~ .cyber-line, .cyber-input-group textarea:focus ~ .cyber-line { width: 100%; }
-        
-        ::placeholder { opacity: 0.4; color: var(--text-main); font-size: 0.85rem; letter-spacing: 1px; }
-
-        .cyber-btn {
-          width: 100%; padding: 18px; border: none; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
-          transition: transform 0.2s, opacity 0.2s; border-radius: 4px; margin-top: 1rem;
-        }
-        .cyber-btn:hover { transform: translateY(-2px); opacity: 0.9; }
-        .cyber-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        .form-status { margin-top: 1rem; text-align: center; font-weight: bold; font-size: 0.9rem; }
-        .success { color: #10b981; } 
-        .error { color: #ef4444; }
-        
-        .cc-footer { margin-top: 3rem; text-align: center; opacity: 0.6; font-size: 0.8rem; }
-
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* MOBILE */
-        @media (max-width: 900px) { 
-          .cc-container { grid-template-columns: 1fr; gap: 3rem; } 
-          .cc-panel { padding: 1.5rem; } 
-        }
-      `}</style>
     </section>
   );
 }

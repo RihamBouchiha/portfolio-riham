@@ -1,105 +1,86 @@
-'use client';
+﻿'use client';
 
 export default function CertificationsSection() {
-  const engagements = [
+  const parascolaire = [
     {
       title: 'Responsable Communication & Présentatrice',
       org: 'Club InnoVerse, ENIAD',
       period: '2025 - 2026',
-      description: 'Responsable de la communication du club, animatrice principale du podcast InnovTalks, conception, animation et production des épisodes, présentatrice officielle lors des événements.'
+      description: 'Responsable de la communication du club, animatrice principale du podcast InnovTalks et présentatrice officielle lors des événements.'
     },
     {
       title: 'Responsable Communication',
       org: 'Club TechRise, ENIAD',
       period: '2024 - 2025',
-      description: 'Gestion de la communication digitale du club technologique, organisation d’événements et ateliers tech.'
+      description: 'Gestion de la communication digitale du club technologique, organisation d’ateliers et valorisation de projets.'
     }
   ];
 
+  const spotlight = [
+    { label: 'Øquipes', year: '2025' },
+    { label: 'OrientalHack 1.0 Hackathon ESS', year: '2024' },
+    { label: 'UI/UX Design | freeCodeCamp', year: '2024' },
+    { label: 'Responsive Web Design | freeCodeCamp', year: '2023' },
+    { label: 'Public Speaking | Girls in ICT', year: '2023' }
+  ];
+
   return (
-    <section
-      id="certifications"
-      style={{
-        minHeight: '90vh',
-        width: '100%',
-        background: 'var(--bg-color)',
-        padding: '4rem 5%',
-        boxSizing: 'border-box',
-        color: 'var(--text-main)'
-      }}
-    >
-      <style dangerouslySetInnerHTML={{__html: `
-        .engagement-wrapper {
-          max-width: 1000px;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-        }
-        .engagement-title {
-          font-size: 2.2rem;
-          font-family: serif;
-          margin-bottom: 0.6rem;
-        }
-        .engagement-subtitle {
-          color: var(--text-sub);
-          margin: 0 0 1.5rem;
-          line-height: 1.6;
-        }
-        .engagement-card {
-          border: 1px solid rgba(166, 128, 100, 0.25);
-          border-radius: 18px;
-          padding: 1.3rem 1.4rem;
-          background: rgba(255,255,255,0.03);
-        }
-        .engagement-card h3 {
-          margin: 0 0 0.35rem;
-          font-size: 1.15rem;
-        }
-        .engagement-org {
-          color: #a68064;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-        }
-        .engagement-period {
-          color: var(--text-sub);
-          font-size: 0.9rem;
-          margin-bottom: 0.6rem;
-        }
-        .engagement-card p {
-          margin: 0;
-          color: var(--text-sub);
-          line-height: 1.7;
-          font-size: 0.95rem;
-        }
-        @media (max-width: 768px) {
-          .engagement-title { font-size: 1.8rem; }
-        }
-      `}} />
-
-      <div className="engagement-wrapper">
-        <h2 className="engagement-title">Engagement, prise de parole, compétitions et certifications.</h2>
-        <p className="engagement-subtitle">
-          Une sélection de mes initiatives associatives, interventions publiques et expériences de valorisation de projets.
-        </p>
-
-        <div className="engagement-card">
-          <h3>Clubs & engagement associatif</h3>
-          <div style={{ marginTop: '1rem' }}>
-            <a href="https://youtu.be/wXkBrFJWra8?si=2tmdsTbIlWIM6HQ_" target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginBottom: '0.8rem' }}>
-              <img src="https://img.youtube.com/vi/wXkBrFJWra8/hqdefault.jpg" alt="InnoVerse" style={{ width: '100%', maxWidth: '360px', borderRadius: '12px' }} />
-            </a>
-          </div>
+    <section id="certifications" className="engagement-section">
+      <div className="engagement-shell">
+        <div className="engagement-header">
+          <span className="eyebrow">Engagement & visibilité</span>
+          <h2>Prise de parole, clubs et initiatives de valorisation</h2>
+          <p>Une sélection d’engagements associatifs, prises de parole et actions de valorisation pour renforcer ma visibilité technique.</p>
         </div>
 
-        {engagements.map((item) => (
-          <div key={item.title} className="engagement-card">
-            <div className="engagement-org">{item.org}</div>
-            <h3>{item.title}</h3>
-            <div className="engagement-period">{item.period}</div>
-            <p>{item.description}</p>
+        <div className="engagement-grid">
+          <div className="engagement-column">
+            <article className="feature-card">
+              <div className="feature-media">
+                <a href="https://youtu.be/wXkBrFJWra8?si=2tmdsTbIlWIM6HQ_" target="_blank" rel="noreferrer">
+                  <img src="https://img.youtube.com/vi/wXkBrFJWra8/hqdefault.jpg" alt="InnoVerse" />
+                </a>
+              </div>
+              <div className="feature-body">
+                <span className="pill">Clubs & engagement</span>
+                <h3>InnoVerse • ENIAD</h3>
+                <p>Animation de podcast, communication digitale et valorisation de projets innovants avec un focus sur l’impact et le partage.</p>
+                <div className="meta-row">
+                  <span>Podcast</span>
+                  <span>Production</span>
+                </div>
+              </div>
+            </article>
+
+            <div className="stack-card">
+              {parascolaire.map((item) => (
+                <div key={item.title} className="engagement-card">
+                  <div className="engagement-org">{item.org}</div>
+                  <h3>{item.title}</h3>
+                  <div className="engagement-period">{item.period}</div>
+                  <p>{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+
+          <aside className="highlight-card">
+            <div className="highlight-head">
+              <span className="pill">Senior Developers Hackathon</span>
+              <h3>6e place sur 45 équipes</h3>
+              <p className="highlight-subtitle">Résultats marquants, hackathons et certifications valorisées sur le plan technique.</p>
+            </div>
+
+            <div className="highlight-list">
+              {spotlight.map((item) => (
+                <div key={item.label} className="highlight-item">
+                  <span>{item.label}</span>
+                  <strong>{item.year}</strong>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
   );
