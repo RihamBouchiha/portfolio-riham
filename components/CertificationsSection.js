@@ -35,32 +35,23 @@ export default function CertificationsSection() {
 
         <div className="engagement-grid">
           <div className="engagement-column">
-            <article className="feature-card">
-              <div className="feature-media">
-                <a href="https://youtu.be/wXkBrFJWra8?si=2tmdsTbIlWIM6HQ_" target="_blank" rel="noreferrer">
-                  <img src="https://img.youtube.com/vi/wXkBrFJWra8/hqdefault.jpg" alt="InnoVerse" />
-                </a>
+            <div className="engagement-panel">
+              <div className="section-top">
+                <span className="pill">Parascolaire</span>
+                <h3>Clubs, communication et valorisation</h3>
+                <p>Engagements associatifs et projets de visibilité portés avec constance et professionnalisme.</p>
               </div>
-              <div className="feature-body">
-                <span className="pill">Clubs & engagement</span>
-                <h3>InnoVerse • ENIAD</h3>
-                <p>Animation de podcast, communication digitale et valorisation de projets innovants avec un focus sur l’impact et le partage.</p>
-                <div className="meta-row">
-                  <span>Podcast</span>
-                  <span>Production</span>
-                </div>
-              </div>
-            </article>
 
-            <div className="stack-card">
-              {parascolaire.map((item) => (
-                <div key={item.title} className="engagement-card">
-                  <div className="engagement-org">{item.org}</div>
-                  <h3>{item.title}</h3>
-                  <div className="engagement-period">{item.period}</div>
-                  <p>{item.description}</p>
-                </div>
-              ))}
+              <div className="stack-card">
+                {parascolaire.map((item) => (
+                  <div key={item.title} className="engagement-card">
+                    <div className="engagement-org">{item.org}</div>
+                    <h3>{item.title}</h3>
+                    <div className="engagement-period">{item.period}</div>
+                    <p>{item.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -68,7 +59,7 @@ export default function CertificationsSection() {
             <div className="highlight-head">
               <span className="pill">Senior Developers Hackathon</span>
               <h3>6e place sur 45 équipes</h3>
-              <p className="highlight-subtitle">Résultats marquants, hackathons et certifications valorisées sur le plan technique.</p>
+              <p className="highlight-subtitle">Un mix de hackathons, certifications et reconnaissance pour valoriser ma pratique.</p>
             </div>
 
             <div className="highlight-list">

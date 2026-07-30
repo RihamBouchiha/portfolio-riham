@@ -9,10 +9,16 @@ import PortfolioSection from '@/components/PortfolioSection';
 import CertificationsSection from '@/components/CertificationsSection';
 import ExperiencesSection from '@/components/ExperiencesSection';
 import ContactSection from '@/components/ContactSection';
+import IntroGame from '@/components/IntroGame';
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState('Home');
   const [language, setLanguage] = useState('fr');
+  const [portfolioOpen, setPortfolioOpen] = useState(false);
+
+  if (!portfolioOpen) {
+    return <IntroGame language={language} onOpen={() => setPortfolioOpen(true)} />;
+  }
 
   return (
     <main>

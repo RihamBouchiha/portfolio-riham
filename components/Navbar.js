@@ -8,11 +8,17 @@ export default function Navbar({ activeItem, setActiveItem, language, setLanguag
 
   const menuItems = ['Home', 'About', 'Skills', 'Education', 'Portfolio', 'Certifications', 'Experiences', 'Contact'];
 
+  const applyTheme = (shouldUseDark) => {
+    document.documentElement.classList.toggle('dark-mode', shouldUseDark);
+    document.body.classList.toggle('dark-mode', shouldUseDark);
+    window.localStorage.setItem('portfolio-theme', shouldUseDark ? 'dark' : 'light');
+  };
+
   useEffect(() => {
     const savedTheme = window.localStorage.getItem('portfolio-theme');
-    const shouldUseDark = savedTheme === 'dark' || document.body.classList.contains('dark-mode');
+    const shouldUseDark = savedTheme === 'dark' || document.documentElement.classList.contains('dark-mode');
     setIsDark(shouldUseDark);
-    document.body.classList.toggle('dark-mode', shouldUseDark);
+    applyTheme(shouldUseDark);
   }, []);
 
   useEffect(() => {
@@ -53,8 +59,7 @@ export default function Navbar({ activeItem, setActiveItem, language, setLanguag
     setTimeout(() => setIsPressed(false), 150);
     const newDarkState = !isDark;
     setIsDark(newDarkState);
-    document.body.classList.toggle('dark-mode', newDarkState);
-    window.localStorage.setItem('portfolio-theme', newDarkState ? 'dark' : 'light');
+    applyTheme(newDarkState);
   };
 
   const toggleLanguage = () => {
