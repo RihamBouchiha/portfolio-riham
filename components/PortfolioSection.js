@@ -52,6 +52,16 @@ export default function PortfolioSection() {
     },
     {
       id: 5,
+      title: "Trustify",
+      category: "Due Diligence Logicielle",
+      description: "Plateforme qui analyse automatiquement un projet et génère un rapport de risques techniques via des modèles IA spécialisés.",
+      role: "AI & Software Analysis",
+      image: "trustify.svg",
+      link: "http://51.170.130.179:3000",
+      github: "https://github.com/RihamBouchiha"
+    },
+    {
+      id: 6,
       title: "QuizzMaster App",
       category: "Quiz Mobile App",
       description: "Jeu de quiz interactif sur mobile pour tester ses connaissances avec un système de score en temps réel.",
@@ -100,7 +110,7 @@ export default function PortfolioSection() {
           margin-bottom: 1rem;
         }
         .header-title {
-          font-size: 3rem;
+          font-size: 2.6rem;
           font-family: serif; /* Ou votre police titre */
           margin: 0;
           line-height: 1.2;
@@ -110,7 +120,7 @@ export default function PortfolioSection() {
         .projects-container {
           display: flex;
           flex-direction: column;
-          gap: 8rem; /* Espace entre les projets */
+          gap: 6rem; /* Espace entre les projets */
           max-width: 1200px;
           margin: 0 auto;
         }
@@ -185,7 +195,7 @@ export default function PortfolioSection() {
         }
 
         .project-desc {
-          font-size: 1rem;
+          font-size: 0.95rem;
           opacity: 0.7;
           line-height: 1.6;
           margin-bottom: 2rem;

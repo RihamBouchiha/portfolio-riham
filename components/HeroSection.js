@@ -64,7 +64,7 @@ export default function HeroSection({ setActiveItem }) {
         alignItems: 'center', position: 'relative', zIndex: 10
       }}>
         <div className="animate-in fade-in duration-1000">
-          <h1 className="hero-title" style={{ fontSize: '5.5rem', fontFamily: 'serif', color: 'var(--text-main)', lineHeight: '1', marginBottom: '1.5rem' }}>
+          <h1 className="hero-title" style={{ fontSize: '4.6rem', fontFamily: 'serif', color: 'var(--text-main)', lineHeight: '1', marginBottom: '1.3rem' }}>
             Hello, I'm<br />
             <span style={{ fontWeight: 'bold' }}>Riham Bouchiha.</span>
           </h1>
@@ -83,27 +83,30 @@ export default function HeroSection({ setActiveItem }) {
           </a>
         </div>
 
-        <div style={{ position: 'relative' }}>
-          <div className="avatar-frame" style={{
-            position: 'absolute', width: '380px', height: '420px',
-            backgroundColor: '#d4b5a0', borderRadius: '50px',
-            transform: 'translate(20px, 20px)', zIndex: -1
-          }}></div>
-          <div className="avatar-container" style={{
-            width: '380px', height: '420px',
-            backgroundColor: 'var(--white-to-dark)', borderRadius: '50px',
-            padding: '12px', boxShadow: '0 30px 60px rgba(0,0,0,0.1)',
-            border: '10px solid var(--white-to-dark)',
-            transition: 'background-color 0.3s, border-color 0.3s'
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+          <div style={{
+            width: '380px', minHeight: '320px',
+            background: 'linear-gradient(135deg, rgba(166,128,100,0.25), rgba(255,255,255,0.08))',
+            borderRadius: '32px',
+            padding: '2rem',
+            boxShadow: '0 24px 60px rgba(0,0,0,0.15)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center'
           }}>
-             <div style={{
-               width: '100%', height: '100%',
-               backgroundColor: 'var(--inner-avatar)', borderRadius: '35px',
-               overflow: 'hidden', display: 'flex', alignItems: 'flex-end',
-               transition: 'background-color 0.3s'
-             }}>
-               <img src="/avatar.png" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-             </div>
+            <div>
+              <p style={{ margin: 0, color: 'var(--text-sub)', letterSpacing: '0.3rem', textTransform: 'uppercase', fontSize: '0.8rem' }}>
+                Software Engineering Student
+              </p>
+              <h2 style={{ fontSize: '1.8rem', fontFamily: 'serif', color: 'var(--text-main)', margin: '0.8rem 0 1rem' }}>
+                Building thoughtful digital experiences.
+              </h2>
+              <p style={{ fontSize: '1rem', color: 'var(--text-sub)', lineHeight: 1.7, margin: 0 }}>
+                Passionate about AI, DevOps and elegant interfaces that turn ideas into useful products.
+              </p>
+            </div>
           </div>
         </div>
       </div>

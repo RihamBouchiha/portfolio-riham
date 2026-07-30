@@ -8,16 +8,36 @@ export default function ExperiencesSection() {
   const experiences = [
     {
       id: 1,
+      company: "NTT Data",
+      role: "Stage",
+      period: "En cours",
+      desc: "Agent IA de service client interne : classification des emails et messages Teams, réponses initiales et routage automatique des demandes.",
+      tags: ["Python", "Microsoft Graph", "Teams", "LangChain", "Work queues"],
+      image: "avatar.png",
+      link: "https://www.nttdata.com"
+    },
+    {
+      id: 2,
+      company: "3LM Solutions",
+      role: "Stage",
+      period: "En cours",
+      desc: "Superviseur IA - Lot 5 : scoring, résumé et debriefing post-appel pour évaluer la qualité commerciale, synthétiser les appels, générer des conseils et suivre la progression.",
+      tags: ["GPT-5.5", "NestJS", "PostgreSQL", "pgvector", "Qdrant"],
+      image: "avatar.png",
+      link: "https://www.3lmsolutions.com"
+    },
+    {
+      id: 3,
       company: "Commune de Tanger",
       role: "Technical Internship",
       period: "2025",
       desc: "Development of a Flutter app for urban lighting management with geolocation.",
-      tags: ["React Native", "PostgreSQL"], // Note: La description dit Flutter mais le tag React Native, vérifiez lequel est le bon.
+      tags: ["React Native", "PostgreSQL"],
       image: "commune.png",
       link: "https://fr.tanger.ma/"
     },
     {
-      id: 2,
+      id: 4,
       company: "Activ Digital",
       role: "Technical Internship",
       period: "2024",
@@ -27,7 +47,7 @@ export default function ExperiencesSection() {
       link: "https://activdigital.ma/#hero"
     },
     {
-      id: 3,
+      id: 5,
       company: "ESTF",
       role: "Academic Project",
       period: "2023-24",
@@ -37,7 +57,7 @@ export default function ExperiencesSection() {
       link: "http://www.est-usmba.ac.ma/"
     },
     {
-      id: 4,
+      id: 6,
       company: "D3 Soft",
       role: "Introductory Internship",
       period: "2023",
@@ -174,7 +194,7 @@ export default function ExperiencesSection() {
           margin-bottom: 0.5rem;
         }
         .exp-title {
-          font-size: 3rem;
+          font-size: 2.6rem;
           font-family: serif;
           margin: 0;
           color: var(--text-main);
