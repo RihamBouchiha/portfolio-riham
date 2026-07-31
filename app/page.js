@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
@@ -15,8 +15,17 @@ export default function Home() {
   const [language, setLanguage] = useState('fr');
   const [portfolioOpen, setPortfolioOpen] = useState(false);
 
+  useEffect(() => {
+    const savedLanguage = window.localStorage.getItem('portfolio-language');
+    if (savedLanguage === 'fr' || savedLanguage === 'en') setLanguage(savedLanguage);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem('portfolio-language', language);
+  }, [language]);
+
   if (!portfolioOpen) {
-    return <IntroGame language={language} onOpen={() => setPortfolioOpen(true)} />;
+    return <IntroGame key={language} language={language} setLanguage={setLanguage} onOpen={() => setPortfolioOpen(true)} />;
   }
 
   return (
