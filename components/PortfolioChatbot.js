@@ -105,8 +105,8 @@ export default function PortfolioChatbot({ language = 'fr' }) {
           <button type="submit" disabled={!input.trim() || sending} aria-label="Send"><FiSend /></button>
         </form>
       </div>}
-      <button type="button" className={styles.launcher} onClick={() => setOpen((current) => !current)} aria-label={open ? copy.ariaClose : copy.ariaOpen}>
-        {open ? <FiX /> : <><span className={styles.launcherLogo}>RB<i>✦</i></span><span className={styles.launcherText}><small>AI PORTFOLIO GUIDE</small><b>{copy.launcher}</b></span><span className={styles.launcherArrow}><FiArrowUpRight /></span></>}
+      <button type="button" className={styles.launcher} onClick={() => setOpen((current) => !current)} aria-label={open ? copy.ariaClose : copy.ariaOpen} title={open ? copy.ariaClose : copy.launcher}>
+        {open ? <FiX /> : <span className={styles.launcherLogo}>RB<i>✦</i></span>}
       </button>
     </aside>
   );
