@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 
 export default function HeroSection({ setActiveItem, language }) {
@@ -24,24 +25,29 @@ export default function HeroSection({ setActiveItem, language }) {
     pauseTimer = window.setTimeout(typeName, 400);
     return () => window.clearTimeout(pauseTimer);
   }, []);
+
   const copy = language === 'fr'
     ? {
         greeting: 'Bonjour, je suis',
         name: 'Riham Bouchiha.',
-        subtitle: 'Élève ingénieure en génie informatique et intelligence artificielle',
-        description: 'Développeuse Full-Stack | Designer UI/UX | Passionnée par l’IA et le Machine Learning | Passionnée par le DevOps et les logiciels évolutifs. Je conçois des produits numériques fiables et à fort impact, qui transforment des idées ambitieuses en expériences soignées.',
-        button: 'Voir mes projets', contact: 'Contactez-moi',
-        badge: 'Ingénierie logicielle',
-        panelTitle: 'Construire des expériences digitales réfléchies.',
-        panelText: 'Je conçois des interfaces et des solutions techniques qui allient impact, clarté et fiabilité. Mon approche combine une architecture solide, une automatisation fluide et une attention particulière à l’expérience utilisateur, afin de créer des produits aussi agréables à utiliser que simples à faire évoluer.',
+        subtitle: '\u00c9l\u00e8ve ing\u00e9nieure en g\u00e9nie informatique et intelligence artificielle',
+        description: 'D\u00e9veloppeuse Full-Stack et Designer UI/UX, passionn\u00e9e par l\u2019intelligence artificielle, le DevOps et les solutions logicielles modernes. Je transforme des id\u00e9es ambitieuses en produits num\u00e9riques fiables, \u00e9volutifs et intuitifs, gr\u00e2ce \u00e0 des architectures robustes, un code maintenable et des interfaces soign\u00e9es.',
+        button: 'Voir mes projets',
+        contact: 'Contactez-moi',
+        badge: 'Ing\u00e9nierie logicielle',
+        panelTitle: 'Construire des exp\u00e9riences digitales r\u00e9fl\u00e9chies.',
+        panelText: 'Je con\u00e7ois des interfaces et des solutions techniques qui allient impact, clart\u00e9 et fiabilit\u00e9. Mon approche combine une architecture solide, une automatisation fluide et une attention particuli\u00e8re \u00e0 l\u2019exp\u00e9rience utilisateur, afin de cr\u00e9er des produits aussi agr\u00e9ables \u00e0 utiliser que simples \u00e0 faire \u00e9voluer.',
       }
     : {
-        greeting: 'Hello, I am', name: 'Riham Bouchiha.', subtitle: 'Engineering student in computer science and artificial intelligence',
-        description: 'Full-Stack Developer | UI/UX Designer | AI & Machine Learning Enthusiast | Passionate About DevOps & Scalable Software. I build reliable, high-impact digital products that turn ambitious ideas into polished experiences.',
-        button: 'View my work', contact: 'Get in touch',
+        greeting: 'Hello, I am',
+        name: 'Riham Bouchiha.',
+        subtitle: 'Engineering student in computer science and artificial intelligence',
+        description: 'Full-Stack Developer and UI/UX Designer, passionate about artificial intelligence, DevOps, and modern software solutions. I turn ambitious ideas into reliable, scalable, intuitive digital products through robust architecture, maintainable code, and polished interfaces.',
+        button: 'View my work',
+        contact: 'Get in touch',
         badge: 'Software engineering',
         panelTitle: 'Building thoughtful digital experiences.',
-        panelText: 'I design interfaces and technical solutions that balance impact, clarity and reliability. My approach brings together sound architecture, seamless automation and a strong focus on the user experience—creating products that feel intuitive today and are ready to evolve tomorrow.',
+        panelText: 'I design interfaces and technical solutions that balance impact, clarity and reliability. My approach brings together sound architecture, seamless automation and a strong focus on the user experience\u2014creating products that feel intuitive today and are ready to evolve tomorrow.',
       };
 
   return (
@@ -64,7 +70,7 @@ export default function HeroSection({ setActiveItem, language }) {
         </div>
 
         <aside className="bp-pipeline bp-panel-copy" aria-label={copy.badge}>
-          <span className="bp-panel-flower" aria-hidden="true">✦</span>
+          <span className="bp-panel-flower" aria-hidden="true">\u2726</span>
           <p className="bp-panel-badge">{copy.badge}</p>
           <h2>{copy.panelTitle}</h2>
           <p>{copy.panelText}</p>
