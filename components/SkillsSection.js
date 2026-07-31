@@ -1,193 +1,56 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
+import styles from './SkillsSection.module.css';
+import SkillMatchGame from './SkillMatchGame';
 import {
-  SiC, SiCplusplus, SiPython, SiJavascript, SiPhp, SiR, SiGnubash,
+  SiC, SiCplusplus, SiPython, SiJavascript, SiPhp, SiR, SiTypescript,
   SiReact, SiNextdotjs, SiNodedotjs, SiTailwindcss, SiBootstrap,
   SiExpress, SiJquery, SiChartdotjs, SiPrisma, SiJson, SiPostman,
   SiApache, SiBabel, SiLinux, SiDotnet, SiFlutter, SiSpringboot,
-  SiMysql, SiPostgresql, SiMongodb, SiSqlite, SiMariadb,
-  SiGit, SiDocker, SiFigma
+  SiMysql, SiPostgresql, SiMongodb, SiSqlite, SiMariadb, SiFirebase, SiGit, SiGithub, SiGithubactions, SiJenkins, SiDocker, SiFigma, SiCanva, SiTensorflow, SiPytorch, SiScikitlearn, SiPandas, SiNumpy
 } from 'react-icons/si';
-import { FaJava } from 'react-icons/fa';
+import { FaJava, FaChartBar } from 'react-icons/fa';
 import { TbBrandCSharp, TbSql, TbBrandMongodb } from 'react-icons/tb';
 
+const hardSkills = {
+  Languages: [{ name: 'C', icon: <SiC /> }, { name: 'C++', icon: <SiCplusplus /> }, { name: 'C#', icon: <TbBrandCSharp /> }, { name: 'Java', icon: <FaJava /> }, { name: 'JavaScript', icon: <SiJavascript /> }, { name: 'TypeScript', icon: <SiTypescript /> }, { name: 'Python', icon: <SiPython /> }, { name: 'PHP', icon: <SiPhp /> }, { name: 'R', icon: <SiR /> }],
+  Frameworks: [{ name: 'React', icon: <SiReact /> }, { name: 'React Native', icon: <SiReact /> }, { name: 'Next.js', icon: <SiNextdotjs /> }, { name: 'Node.js', icon: <SiNodedotjs /> }, { name: 'Express.js', icon: <SiExpress /> }, { name: 'Flutter', icon: <SiFlutter /> }, { name: 'Spring Boot', icon: <SiSpringboot /> }, { name: '.NET', icon: <SiDotnet /> }, { name: 'Bootstrap', icon: <SiBootstrap /> }, { name: 'Tailwind', icon: <SiTailwindcss /> }, { name: 'jQuery', icon: <SiJquery /> }, { name: 'Prisma', icon: <SiPrisma /> }, { name: 'Mongoose', icon: <TbBrandMongodb /> }, { name: 'Chart.js', icon: <SiChartdotjs /> }, { name: 'JSON', icon: <SiJson /> }],
+  Databases: [{ name: 'PostgreSQL', icon: <SiPostgresql /> }, { name: 'MySQL', icon: <SiMysql /> }, { name: 'MongoDB', icon: <SiMongodb /> }, { name: 'Firebase', icon: <SiFirebase /> }, { name: 'SQLite', icon: <SiSqlite /> }, { name: 'MariaDB', icon: <SiMariadb /> }, { name: 'SQL Server', icon: <TbSql /> }],
+  Tools: [{ name: 'Git', icon: <SiGit /> }, { name: 'Docker', icon: <SiDocker /> }, { name: 'Figma', icon: <SiFigma /> }, { name: 'Canva', icon: <SiCanva /> }, { name: 'Power BI', icon: <FaChartBar /> }, { name: 'Postman', icon: <SiPostman /> }, { name: 'Apache', icon: <SiApache /> }, { name: 'Babel', icon: <SiBabel /> }, { name: 'Linux', icon: <SiLinux /> }],
+  DevOps: [{ name: 'Git', icon: <SiGit /> }, { name: 'GitHub', icon: <SiGithub /> }, { name: 'Jenkins', icon: <SiJenkins /> }, { name: 'Docker', icon: <SiDocker /> }, { name: 'GitHub Actions', icon: <SiGithubactions /> }],
+  AI: [{ name: 'Python', icon: <SiPython /> }, { name: 'TensorFlow', icon: <SiTensorflow /> }, { name: 'PyTorch', icon: <SiPytorch /> }, { name: 'Scikit-learn', icon: <SiScikitlearn /> }, { name: 'Pandas', icon: <SiPandas /> }, { name: 'NumPy', icon: <SiNumpy /> }],
+};
+
+const technologyColors = {
+  C: '#5c6bc0', 'C++': '#00599c', 'C#': '#8b4bc1', Java: '#e76f00', JavaScript: '#f0bf21', TypeScript: '#3178c6', Python: '#3776ab', PHP: '#777bb4', R: '#276dc3',
+  React: '#149eca', 'React Native': '#149eca', 'Next.js': '#1d1d1d', 'Node.js': '#4b9d3e', 'Express.js': '#444', Flutter: '#42a5f5', 'Spring Boot': '#6db33f', '.NET': '#6d3fb5', Bootstrap: '#7952b3', Tailwind: '#22a9c8', jQuery: '#0769ad', Prisma: '#2d3748', Mongoose: '#8f2020', 'Chart.js': '#e85878', JSON: '#333',
+  PostgreSQL: '#336791', MySQL: '#4479a1', MongoDB: '#47a248', Firebase: '#f5a300', SQLite: '#1689c0', MariaDB: '#003545', 'SQL Server': '#cc2927', Git: '#f05032', GitHub: '#24292e', Jenkins: '#d24939', Docker: '#2496ed', 'GitHub Actions': '#2088ff', Figma: '#f24e1e', Canva: '#00c4cc', 'Power BI': '#f2c811', Postman: '#ff6c37', Apache: '#d22128', Babel: '#f9c928', Linux: '#d6a900', TensorFlow: '#ff6f00', PyTorch: '#ee4c2c', 'Scikit-learn': '#f7931e', Pandas: '#150458', NumPy: '#4dabcf',
+};
+
 export default function SkillsSection({ language }) {
+  const [skillKind, setSkillKind] = useState('hard');
   const [activeTab, setActiveTab] = useState('Languages');
-  const [rotation, setRotation] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
+  const [discovered, setDiscovered] = useState([]);
+  const isFrench = language === 'fr';
   const copy = language === 'fr'
-    ? {
-        heading: 'Univers des compétences',
-        subtitle: 'Un mélange de logique, d’outils modernes et de goût pour l’expérience utilisateur.',
-        tabs: { Languages: 'Langages', Frameworks: 'Frameworks', Databases: 'Bases de données', Tools: 'Outils' }
-      }
-    : {
-        heading: 'Skills universe',
-        subtitle: 'A blend of logic, modern tooling and a strong eye for user experience.',
-        tabs: { Languages: 'Languages', Frameworks: 'Frameworks', Databases: 'Databases', Tools: 'Tools' }
-      };
+    ? { eyebrow: 'L’ATELIER DE MES COMPÉTENCES', title: 'Technique &<br />humain, en équilibre.', intro: 'Un espace où la précision technique rencontre la curiosité, la créativité et le travail d’équipe.', hard: 'Hard skills', soft: 'Soft skills', tabs: { Languages: 'Langages', Frameworks: 'Frameworks', Databases: 'Bases de données', Tools: 'Outils', AI: 'Intelligence artificielle' }, softSkills: [{ title: 'Résolution de problèmes', detail: 'Transformer la complexité en solutions concrètes.' }, { title: 'Esprit d’analyse', detail: 'Comprendre les systèmes avant de les améliorer.' }, { title: 'Créativité', detail: 'Imaginer des expériences utiles qui marquent.' }, { title: 'Communication', detail: 'Rendre les idées claires et accessibles.' }, { title: 'Esprit d’équipe', detail: 'Construire avec écoute, confiance et partage.' }, { title: 'Adaptabilité', detail: 'Apprendre vite et évoluer avec le contexte.' }, { title: 'Organisation', detail: 'Avancer avec méthode, jusqu’au détail.' }, { title: 'Curiosité', detail: 'Explorer sans cesse les outils et les idées.' }, { title: 'Autonomie', detail: 'Prendre des initiatives et les mener à bien.' }] }
+    : { eyebrow: 'MY SKILLS STUDIO', title: 'Technical &<br />human, in balance.', intro: 'A space where technical precision meets curiosity, creativity and teamwork.', hard: 'Hard skills', soft: 'Soft skills', tabs: { Languages: 'Languages', Frameworks: 'Frameworks', Databases: 'Databases', Tools: 'Tools', AI: 'Artificial intelligence' }, softSkills: [{ title: 'Problem solving', detail: 'Turning complexity into concrete solutions.' }, { title: 'Analytical mindset', detail: 'Understanding systems before improving them.' }, { title: 'Creativity', detail: 'Imagining useful experiences that leave a mark.' }, { title: 'Communication', detail: 'Making ideas clear and accessible.' }, { title: 'Team spirit', detail: 'Building through trust and active listening.' }, { title: 'Adaptability', detail: 'Learning fast and evolving with context.' }, { title: 'Organisation', detail: 'Moving forward with care and method.' }, { title: 'Curiosity', detail: 'Continuously exploring tools and ideas.' }, { title: 'Autonomy', detail: 'Taking initiative and carrying it through.' }] };
+  const displayedSkills = hardSkills[activeTab];
+  const toggleDiscovery = (name) => setDiscovered((current) => current.includes(name) ? current.filter((item) => item !== name) : [...current, name]);
 
-  const skillsData = {
-    Languages: [
-      { name: 'C', icon: <SiC color="#775535" /> },
-      { name: 'C++', icon: <SiCplusplus color="#00599C" /> },
-      { name: 'C#', icon: <TbBrandCSharp color="#239120" /> },
-      { name: 'Java', icon: <FaJava color="#de4605" /> },
-      { name: 'JS', icon: <SiJavascript color="#F7DF1E" /> },
-      { name: 'Python', icon: <SiPython color="#3776AB" /> },
-      { name: 'PHP', icon: <SiPhp color="#777BB4" /> },
-      { name: 'Bash', icon: <SiGnubash color="#4EAA25" /> },
-      { name: 'R', icon: <SiR color="#276DC3" /> },
-    ],
-    Frameworks: [
-      { name: 'React', icon: <SiReact color="#61DAFB" /> },
-      { name: 'React Native', icon: <SiReact color="#1b5c6e" /> },
-      { name: 'Next.js', icon: <SiNextdotjs color="#000000" /> },
-      { name: 'Node.js', icon: <SiNodedotjs color="#339933" /> },
-      { name: 'Express.js', icon: <SiExpress color="#000000" /> },
-      { name: 'Flutter', icon: <SiFlutter color="#2694ee" /> },
-      { name: 'Spring Boot', icon: <SiSpringboot color="#6DB33F" /> },
-      { name: '.NET', icon: <SiDotnet color="#512BD4" /> },
-      { name: 'Bootstrap', icon: <SiBootstrap color="#7952B3" /> },
-      { name: 'Tailwind', icon: <SiTailwindcss color="#06B6D4" /> },
-      { name: 'jQuery', icon: <SiJquery color="#0769AD" /> },
-      { name: 'Prisma', icon: <SiPrisma color="#2D3748" /> },
-      { name: 'Mongoose', icon: <TbBrandMongodb color="#880000" /> },
-      { name: 'Chart.js', icon: <SiChartdotjs color="#FF6384" /> },
-      { name: 'JSON', icon: <SiJson color="#000000" /> },
-    ],
-    Databases: [
-      { name: 'PostgreSQL', icon: <SiPostgresql color="#4169E1" /> },
-      { name: 'MySQL', icon: <SiMysql color="#4479A1" /> },
-      { name: 'MongoDB', icon: <SiMongodb color="#47A248" /> },
-      { name: 'SQLite', icon: <SiSqlite color="#169ad7" /> },
-      { name: 'MariaDB', icon: <SiMariadb color="#003545" /> },
-      { name: 'SQL Server', icon: <TbSql color="#CC2927" /> },
-    ],
-    Tools: [
-      { name: 'Git', icon: <SiGit color="#F05032" /> },
-      { name: 'Docker', icon: <SiDocker color="#2496ED" /> },
-      { name: 'Figma', icon: <SiFigma color="#f21e76" /> },
-      { name: 'Postman', icon: <SiPostman color="#FF6C37" /> },
-      { name: 'Apache', icon: <SiApache color="#D22128" /> },
-      { name: 'Babel', icon: <SiBabel color="#F9DC3E" /> },
-      { name: 'Linux', icon: <SiLinux color="#FCC624" /> },
-    ]
-  };
-
-  useEffect(() => {
-    setMounted(true);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    const interval = setInterval(() => {
-      if (!isHovered) {
-        setRotation((prev) => prev + 0.4);
-      }
-    }, 40);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isHovered]);
-
-  if (!mounted) return null;
-
-  const currentSkills = skillsData[activeTab] || [];
-  const rx = isMobile ? 150 : (currentSkills.length > 10 ? 380 : 320);
-  const ry = isMobile ? 60 : 120;
-  const centerCardSize = isMobile ? '100px' : '140px';
-  const skillCardSize = isMobile ? '58px' : '86px';
-  const iconSize = isMobile ? '1.35rem' : '1.8rem';
-  const titleSize = isMobile ? '2rem' : '3rem';
+  return <SkillMatchGame language={language} hardSkills={hardSkills} technologyColors={technologyColors} />;
 
   return (
-    <section id="skills" style={{
-      minHeight: '100vh', width: '100vw',
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      position: 'relative', overflow: 'hidden', padding: '4rem 1rem', perspective: '1500px'
-    }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top, rgba(166,128,100,0.16), transparent 58%)', pointerEvents: 'none' }} />
-
-      <div style={{ zIndex: 100, textAlign: 'center', marginBottom: isMobile ? '1rem' : '1.5rem', padding: '0 10px' }}>
-        <span className="pill" style={{ marginBottom: '0.75rem' }}>{language === 'fr' ? 'Compétences' : 'Skills'}</span>
-        <h2 style={{ fontSize: titleSize, fontFamily: 'serif', color: 'var(--accent)', margin: 0, fontWeight: '900' }}>
-          {copy.heading}
-        </h2>
-        <p style={{ marginTop: '0.7rem', color: 'var(--text-sub)', maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.7 }}>
-          {copy.subtitle}
-        </p>
-
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1rem' }}>
-          {Object.keys(skillsData).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => { setActiveTab(tab); setRotation(0); }}
-              style={{
-                background: activeTab === tab ? '#a68064' : 'rgba(255,255,255,0.72)',
-                color: activeTab === tab ? 'white' : '#a68064',
-                border: '1px solid rgba(166, 128, 100, 0.3)', padding: '7px 12px', borderRadius: '999px',
-                cursor: 'pointer', transition: '0.3s', fontWeight: '700', fontSize: isMobile ? '0.65rem' : '0.75rem'
-              }}
-            >
-              {copy.tabs[tab]}
-            </button>
-          ))}
+    <section id="skills" className={styles.game}>
+      <div className={styles.gameStars} aria-hidden="true">✦　·　✧　·　✦</div>
+      <div className={styles.gameShell}>
+        <header className={styles.gameHeader}><div><p>SKILL QUEST — RIHAM.B</p><h2>{isFrench ? 'Choisis un monde,<br />découvre mes pouvoirs.' : 'Choose a world,<br />discover my powers.'}</h2></div><div className={styles.score}><span>COLLECTION</span><strong>{String(discovered.length).padStart(2, '0')}</strong><small> / {skillKind === 'hard' ? displayedSkills.length : copy.softSkills.length}</small></div></header>
+        <div className={styles.worlds} role="tablist"><button type="button" role="tab" aria-selected={skillKind === 'hard'} onClick={() => setSkillKind('hard')}><span>⌘</span><strong>{copy.hard}</strong><small>{isFrench ? 'Le laboratoire' : 'The lab'}</small></button><button type="button" role="tab" aria-selected={skillKind === 'soft'} onClick={() => setSkillKind('soft')}><span>♡</span><strong>{copy.soft}</strong><small>{isFrench ? 'Les super-pouvoirs' : 'Super powers'}</small></button></div>
+        <div className={styles.gameBoard} key={skillKind}>
+          <div className={styles.boardTop}><span>{skillKind === 'hard' ? 'LEVEL SELECT' : 'POWER-UP SELECT'}</span><span>{isFrench ? 'Clique sur une carte' : 'Click a card'}</span></div>
+          {skillKind === 'hard' ? <><nav className={styles.levels}>{Object.keys(hardSkills).map((tab, index) => <button key={tab} type="button" onClick={() => setActiveTab(tab)} aria-current={activeTab === tab}><span>0{index + 1}</span>{copy.tabs[tab]}</button>)}</nav><div className={styles.collectibleGrid}>{displayedSkills.map((skill, index) => { const id = `${activeTab}-${skill.name}-${index}`; const isFound = discovered.includes(id); return <button type="button" className={`${styles.collectible} ${isFound ? styles.found : ''}`} key={id} onClick={() => toggleDiscovery(id)}><span className={styles.collectIcon} style={{ color: technologyColors[skill.name] }}>{skill.icon}</span><strong>{skill.name}</strong><small>{isFound ? (isFrench ? 'Trouvé !' : 'Found!') : `+${index + 1} XP`}</small></button>; })}</div></> : <div className={styles.powerGrid}>{copy.softSkills.map((skill, index) => { const id = `soft-${skill.title}`; const isFound = discovered.includes(id); return <button type="button" className={`${styles.powerCard} ${isFound ? styles.found : ''}`} key={skill.title} onClick={() => toggleDiscovery(id)}><span>✦ 0{index + 1}</span><h3>{skill.title}</h3><p>{skill.detail}</p><i>{isFound ? '✓' : '+'}</i></button>; })}</div>}
         </div>
-      </div>
-
-      <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{
-          position: 'relative', width: '100%', maxWidth: '920px', height: isMobile ? '300px' : '420px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}
-      >
-        <div className="glass-card" style={{
-          width: centerCardSize, height: centerCardSize, borderRadius: '32px',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          zIndex: 50, borderBottom: '5px solid var(--accent)', background: 'var(--surface-strong)'
-        }}>
-          <span style={{ fontSize: isMobile ? '1.2rem' : '1.6rem' }}>✦</span>
-          <span style={{ fontSize: isMobile ? '0.7rem' : '0.85rem', fontWeight: '700', color: '#a68064', marginTop: '5px' }}>{copy.tabs[activeTab]}</span>
-        </div>
-
-        {currentSkills.map((skill, index) => {
-          const angle = ((index / currentSkills.length) * Math.PI * 2) + (rotation * Math.PI / 180);
-          const x = Math.cos(angle) * rx;
-          const y = Math.sin(angle) * ry;
-          const factor = (y + ry) / (2 * ry);
-          const scale = 0.48 + (factor * 0.62);
-
-          return (
-            <div key={`${skill.name}-${index}`} style={{
-              position: 'absolute', left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)`,
-              transform: `translate(-50%, -50%) scale(${scale})`, opacity: 0.45 + (factor * 0.55),
-              filter: y > 0 ? 'none' : `blur(${(1 - factor) * 2}px)`, zIndex: Math.round(factor * 100)
-            }}>
-              <div className="glass-card" style={{
-                width: skillCardSize, height: skillCardSize, borderRadius: '22px',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(255,255,255,0.84)', boxShadow: '0 12px 30px rgba(0,0,0,0.08)'
-              }}>
-                <div style={{ fontSize: iconSize }}>{skill.icon}</div>
-                <span style={{
-                  fontSize: '0.6rem', fontWeight: '700', color: '#a68064',
-                  marginTop: '4px', textAlign: 'center', width: '100%', padding: '0 2px',
-                  display: isMobile ? 'none' : 'block'
-                }}>
-                  {skill.name}
-                </span>
-              </div>
-            </div>
-          );
-        })}
       </div>
     </section>
   );
