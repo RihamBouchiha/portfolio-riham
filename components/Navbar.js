@@ -1,184 +1,29 @@
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
+import { FiMenu, FiMoon, FiSun, FiX } from 'react-icons/fi';
+import styles from './Navbar.module.css';
 
 export default function Navbar({ activeItem, setActiveItem, language, setLanguage }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
+  const items = [
+    { key: 'Home', href: '#home', fr: 'Accueil', en: 'Home' },
+    { key: 'About', href: '#about', fr: 'À propos', en: 'About' },
+    { key: 'Skills', href: '#skills', fr: 'Compétences', en: 'Skills' },
+    { key: 'Education', href: '#education', fr: 'Formation', en: 'Education' },
+    { key: 'Portfolio', href: '#portfolio', fr: 'Projets', en: 'Projects' },
+    { key: 'Experiences', href: '#experiences', fr: 'Expériences', en: 'Experience' },
+    { key: 'Contact', href: '#contact', fr: 'Contact', en: 'Contact' },
+  ];
 
-  const menuItems = ['Home', 'About', 'Skills', 'Education', 'Portfolio', 'Certifications', 'Experiences', 'Contact'];
+  const applyTheme = (dark) => { document.documentElement.classList.toggle('dark-mode', dark); document.body.classList.toggle('dark-mode', dark); window.localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light'); };
+  useEffect(() => { const dark = window.localStorage.getItem('portfolio-theme') === 'dark' || document.documentElement.classList.contains('dark-mode'); setIsDark(dark); applyTheme(dark); }, []);
+  useEffect(() => { const onScroll = () => { const point = window.scrollY + 170; items.forEach((item) => { const section = document.querySelector(item.href); if (section && point >= section.offsetTop && point < section.offsetTop + section.offsetHeight) setActiveItem(item.key); }); }; window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, [setActiveItem]);
+  const toggleTheme = () => { try { const context = new (window.AudioContext || window.webkitAudioContext)(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = isDark ? 620 : 420; gain.gain.setValueAtTime(.05, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .12); oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .12); } catch {} const next = !isDark; setIsDark(next); applyTheme(next); };
+  const choose = (item) => { setActiveItem(item.key); setIsOpen(false); };
+  const FlagSwitch = () => <div className={styles.flags} aria-label="Language"><button type="button" onClick={() => setLanguage('fr')} aria-pressed={language === 'fr'} title="Français"><img src="/flags/fr.svg" alt="Français" /></button><button type="button" onClick={() => setLanguage('en')} aria-pressed={language === 'en'} title="English"><img src="/flags/us.svg" alt="English" /></button></div>;
+  const ThemeSwitch = () => <button type="button" className={styles.theme} onClick={toggleTheme} aria-label={isDark ? 'Light mode' : 'Dark mode'}><span className={isDark ? styles.darkKnob : ''}>{isDark ? <FiMoon /> : <FiSun />}</span></button>;
 
-  const applyTheme = (shouldUseDark) => {
-    document.documentElement.classList.toggle('dark-mode', shouldUseDark);
-    document.body.classList.toggle('dark-mode', shouldUseDark);
-    window.localStorage.setItem('portfolio-theme', shouldUseDark ? 'dark' : 'light');
-  };
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem('portfolio-theme');
-    const shouldUseDark = savedTheme === 'dark' || document.documentElement.classList.contains('dark-mode');
-    setIsDark(shouldUseDark);
-    applyTheme(shouldUseDark);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 150;
-      menuItems.forEach((item) => {
-        const section = document.getElementById(item.toLowerCase());
-        if (section) {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            setActiveItem(item);
-          }
-        }
-      });
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeItem, setActiveItem]);
-
-  const playSwitchSound = () => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(isDark ? 400 : 600, ctx.currentTime);
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.1);
-  };
-
-  const toggleTheme = () => {
-    playSwitchSound();
-    setIsPressed(true);
-    setTimeout(() => setIsPressed(false), 150);
-    const newDarkState = !isDark;
-    setIsDark(newDarkState);
-    applyTheme(newDarkState);
-  };
-
-  const toggleLanguage = () => {
-    setLanguage(language === 'fr' ? 'en' : 'fr');
-  };
-
-  const ThemeToggleBtn = () => (
-    <div
-      onClick={toggleTheme}
-      style={{
-        width: '65px', height: '32px',
-        backgroundColor: isDark ? '#2c2c2c' : '#a68064',
-        borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '0 6px',
-        cursor: 'pointer', position: 'relative', justifyContent: isDark ? 'flex-end' : 'flex-start',
-        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-        transform: isPressed ? 'scale(0.9)' : 'scale(1)',
-        boxShadow: isDark ? '0 0 15px rgba(0,0,0,0.5)' : '0 4px 10px rgba(166, 128, 100, 0.3)'
-      }}
-    >
-      <span style={{ position: 'absolute', left: isDark ? '12px' : 'auto', right: isDark ? 'auto' : '12px', fontSize: '14px' }}>
-        {isDark ? '🌙' : '☀️'}
-      </span>
-      <div style={{ width: '22px', height: '22px', backgroundColor: 'white', borderRadius: '50%', zIndex: 2 }}></div>
-    </div>
-  );
-
-  const LangToggleBtn = () => (
-    <button
-      onClick={toggleLanguage}
-      style={{
-        border: '1px solid rgba(166,128,100,0.35)',
-        background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.7)',
-        color: 'var(--text-main)',
-        borderRadius: '999px',
-        padding: '0.45rem 0.8rem',
-        fontWeight: 700,
-        cursor: 'pointer',
-        fontSize: '0.8rem',
-        letterSpacing: '0.08em',
-        backdropFilter: 'blur(10px)'
-      }}
-    >
-      {language === 'fr' ? 'FR / EN' : 'EN / FR'}
-    </button>
-  );
-
-  return (
-    <nav style={{
-      position: 'fixed', top: 0, width: '100%', zIndex: 100,
-      padding: '1rem 5%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-    }}>
-      <div style={{
-        padding: '0.75rem 1rem', borderRadius: '999px', backdropFilter: 'blur(16px)',
-        background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)',
-        fontWeight: '800', fontSize: '0.95rem', color: 'var(--text-main)', zIndex: 102, letterSpacing: '0.14em'
-      }}>
-        RIHAM BOUCHIHA
-      </div>
-
-      <div className="nav-links-pc" style={{ alignItems: 'center', gap: '0.8rem' }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.35rem',
-          borderRadius: '999px', backdropFilter: 'blur(16px)', background: 'var(--surface)',
-          border: '1px solid var(--border)', boxShadow: 'var(--shadow)'
-        }}>
-          {menuItems.map((item) => {
-            const isActive = activeItem === item;
-            return (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={() => setActiveItem(item)}
-                style={{
-                  textDecoration: 'none',
-                  color: isActive ? 'var(--accent)' : 'var(--text-main)',
-                  fontSize: '0.9rem',
-                  fontWeight: isActive ? '700' : '500',
-                  padding: '0.55rem 0.85rem',
-                  backgroundColor: isActive ? 'rgba(166, 128, 100, 0.14)' : 'transparent',
-                  borderRadius: '999px',
-                  transition: '0.2s'
-                }}
-              >
-                {item}
-              </a>
-            );
-          })}
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <LangToggleBtn />
-          <ThemeToggleBtn />
-        </div>
-      </div>
-
-      <button className="hamburger-btn" onClick={() => setIsOpen(!isOpen)} style={{ zIndex: 102, background: 'none', border: 'none', cursor: 'pointer' }}>
-        <span style={{ display:'block', width:'24px', height:'2px', backgroundColor:'var(--text-main)', margin:'4px 0', transform: isOpen ? 'rotate(45deg) translate(4px, 5px)' : 'none', transition: '0.3s' }}></span>
-        <span style={{ display:'block', width:'24px', height:'2px', backgroundColor:'var(--text-main)', margin:'4px 0', opacity: isOpen ? 0 : 1, transition: '0.3s' }}></span>
-        <span style={{ display:'block', width:'24px', height:'2px', backgroundColor:'var(--text-main)', margin:'4px 0', transform: isOpen ? 'rotate(-45deg) translate(4px, -6px)' : 'none', transition: '0.3s' }}></span>
-      </button>
-
-      {isOpen && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh',
-          background: 'var(--bg-color)', display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: '1.6rem', zIndex: 101
-        }}>
-          {menuItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => { setActiveItem(item); setIsOpen(false); }} style={{ fontSize: '1.4rem', textDecoration: 'none', color: 'var(--text-main)', fontWeight: '700' }}>
-              {item}
-            </a>
-          ))}
-          <div style={{ width: '46px', height: '2px', backgroundColor: 'var(--text-main)', opacity: 0.2 }}></div>
-          <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
-            <LangToggleBtn />
-            <ThemeToggleBtn />
-          </div>
-        </div>
-      )}
-    </nav>
-  );
+  return <nav className={styles.nav}><a href="#home" className={styles.brand} onClick={() => choose(items[0])}><b>RB</b><span>RIHAM<br />BOUCHIHA</span></a><div className={styles.desktop}><div className={styles.links}>{items.map((item) => <a key={item.key} href={item.href} onClick={() => choose(item)} className={activeItem === item.key ? styles.active : ''}>{item[language]}</a>)}</div><div className={styles.utilities}><FlagSwitch /><ThemeSwitch /></div></div><button type="button" className={styles.menu} onClick={() => setIsOpen(!isOpen)} aria-label="Menu">{isOpen ? <FiX /> : <FiMenu />}</button>{isOpen && <div className={styles.mobilePanel}><div className={styles.mobileTop}><span>MENU</span><button type="button" onClick={() => setIsOpen(false)}><FiX /></button></div><div className={styles.mobileLinks}>{items.map((item, index) => <a key={item.key} href={item.href} onClick={() => choose(item)}><small>0{index + 1}</small>{item[language]}<FiX className={styles.arrow} /></a>)}</div><div className={styles.mobileUtilities}><FlagSwitch /><ThemeSwitch /></div></div>}</nav>;
 }
