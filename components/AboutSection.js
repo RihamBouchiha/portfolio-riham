@@ -1,91 +1,53 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+
+import { useEffect, useState } from 'react';
 
 export default function AboutSection({ language }) {
-  const [mounted, setMounted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const sectionRef = useRef(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const isFrench = language === 'fr';
+  const slides = isFrench
+    ? [
+        { label: '01 — MON HISTOIRE', title: 'À propos de moi.', text: 'Tout a commencé par une simple question : « Comment ça fonctionne vraiment ? ». Ce goût pour comprendre les mécanismes derrière les écrans s’est transformé en une vraie passion pour la résolution de problèmes complexes, la création de logiciels fiables et la conception d’expériences digitales élégantes.', accent: 'curiosity' },
+        { label: '02 — MA FAÇON DE PENSER', title: 'Ce qui me guide.', text: 'Chaque projet est l’occasion de relier une idée ambitieuse à une expérience claire, utile et durable.', accent: 'values', values: ['Penser produit', 'Soigner l’expérience', 'Construire pour durer', 'Apprendre sans cesse'] },
+        { label: '03 — ET DEMAIN', title: 'Créer avec intention.', text: 'Je veux participer à des produits qui ont du sens : des solutions intelligentes, accessibles et techniquement solides, pensées pour évoluer avec leurs utilisateurs.', accent: 'vision' },
+      ]
+    : [
+        { label: '01 — MY STORY', title: 'About me.', text: 'It all started with a simple question: “How does this actually work?” That curiosity grew into a genuine passion for understanding complex systems, building reliable software and crafting polished digital experiences.', accent: 'curiosity' },
+        { label: '02 — HOW I THINK', title: 'What guides me.', text: 'Every project is an opportunity to connect an ambitious idea to an experience that is clear, useful and built to last.', accent: 'values', values: ['Product thinking', 'Thoughtful experiences', 'Built to last', 'Always learning'] },
+        { label: '03 — WHAT’S NEXT', title: 'Creating with intention.', text: 'I want to contribute to products that matter: intelligent, accessible and technically sound solutions designed to grow alongside their users.', accent: 'vision' },
+      ];
+
+  const slide = slides[activeSlide];
+  const previous = () => setActiveSlide((activeSlide - 1 + slides.length) % slides.length);
+  const next = () => setActiveSlide((activeSlide + 1) % slides.length);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleMouseMove = (e) => {
-    if (sectionRef.current) {
-      const rect = sectionRef.current.getBoundingClientRect();
-      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    }
-  };
-
-  const copy = language === 'fr'
-    ? {
-        title: 'À propos de moi',
-        body: 'Tout a commencé par une simple question : « Comment ça fonctionne vraiment ? ». Ce goût pour comprendre les mécanismes derrière les écrans s’est transformé en une vraie passion pour la résolution de problèmes complexes, la création de logiciels fiables et la conception d’expériences digitales élégantes.',
-        cv: 'Télécharger le CV',
-        contact: 'Me contacter'
-      }
-    : {
-        title: 'About me',
-        body: 'It all started with a simple question: “How does this actually work?” That curiosity grew into a genuine passion for understanding complex systems, building reliable software and crafting polished digital experiences.',
-        cv: 'Download CV',
-        contact: 'Contact me'
-      };
-
-  const starsData = mounted ? Array.from({ length: 50 }).map((_, i) => ({
-    id: i,
-    size: Math.random() * 3 + 1 + 'px',
-    top: Math.random() * 100 + '%',
-    left: Math.random() * 100 + '%',
-    duration: Math.random() * 3 + 2 + 's',
-    delay: Math.random() * 5 + 's'
-  })) : [];
+    const timer = window.setTimeout(() => {
+      setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
+    }, 6500);
+    return () => window.clearTimeout(timer);
+  }, [activeSlide, slides.length]);
 
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      style={{
-        minHeight: '100vh',
-        width: '100vw',
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '5rem 8%',
-        transition: 'background-color 0.5s ease',
-        zIndex: 1
-      }}
-    >
-      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(166,128,100,0.16), transparent 42%)`, zIndex: 1, pointerEvents: 'none' }} />
-
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-        {mounted && starsData.map((star) => (
-          <div key={star.id} className="star-base" style={{ width: star.size, height: star.size, top: star.top, left: star.left, animationDelay: star.delay, backgroundColor: 'var(--accent)', position: 'absolute', borderRadius: '50%', opacity: 0.5 }} />
-        ))}
-      </div>
-
-      <div className="glass-card section-shell" style={{ zIndex: 10, position: 'relative', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '2rem', alignItems: 'center' }}>
-        <div>
-          <span className="pill" style={{ marginBottom: '0.85rem' }}>{language === 'fr' ? 'À propos' : 'About'}</span>
-          <h2 style={{ fontSize: 'clamp(2rem, 3.4vw, 2.8rem)', fontFamily: 'serif', marginBottom: '1rem', color: 'var(--accent)' }}>{copy.title}</h2>
-          <p style={{ fontSize: '1.04rem', lineHeight: '1.8', color: 'var(--text-sub)', marginBottom: '1.4rem' }}>{copy.body}</p>
-          <div style={{ display: 'flex', gap: '0.9rem', flexWrap: 'wrap' }}>
-            <a href="cv_riham_bouchiha.pdf" target="_blank" className="soft-btn" style={{ background: 'var(--accent)', color: 'white', boxShadow: '0 12px 24px rgba(166,128,100,0.24)' }}>{copy.cv}</a>
-            <a href="#contact" className="soft-btn" style={{ background: 'var(--surface-strong)', color: 'var(--text-main)', border: '1px solid var(--border)' }}>{copy.contact}</a>
-          </div>
-        </div>
-
-        <div style={{ padding: '1.2rem', borderRadius: '24px', background: 'rgba(166,128,100,0.08)', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'grid', gap: '0.75rem' }}>
-            {['Product thinking', 'Clean UI', 'Reliable engineering', 'Curiosity-driven learning'].map((item) => (
-              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', padding: '0.8rem 0.9rem', borderRadius: '14px', background: 'var(--surface-strong)' }}>
-                <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--accent)' }} />
-                <span style={{ color: 'var(--text-main)', fontWeight: 600 }}>{item}</span>
-              </div>
-            ))}
-          </div>
+    <section id="about" className="about-hero about-carousel-section">
+      <div className="about-grid" aria-hidden="true" />
+      <div className={`about-orb about-orb--one about-orb--${slide.accent}`} aria-hidden="true" />
+      <div className="about-orb about-orb--two" aria-hidden="true" />
+      <div className="about-carousel-shell">
+        <div className="about-carousel-count"><span>ABOUT</span><span>0{activeSlide + 1} / 0{slides.length}</span></div>
+        <div className="about-carousel-progress" aria-hidden="true"><span key={activeSlide} /></div>
+        <article className={`about-slide about-slide--${slide.accent}`} key={activeSlide}>
+          <div className="about-slide-mark" aria-hidden="true"><span>{activeSlide + 1}</span><i>✦</i></div>
+          <p className="about-eyebrow">{slide.label}</p>
+          <h2>{slide.title}</h2>
+          <p className="about-body">{slide.text}</p>
+          {slide.values && <ul className="about-values">{slide.values.map((value, index) => <li key={value}><span>0{index + 1}</span>{value}<i>↗</i></li>)}</ul>}
+          {activeSlide === 0 && <div className="about-actions"><a href="/cv_riham_bouchiha.pdf" target="_blank" rel="noreferrer" className="about-btn about-btn--primary">{isFrench ? 'Télécharger le CV' : 'Download CV'} <span>↓</span></a><a href="#contact" className="about-btn about-btn--secondary">{isFrench ? 'Me contacter' : 'Contact me'}</a></div>}
+        </article>
+        <div className="about-carousel-controls">
+          <button type="button" onClick={previous} aria-label={isFrench ? 'Diapositive précédente' : 'Previous slide'}>←</button>
+          <div className="about-carousel-dots">{slides.map((item, index) => <button key={item.label} type="button" aria-label={`Slide ${index + 1}`} aria-current={activeSlide === index} onClick={() => setActiveSlide(index)}><span /></button>)}</div>
+          <button type="button" onClick={next} aria-label={isFrench ? 'Diapositive suivante' : 'Next slide'}>→</button>
         </div>
       </div>
     </section>
