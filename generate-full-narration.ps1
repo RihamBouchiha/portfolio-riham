@@ -17,7 +17,7 @@ $outputDirectory = Join-Path $PSScriptRoot 'public\audio'
 New-Item -ItemType Directory -Force -Path $outputDirectory | Out-Null
 
 $narrations = @(
-  @{ Prefix = 'fr'; Text = 'Bonjour. Je suis une idée. Riham m''a d''abord imaginée. Puis elle m''a dessinée, codée et améliorée. Elle m''a appris à devenir utile, claire et mémorable. Maintenant, je vais te montrer ce qu''elle sait créer.'; Style = 'a warm, natural adult female French voice' },
+  @{ Prefix = 'fr'; Text = "Bonjour. Je suis une idee. Riham m'a d'abord imaginee. Puis elle m'a dessinee, codee et amelioree. Elle m'a appris a devenir utile, claire et memorable. Maintenant, je vais te montrer ce qu'elle sait creer."; Style = 'a warm, natural adult female French voice' },
   @{ Prefix = 'en'; Text = 'Hello, I am an idea. Riham imagined me first. Then she designed, coded and refined me. She taught me to be useful, clear and memorable. Now, I will show you what she can create.'; Style = 'a warm, natural adult female English voice' }
 )
 
@@ -58,7 +58,18 @@ foreach ($narration in $narrations) {
     generation_config = @{ speech_config = @(@{ voice = 'Kore' }) }
   } | ConvertTo-Json -Depth 7 -Compress
 
-  $response = Invoke-RestMethod -Method Post -Uri 'https://generativelanguage.googleapis.com/v1beta/interactions' -Headers @{ 'x-goog-api-key' = $apiKey } -ContentType 'application/json' -Body $payload
+  try {
+    $response = Invoke-RestMethod -Method Post -Uri 'https://generativelanguage.googleapis.com/v1beta/interactions' -Headers @{ 'x-goog-api-key' = $apiKey } -ContentType 'application/json' -Body $payload
+  } catch {
+    $responseStream = $_.Exception.Response.GetResponseStream()
+    if ($responseStream) {
+      $reader = New-Object System.IO.StreamReader($responseStream)
+      $details = $reader.ReadToEnd()
+      $reader.Close()
+      throw "Gemini request failed: $details"
+    }
+    throw
+  }
   $audioData = $response.output_audio.data
   if (-not $audioData -and $response.steps) {
     $audioData = ($response.steps | ForEach-Object { @($_.content) } | Where-Object { $_.type -eq 'audio' } | Select-Object -Last 1).data

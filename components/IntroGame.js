@@ -92,7 +92,7 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         preload="auto"
         muted={muted}
         onEnded={() => setNarrationDone(true)}
-        src={`/audio/story-${french ? 'fr' : 'en'}-full.wav?v=20260803`}
+        src={`/audio/story-${french ? 'fr' : 'en'}-full.wav?v=20260804`}
       />
       <div className={styles.ambient} aria-hidden="true"><i /><i /><i /></div>
       <div className={styles.shell}>
