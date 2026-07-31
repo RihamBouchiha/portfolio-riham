@@ -60,7 +60,7 @@ for ($index = 0; $index -lt $narration.Lines.Length; $index += 1) {
   if (($index + 1) -lt $StartAt -or ($index + 1) -gt $EndAt) { continue }
   $outputPath = Join-Path $outputDirectory "story-$($narration.Prefix)-$($index + 1).wav"
   if ((Test-Path -LiteralPath $outputPath) -and -not $Force) { Write-Output "Kept story-$($narration.Prefix)-$($index + 1).wav"; continue }
-  $prompt = "Synthesize only the quoted text in $($narration.Language). $($narration.Direction) Do not read these instructions. Spoken text: `"$($narration.Lines[$index])`""
+  $prompt = "Read this exact $($narration.Language) sentence aloud in a warm, natural voice. Pronounce every word completely and do not say anything else: $($narration.Lines[$index])"
   $payload = @{
     model = 'gemini-2.5-flash-preview-tts'
     input = $prompt

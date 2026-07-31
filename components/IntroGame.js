@@ -5,6 +5,9 @@ import { FiArrowRight, FiVolume2, FiVolumeX } from 'react-icons/fi';
 import styles from './IntroGame.module.css';
 import languageStyles from './IntroGameLanguage.module.css';
 
+const FRENCH_LINE_DURATIONS = [2100, 2500, 3200, 3400];
+const ENGLISH_LINE_DURATIONS = [1900, 2300, 2900, 3300];
+
 export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   const french = language === 'fr';
   const story = french
@@ -44,10 +47,12 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   const [step, setStep] = useState(0);
   const [typed, setTyped] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [narrationDone, setNarrationDone] = useState(false);
   const audioRef = useRef(null);
   const line = story[step];
   const complete = typed >= line.length;
   const final = step === story.length - 1 && complete;
+  const lineDurations = french ? FRENCH_LINE_DURATIONS : ENGLISH_LINE_DURATIONS;
 
   useEffect(() => setTyped(0), [step]);
 
@@ -58,39 +63,24 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   }, [typed, complete]);
 
   useEffect(() => {
-    let fallbackTimer;
     let transitionTimer;
-    const advance = () => {
-      if (step < story.length - 1) {
-        transitionTimer = window.setTimeout(() => setStep((current) => current + 1), 360);
-      }
-    };
+    if (step >= story.length - 1) return undefined;
+    transitionTimer = window.setTimeout(() => setStep((current) => current + 1), lineDurations[step]);
+    return () => window.clearTimeout(transitionTimer);
+  }, [step, story.length, lineDurations]);
 
-    if (muted) {
-      fallbackTimer = window.setTimeout(advance, Math.max(3900, line.length * 90));
-      return () => {
-        window.clearTimeout(fallbackTimer);
-        window.clearTimeout(transitionTimer);
-      };
-    }
-
+  useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return undefined;
-    audio.playbackRate = french ? 1.12 : 1;
+    audio.playbackRate = 1;
     audio.preservesPitch = true;
-    audio.onended = advance;
-    audio.play()
-      .catch(() => {
-        fallbackTimer = window.setTimeout(advance, Math.max(3900, line.length * 90));
-      });
+    audio.currentTime = 0;
+    if (!muted) audio.play().catch(() => {});
 
     return () => {
       audio.pause();
-      audio.onended = null;
-      window.clearTimeout(fallbackTimer);
-      window.clearTimeout(transitionTimer);
     };
-  }, [step, muted, french, line.length, story.length]);
+  }, [french]);
 
   const toggleSound = () => setMuted((current) => !current);
 
@@ -101,7 +91,8 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         autoPlay
         preload="auto"
         muted={muted}
-        src={`/audio/story-${french ? 'fr' : 'en'}-${step + 1}.wav?v=20260801`}
+        onEnded={() => setNarrationDone(true)}
+        src={`/audio/story-${french ? 'fr' : 'en'}-full.wav?v=20260803`}
       />
       <div className={styles.ambient} aria-hidden="true"><i /><i /><i /></div>
       <div className={styles.shell}>
@@ -131,7 +122,7 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
                 {muted ? <FiVolumeX /> : <FiVolume2 />}
               </button>
             </div>
-            {final && <button type="button" className={styles.enter} onClick={onOpen}>{copy.enter}<FiArrowRight /></button>}
+            {final && narrationDone && <button type="button" className={styles.enter} onClick={onOpen}>{copy.enter}<FiArrowRight /></button>}
           </div>
           <p className={styles.credit}>RIHAM BOUCHIHA · DESIGN / CODE / AI</p>
         </main>
