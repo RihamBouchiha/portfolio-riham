@@ -1,24 +1,94 @@
 'use client';
 
-import { useState } from 'react';
-import { FiArrowRight, FiCode, FiCpu, FiPenTool } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { FiArrowRight, FiCheck } from 'react-icons/fi';
 import styles from './IntroGame.module.css';
 
 export default function IntroGame({ onOpen, language = 'fr' }) {
-  const [fed, setFed] = useState([]);
+  const [folds, setFolds] = useState([]);
+  const [takeoff, setTakeoff] = useState(false);
   const french = language === 'fr';
+  const complete = folds.length === 3;
   const copy = french ? {
-    eyebrow: 'LE JARDIN DES IDÉES', title: <>Fais éclore<br /><i>mon univers.</i></>, intro: 'Chaque produit commence par une idée. Nourris cette tulipe avec les trois forces qui guident mon travail.', skip: 'Passer le jardin', instruction: 'Choisis une goutte à offrir', growing: 'La tulipe grandit…', bloom: 'LA TULIPE FLEURIT', open: 'Entrer dans le portfolio',
+    eyebrow: 'L’ORIGAMI D’UNE IDÉE',
+    title: <>Une idée prend forme,<br /><i>un univers s’ouvre.</i></>,
+    intro: 'Trois facettes composent ma façon de créer. Plie chacune d’elles pour donner vie à mon univers.',
+    instruction: 'Choisis un pli pour commencer',
+    design: 'Design', code: 'Code', ai: 'IA',
+    designNote: 'penser l’expérience', codeNote: 'construire avec soin', aiNote: 'imaginer la suite',
+    progress: 'composition en cours', ready: 'l’origami est prêt',
+    skip: 'Entrer directement', enter: 'Ouvrir le portfolio',
+    bird: 'Riham Bouchiha · portfolio',
   } : {
-    eyebrow: 'THE IDEA GARDEN', title: <>Help my world<br /><i>bloom.</i></>, intro: 'Every product starts with an idea. Feed this tulip with the three strengths that guide my work.', skip: 'Skip the garden', instruction: 'Choose a drop to offer', growing: 'The tulip is growing…', bloom: 'THE TULIP IS BLOOMING', open: 'Enter the portfolio',
+    eyebrow: 'THE ORIGAMI OF AN IDEA',
+    title: <>An idea takes shape,<br /><i>a world opens.</i></>,
+    intro: 'Three facets shape the way I create. Fold each one to bring my world to life.',
+    instruction: 'Choose a fold to begin',
+    design: 'Design', code: 'Code', ai: 'AI',
+    designNote: 'shape the experience', codeNote: 'build with care', aiNote: 'imagine what’s next',
+    progress: 'composition in progress', ready: 'the origami is ready',
+    skip: 'Enter directly', enter: 'Open portfolio',
+    bird: 'Riham Bouchiha · portfolio',
   };
-  const nutrients = [
-    { id: 'design', label: 'DESIGN', title: french ? 'Imaginer' : 'Imagine', icon: <FiPenTool /> },
-    { id: 'code', label: 'CODE', title: french ? 'Construire' : 'Build', icon: <FiCode /> },
-    { id: 'ai', label: 'AI', title: french ? 'Évoluer' : 'Evolve', icon: <FiCpu /> },
-  ];
-  const bloomed = fed.length === nutrients.length;
-  const nourish = (id) => { if (!fed.includes(id)) setFed((current) => [...current, id]); };
 
-  return <section className={styles.section}><div className={styles.sun} aria-hidden="true" /><div className={styles.shell}><div className={styles.copy}><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span><button type="button" onClick={onOpen}>{copy.skip}<FiArrowRight /></button></div><div className={styles.garden}><div className={styles.gardenTop}><span>RIHAM’S GARDEN</span><b>{String(fed.length).padStart(2, '0')} / 03</b></div><div className={`${styles.scene} ${bloomed ? styles.bloomed : ''}`}><div className={styles.sparkles} aria-hidden="true"><i /><i /><i /><i /></div><div className={styles.tulip}><div className={styles.bloom}><i className={styles.petalOne} /><i className={styles.petalTwo} /><i className={styles.petalThree} /><i className={styles.petalFour} /><i className={styles.petalFive} /></div><div className={styles.stem}><i className={styles.leafLeft} /><i className={styles.leafRight} /></div><div className={styles.pot}><i /></div></div><p>{bloomed ? copy.bloom : copy.growing}</p></div><div className={styles.nutrients}><span>{copy.instruction}</span><div>{nutrients.map((nutrient) => { const active = fed.includes(nutrient.id); return <button type="button" key={nutrient.id} onClick={() => nourish(nutrient.id)} className={active ? styles.nutrientActive : ''} aria-pressed={active}><i>{nutrient.icon}</i><small>{nutrient.label}</small><strong>{nutrient.title}</strong></button>; })}</div></div>{bloomed && <button type="button" className={styles.open} onClick={onOpen}>{copy.open}<FiArrowRight /></button>}</div></div></section>;
+  const foldsData = [
+    { id: 'design', label: copy.design, note: copy.designNote },
+    { id: 'code', label: copy.code, note: copy.codeNote },
+    { id: 'ai', label: copy.ai, note: copy.aiNote },
+  ];
+
+  const addFold = (id) => {
+    if (complete || folds.includes(id)) return;
+    const next = [...folds, id];
+    setFolds(next);
+    if (next.length === 3) window.setTimeout(() => setTakeoff(true), 850);
+  };
+
+  useEffect(() => {
+    if (!takeoff) return undefined;
+    const timer = window.setTimeout(onOpen, 3100);
+    return () => window.clearTimeout(timer);
+  }, [takeoff, onOpen]);
+
+  return (
+    <section className={styles.section}>
+      <div className={styles.mesh} aria-hidden="true"><i /><i /><i /></div>
+      <div className={styles.shell}>
+        <header className={styles.header}>
+          <p>{copy.eyebrow}</p>
+          <h1>{copy.title}</h1>
+          <span>{copy.intro}</span>
+        </header>
+
+        <div className={`${styles.stage} ${complete ? styles.complete : ''} ${takeoff ? styles.takeoff : ''}`}>
+          <div className={styles.paperShadow} aria-hidden="true" />
+          <div className={styles.paper}>
+            <div className={styles.paperLines} aria-hidden="true"><i /><i /><i /><i /></div>
+            <div className={styles.paperCore}><b>RB</b><span>DESIGN · CODE · AI</span></div>
+            {foldsData.map((fold, index) => {
+              const folded = folds.includes(fold.id);
+              return <button key={fold.id} type="button" className={`${styles.fold} ${styles[`fold${index + 1}`]} ${folded ? styles.folded : ''}`} onClick={() => addFold(fold.id)} disabled={folded || complete}>
+                <span className={styles.foldNumber}>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{folded ? <FiCheck /> : fold.label}</strong>
+                <small>{folded ? fold.note : copy.instruction}</small>
+              </button>;
+            })}
+          </div>
+          <div className={styles.bird} aria-hidden="true">
+            <i className={styles.wingLeft} /><i className={styles.wingRight} /><i className={styles.tail} /><b>RB</b>
+          </div>
+          <p className={styles.birdLabel}>{copy.bird}</p>
+        </div>
+
+        <footer className={styles.footer}>
+          <button type="button" className={styles.skip} onClick={onOpen}>{copy.skip}<FiArrowRight /></button>
+          <div className={styles.progress} aria-live="polite">
+            <span>{complete ? copy.ready : copy.progress}</span>
+            <i>{foldsData.map((fold) => <b key={fold.id} className={folds.includes(fold.id) ? styles.active : ''} />)}</i>
+          </div>
+          <button type="button" className={`${styles.enter} ${complete ? styles.visible : ''}`} onClick={onOpen}>{copy.enter}<FiArrowRight /></button>
+        </footer>
+      </div>
+    </section>
+  );
 }
