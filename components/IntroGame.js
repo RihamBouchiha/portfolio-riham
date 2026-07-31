@@ -1,24 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { FiArrowRight, FiCheck, FiCode, FiCpu, FiPenTool } from 'react-icons/fi';
+import { FiArrowRight, FiCode, FiCpu, FiPenTool } from 'react-icons/fi';
 import styles from './IntroGame.module.css';
 
 export default function IntroGame({ onOpen, language = 'fr' }) {
-  const [activeModules, setActiveModules] = useState([]);
+  const [fed, setFed] = useState([]);
   const french = language === 'fr';
   const copy = french ? {
-    eyebrow: 'RIHAM.OS · LAUNCH SEQUENCE', title: <>Construisons<br /><i>quelque chose de grand.</i></>, intro: 'Active les trois modules qui définissent ma manière de créer. La capsule portfolio est prête à décoller.', skip: 'Passer la séquence', launch: 'Ouvrir le portfolio', locked: 'SÉQUENCE VERROUILLÉE', ready: 'SYSTÈME PRÊT', activate: 'Activer le module', active: 'Module activé',
+    eyebrow: 'LE JARDIN DES IDÉES', title: <>Fais éclore<br /><i>mon univers.</i></>, intro: 'Chaque produit commence par une idée. Nourris cette tulipe avec les trois forces qui guident mon travail.', skip: 'Passer le jardin', instruction: 'Choisis une goutte à offrir', growing: 'La tulipe grandit…', bloom: 'LA TULIPE FLEURIT', open: 'Entrer dans le portfolio',
   } : {
-    eyebrow: 'RIHAM.OS · LAUNCH SEQUENCE', title: <>Let’s build<br /><i>something great.</i></>, intro: 'Activate the three modules that define the way I create. The portfolio capsule is ready to launch.', skip: 'Skip sequence', launch: 'Open the portfolio', locked: 'SEQUENCE LOCKED', ready: 'SYSTEM READY', activate: 'Activate module', active: 'Module active',
+    eyebrow: 'THE IDEA GARDEN', title: <>Help my world<br /><i>bloom.</i></>, intro: 'Every product starts with an idea. Feed this tulip with the three strengths that guide my work.', skip: 'Skip the garden', instruction: 'Choose a drop to offer', growing: 'The tulip is growing…', bloom: 'THE TULIP IS BLOOMING', open: 'Enter the portfolio',
   };
-  const modules = [
-    { id: 'design', label: 'DESIGN', title: french ? 'Clarté visuelle' : 'Visual clarity', detail: french ? 'Des interfaces pensées pour être belles et utiles.' : 'Interfaces designed to be both beautiful and useful.', icon: <FiPenTool /> },
-    { id: 'code', label: 'CODE', title: french ? 'Solutions solides' : 'Solid solutions', detail: french ? 'Du code fiable, structuré et prêt à évoluer.' : 'Reliable, structured code ready to grow.', icon: <FiCode /> },
-    { id: 'ai', label: 'AI', title: french ? 'Intelligence appliquée' : 'Applied intelligence', detail: french ? 'L’IA au service de produits plus intelligents.' : 'AI in service of smarter products.', icon: <FiCpu /> },
+  const nutrients = [
+    { id: 'design', label: 'DESIGN', title: french ? 'Imaginer' : 'Imagine', icon: <FiPenTool /> },
+    { id: 'code', label: 'CODE', title: french ? 'Construire' : 'Build', icon: <FiCode /> },
+    { id: 'ai', label: 'AI', title: french ? 'Évoluer' : 'Evolve', icon: <FiCpu /> },
   ];
-  const ready = activeModules.length === modules.length;
-  const activate = (id) => { if (!activeModules.includes(id)) setActiveModules((current) => [...current, id]); };
+  const bloomed = fed.length === nutrients.length;
+  const nourish = (id) => { if (!fed.includes(id)) setFed((current) => [...current, id]); };
 
-  return <section className={styles.section}><div className={styles.grid} aria-hidden="true" /><div className={styles.shell}><div className={styles.copy}><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span><button type="button" onClick={onOpen}>{copy.skip}<FiArrowRight /></button></div><div className={styles.console}><div className={styles.consoleTop}><span>PORTFOLIO / BOOT</span><b>{String(activeModules.length).padStart(2, '0')} / 03</b></div><div className={styles.modules}>{modules.map((module, index) => { const active = activeModules.includes(module.id); return <button key={module.id} type="button" onClick={() => activate(module.id)} className={active ? styles.moduleActive : ''} aria-pressed={active}><span className={styles.moduleNumber}>0{index + 1}</span><i>{active ? <FiCheck /> : module.icon}</i><span className={styles.moduleCopy}><small>{module.label}</small><strong>{module.title}</strong><em>{module.detail}</em></span><b>{active ? copy.active : copy.activate}</b></button>; })}</div><div className={`${styles.capsule} ${ready ? styles.capsuleReady : ''}`}><div className={styles.capsuleHalo} /><div className={styles.capsuleCore}><span>RB</span></div><div className={styles.capsuleInfo}><small>{ready ? copy.ready : copy.locked}</small><strong>{ready ? 'PORTFOLIO' : 'RIHAM.OS'}</strong></div>{ready && <button type="button" onClick={onOpen}>{copy.launch}<FiArrowRight /></button>}</div></div></div></section>;
+  return <section className={styles.section}><div className={styles.sun} aria-hidden="true" /><div className={styles.shell}><div className={styles.copy}><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span><button type="button" onClick={onOpen}>{copy.skip}<FiArrowRight /></button></div><div className={styles.garden}><div className={styles.gardenTop}><span>RIHAM’S GARDEN</span><b>{String(fed.length).padStart(2, '0')} / 03</b></div><div className={`${styles.scene} ${bloomed ? styles.bloomed : ''}`}><div className={styles.sparkles} aria-hidden="true"><i /><i /><i /><i /></div><div className={styles.tulip}><div className={styles.bloom}><i className={styles.petalOne} /><i className={styles.petalTwo} /><i className={styles.petalThree} /><i className={styles.petalFour} /><i className={styles.petalFive} /></div><div className={styles.stem}><i className={styles.leafLeft} /><i className={styles.leafRight} /></div><div className={styles.pot}><i /></div></div><p>{bloomed ? copy.bloom : copy.growing}</p></div><div className={styles.nutrients}><span>{copy.instruction}</span><div>{nutrients.map((nutrient) => { const active = fed.includes(nutrient.id); return <button type="button" key={nutrient.id} onClick={() => nourish(nutrient.id)} className={active ? styles.nutrientActive : ''} aria-pressed={active}><i>{nutrient.icon}</i><small>{nutrient.label}</small><strong>{nutrient.title}</strong></button>; })}</div></div>{bloomed && <button type="button" className={styles.open} onClick={onOpen}>{copy.open}<FiArrowRight /></button>}</div></div></section>;
 }
