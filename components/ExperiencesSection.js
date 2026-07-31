@@ -1,112 +1,24 @@
 'use client';
 
-export default function ExperiencesSection() {
+import { FiArrowUpRight } from 'react-icons/fi';
+import styles from './ExperiencesSection.module.css';
+
+export default function ExperiencesSection({ language = 'fr' }) {
+  const french = language === 'fr';
   const experiences = [
-    {
-      id: 1,
-      company: 'NTT Data',
-      role: 'Stage',
-      period: 'En cours',
-      desc: 'Agent IA de service client interne : classification des emails et messages Teams, réponses initiales et routage automatique des demandes.',
-      tags: ['Python', 'Microsoft Graph', 'Teams', 'LangChain', 'Work queues'],
-      link: 'https://www.nttdata.com',
-      logo: '/logo.png'
-    },
-    {
-      id: 2,
-      company: '3LM Solutions',
-      role: 'Stage',
-      period: 'En cours',
-      desc: 'Superviseur IA - Lot 5 : scoring, résumé et debriefing post-appel pour évaluer la qualité commerciale, synthétiser les appels, générer des conseils et suivre la progression.',
-      tags: ['GPT-5.5', 'NestJS', 'PostgreSQL', 'pgvector', 'Qdrant'],
-      link: 'https://www.3lmsolutions.com',
-      logo: '/gusto2.png'
-    },
-    {
-      id: 3,
-      company: 'Commune de Tanger',
-      role: 'Technical Internship',
-      period: '2025',
-      desc: 'Development of a Flutter app for urban lighting management with geolocation.',
-      tags: ['React Native', 'PostgreSQL'],
-      link: 'https://fr.tanger.ma/',
-      logo: '/commune.png'
-    },
-    {
-      id: 4,
-      company: 'Activ Digital',
-      role: 'Technical Internship',
-      period: '2024',
-      desc: 'HR application for managing employees, leave, and payroll, optimizing internal processes.',
-      tags: ['React', 'Node.js', 'MongoDB', 'Express.js'],
-      link: 'https://activdigital.ma/#hero',
-      logo: '/activ.png'
-    },
-    {
-      id: 5,
-      company: 'ESTF',
-      role: 'Academic Project',
-      period: '2023-24',
-      desc: 'Architecture of a real-time hotel booking platform.',
-      tags: ['html', 'css', 'javascript', 'JQuery', 'MySQL'],
-      link: 'http://www.est-usmba.ac.ma/',
-      logo: '/estf.png'
-    },
-    {
-      id: 6,
-      company: 'D3 Soft',
-      role: 'Introductory Internship',
-      period: '2023',
-      desc: 'Payroll management application for companies, including payslip generation and employee management.',
-      tags: ['Windev', 'MariaDB'],
-      link: 'https://www.d3soft.ma/',
-      logo: '/d.png'
-    }
+    { company: 'NTT Data', role: french ? 'Stage — Intelligence artificielle' : 'Internship — Artificial Intelligence', period: french ? 'En cours' : 'Ongoing', desc: french ? 'Conception d’un agent IA de service client interne : classification des e-mails et messages Teams, premières réponses et routage intelligent des demandes.' : 'Designing an internal AI customer-service agent that classifies emails and Teams messages, prepares first responses and routes requests intelligently.', tags: ['Python', 'Microsoft Graph', 'Teams', 'LangChain'], link: 'https://www.nttdata.com', image: '/ntt.png', accent: '#b85f77' },
+    { company: '3LM Solutions', role: french ? 'Stage — Superviseur IA' : 'Internship — AI Supervisor', period: french ? 'En cours' : 'Ongoing', desc: french ? 'Développement d’un superviseur IA pour analyser les appels : scoring de qualité, résumés, débriefing post-appel, conseils personnalisés et suivi de progression commerciale.' : 'Building an AI supervisor for call analysis: quality scoring, summaries, post-call debriefing, personalised coaching and sales-progress tracking.', tags: ['NestJS', 'PostgreSQL', 'pgvector', 'Qdrant'], link: 'https://www.3lmsolutions.com', image: '/3LM.jpg', accent: '#9b76a7' },
+    { company: 'Commune de Tanger', role: french ? 'Stage technique' : 'Technical internship', period: '2025', desc: french ? 'Développement d’une application mobile de gestion de l’éclairage public, avec géolocalisation et suivi des signalements citoyens.' : 'Development of a mobile public-lighting management application with geolocation and citizen-report tracking.', tags: ['Flutter', 'Geolocation', 'PostgreSQL'], link: 'https://fr.tanger.ma/', image: '/commune.png', accent: '#cb975b' },
+    { company: 'Activ Digital', role: french ? 'Stage technique' : 'Technical internship', period: '2024', desc: french ? 'Conception d’une application RH pour centraliser les collaborateurs, les congés et les processus internes autour d’une expérience simple.' : 'Designing an HR application that centralises employees, leave management and internal workflows in a simple experience.', tags: ['React', 'Node.js', 'MongoDB', 'Express.js'], link: 'https://activdigital.ma/#hero', image: '/activ.png', accent: '#cf7389' },
+    { company: 'D3 Soft', role: french ? 'Stage d’initiation' : 'Introductory internship', period: '2023', desc: french ? 'Participation au développement d’une application de gestion de paie : génération de bulletins et gestion des collaborateurs.' : 'Contributing to a payroll-management application, including payslip generation and employee management.', tags: ['Windev', 'MariaDB'], link: 'https://www.d3soft.ma/', image: '/d.png', accent: '#6e98ad' },
   ];
+  const copy = french ? { eyebrow: 'JOURNAL D’EXPÉRIENCE', title: <>Apprendre, construire,<br /><i>faire évoluer.</i></>, intro: 'Des expériences concrètes où se rencontrent IA, produit et impact.', current: 'EN CE MOMENT', archive: 'CHAPITRES PRÉCÉDENTS', visit: 'Découvrir ↗' } : { eyebrow: 'EXPERIENCE LOG', title: <>Learn, build,<br /><i>move forward.</i></>, intro: 'Concrete experiences at the intersection of AI, product and impact.', current: 'CURRENTLY', archive: 'PREVIOUS CHAPTERS', visit: 'Discover ↗' };
 
-  return (
-    <section id="experiences" className="exp-section">
-      <div className="exp-shell">
-        <div className="exp-header">
-          <span className="eyebrow">MY PATH</span>
-          <h2>Professional Experience</h2>
-          <p>Étapes clés d’un parcours mêlant innovation, développement et communication technique.</p>
-        </div>
-
-        <div className="exp-layout">
-          <div className="exp-list">
-            {experiences.map((exp) => (
-              <div key={exp.id} className="exp-card">
-                <div className="exp-card-body">
-                  <div className="exp-card-header">
-                    <div className="exp-card-logo">
-                      <img src={exp.logo} alt={`${exp.company} logo`} />
-                    </div>
-                    <div className="exp-card-title">
-                      <h3 className="exp-role">{exp.role}</h3>
-                      <span className="exp-company">@ {exp.company}</span>
-                    </div>
-                    <span className="exp-period">{exp.period}</span>
-                  </div>
-
-                  <p className="exp-desc">{exp.desc}</p>
-
-                  <div className="exp-tags">
-                    {exp.tags?.map((tag) => (
-                      <span key={tag} className="exp-tag">{tag}</span>
-                    ))}
-                  </div>
-
-                  <a href={exp.link} target="_blank" rel="noreferrer" className="visit-chip" aria-label={`Visiter le site de ${exp.company}`}>
-                    Visiter le site ↗
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-    </section>
-  );
+  return <section id="experiences" className={styles.section}><div className={styles.shell}>
+    <header className={styles.header}><p>{copy.eyebrow}</p><h2>{copy.title}</h2><span>{copy.intro}</span></header>
+    <div className={styles.sectionLabel}><span>{copy.current}</span><i /></div>
+    <div className={styles.leads}>{experiences.slice(0, 2).map((item, index) => <article key={item.company} className={styles.lead} style={{ '--accent': item.accent }}><div className={styles.leadImage}><img src={item.image} alt={item.company} /><span>0{index + 1}</span></div><div className={styles.leadContent}><p>{item.period}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.desc}</span><div>{item.tags.map((tag) => <em key={tag}>{tag}</em>)}</div><a href={item.link} target="_blank" rel="noreferrer">{copy.visit}<FiArrowUpRight /></a></div></article>)}</div>
+    <div className={styles.sectionLabel}><span>{copy.archive}</span><i /></div>
+    <div className={styles.archive}>{experiences.slice(2).map((item, index) => <article key={item.company} className={styles.archiveCard} style={{ '--accent': item.accent }}><div className={styles.archiveImage}><img src={item.image} alt={item.company} /></div><div className={styles.archiveTitle}><span>0{index + 3}</span><h3>{item.company}</h3><strong>{item.role}</strong></div><p>{item.desc}</p><div className={styles.archiveBottom}><span>{item.period}</span><a href={item.link} target="_blank" rel="noreferrer">{copy.visit}<FiArrowUpRight /></a></div></article>)}</div>
+  </div></section>;
 }

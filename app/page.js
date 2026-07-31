@@ -6,7 +6,6 @@ import AboutSection from '@/components/AboutSection';
 import SkillsSection from '@/components/SkillsSection';
 import EducationSection from '@/components/EducationSection';
 import PortfolioSection from '@/components/PortfolioSection';
-import CertificationsSection from '@/components/CertificationsSection';
 import ExperiencesSection from '@/components/ExperiencesSection';
 import ContactSection from '@/components/ContactSection';
 import IntroGame from '@/components/IntroGame';
@@ -34,7 +33,6 @@ export default function Home() {
       <SkillsSection language={language} />
       <EducationSection language={language} />
       <PortfolioSection language={language} />
-      <CertificationsSection language={language} />
       <ExperiencesSection language={language} />
       <ContactSection language={language} />
     </main>

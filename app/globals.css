@@ -5,6 +5,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Unified page canvas: sections flow into one another without visible seams. */
+main > section {
+  background: linear-gradient(145deg, #fffafa 0%, #f8edf3 58%, #f1e8f0 100%) !important;
+}
+
+body.dark-mode main > section,
+html.dark-mode main > section {
+  background: linear-gradient(118deg, #1d141a 0%, #2a1822 54%, #351d2a 100%) !important;
+}
+
 
 /* CONFIGURATION DU THEME SOMBRE */
 :root {
