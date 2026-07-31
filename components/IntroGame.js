@@ -44,8 +44,6 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   const [step, setStep] = useState(0);
   const [typed, setTyped] = useState(0);
   const [muted, setMuted] = useState(false);
-  const [audioBlocked, setAudioBlocked] = useState(false);
-  const [audioAttempt, setAudioAttempt] = useState(0);
   const audioRef = useRef(null);
   const line = story[step];
   const complete = typed >= line.length;
@@ -76,17 +74,13 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
       };
     }
 
-    const audio = new Audio(`/audio/story-${french ? 'fr' : 'en'}-${step + 1}.wav?v=20260801`);
-    audio.preload = 'auto';
-    audio.autoplay = true;
+    const audio = audioRef.current;
+    if (!audio) return undefined;
     audio.playbackRate = french ? 1.12 : 1;
     audio.preservesPitch = true;
-    audioRef.current = audio;
     audio.onended = advance;
     audio.play()
-      .then(() => setAudioBlocked(false))
       .catch(() => {
-        setAudioBlocked(true);
         fallbackTimer = window.setTimeout(advance, Math.max(3900, line.length * 90));
       });
 
@@ -96,15 +90,19 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
       window.clearTimeout(fallbackTimer);
       window.clearTimeout(transitionTimer);
     };
-  }, [step, muted, french, line.length, story.length, audioAttempt]);
+  }, [step, muted, french, line.length, story.length]);
 
   const toggleSound = () => setMuted((current) => !current);
-  const retryAudio = () => {
-    if (audioBlocked && !muted) setAudioAttempt((current) => current + 1);
-  };
 
   return (
-    <section className={styles.section} onPointerDown={retryAudio}>
+    <section className={styles.section}>
+      <audio
+        ref={audioRef}
+        autoPlay
+        preload="auto"
+        muted={muted}
+        src={`/audio/story-${french ? 'fr' : 'en'}-${step + 1}.wav?v=20260801`}
+      />
       <div className={styles.ambient} aria-hidden="true"><i /><i /><i /></div>
       <div className={styles.shell}>
         <header className={styles.header}>
