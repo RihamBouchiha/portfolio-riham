@@ -9,6 +9,7 @@ import PortfolioSection from '@/components/PortfolioSection';
 import ExperiencesSection from '@/components/ExperiencesSection';
 import ContactSection from '@/components/ContactSection';
 import IntroGame from '@/components/IntroGame';
+import PortfolioChatbot from '@/components/PortfolioChatbot';
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState('Home');
@@ -44,6 +45,7 @@ export default function Home() {
       <PortfolioSection language={language} />
       <ExperiencesSection language={language} />
       <ContactSection language={language} />
+      <PortfolioChatbot language={language} />
     </main>
   );
 }
