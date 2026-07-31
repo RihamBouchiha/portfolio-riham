@@ -1,73 +1,76 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { FiArrowRight, FiCode, FiFeather, FiHexagon } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { FiArrowRight, FiVolume2, FiVolumeX } from 'react-icons/fi';
 import styles from './IntroGame.module.css';
 
-const artifacts = [
-  { id: 'quill', x: 22, y: 34, Icon: FiFeather },
-  { id: 'rune', x: 51, y: 64, Icon: FiCode },
-  { id: 'orb', x: 81, y: 30, Icon: FiHexagon },
-];
-
 export default function IntroGame({ onOpen, language = 'fr' }) {
-  const galleryRef = useRef(null);
-  const [light, setLight] = useState({ x: 50, y: 74 });
-  const [discovered, setDiscovered] = useState([]);
   const french = language === 'fr';
-  const complete = discovered.length === artifacts.length;
-  const copy = french ? {
-    eyebrow: 'LA GALERIE ENCHANTÉE',
-    title: <>Révèle les traces<br /><i>de mon univers.</i></>,
-    intro: 'Une baguette de lumière, trois artefacts à retrouver et un passage vers mes créations.',
-    hint: 'Déplace la lumière dans la galerie',
-    skip: 'Passer le sort', open: 'Le passage s’ouvre…',
-    quill: 'L’encre du design', rune: 'La logique du code', orb: 'L’étincelle de l’IA',
-  } : {
-    eyebrow: 'THE ENCHANTED GALLERY',
-    title: <>Reveal the traces<br /><i>of my world.</i></>,
-    intro: 'One wand of light, three artifacts to find and a passage into my work.',
-    hint: 'Move the light through the gallery',
-    skip: 'Skip the spell', open: 'The passage is opening…',
-    quill: 'The ink of design', rune: 'The logic of code', orb: 'The spark of AI',
-  };
+  const story = french ? [
+    'Bonjour. Je suis une idée.',
+    'Riham m’a d’abord imaginée.',
+    'Puis elle m’a dessinée, codée et améliorée.',
+    'Elle m’a appris à devenir utile, claire et mémorable.',
+    'Maintenant, je vais te montrer ce qu’elle sait créer.',
+  ] : [
+    'Hello. I am an idea.',
+    'Riham imagined me first.',
+    'Then she designed, coded and refined me.',
+    'She taught me to be useful, clear and memorable.',
+    'Now, I will show you what she can create.',
+  ];
+  const copy = french ? { eyebrow: 'UNE HISTOIRE AVANT D’ENTRER', title: <>Il était une fois<br /><i>une idée.</i></>, speaker: 'LA NARRATRICE', start: 'Écouter l’histoire', continue: 'Continuer', enter: 'Découvrir le portfolio', skip: 'Passer l’histoire' } : { eyebrow: 'A STORY BEFORE YOU ENTER', title: <>Once there was<br /><i>an idea.</i></>, speaker: 'THE NARRATOR', start: 'Listen to the story', continue: 'Continue', enter: 'Discover the portfolio', skip: 'Skip the story' };
+  const [step, setStep] = useState(0);
+  const [typed, setTyped] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const line = story[step];
+  const complete = typed >= line.length;
+  const final = step === story.length - 1 && complete;
 
-  const explore = (event) => {
-    const box = galleryRef.current?.getBoundingClientRect();
-    if (!box || complete) return;
-    const point = { x: ((event.clientX - box.left) / box.width) * 100, y: ((event.clientY - box.top) / box.height) * 100 };
-    setLight({ x: Math.max(0, Math.min(100, point.x)), y: Math.max(0, Math.min(100, point.y)) });
-    artifacts.forEach((artifact) => {
-      if (Math.hypot(point.x - artifact.x, point.y - artifact.y) < 12) {
-        setDiscovered((current) => current.includes(artifact.id) ? current : [...current, artifact.id]);
-      }
-    });
-  };
+  useEffect(() => { setTyped(0); }, [step]);
   useEffect(() => {
-    if (!complete) return undefined;
-    const timer = window.setTimeout(onOpen, 2700);
+    if (!started || complete) return undefined;
+    const timer = window.setTimeout(() => setTyped((count) => count + 1), 21);
     return () => window.clearTimeout(timer);
-  }, [complete, onOpen]);
+  }, [typed, complete, started]);
+  useEffect(() => {
+    if (!started || muted || typeof window === 'undefined' || !window.speechSynthesis) return undefined;
+    let disposed = false;
+    let nextTimer;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(line);
+    const preferred = window.speechSynthesis.getVoices().find((voice) => voice.lang.toLowerCase().startsWith(french ? 'fr' : 'en'));
+    if (preferred) utterance.voice = preferred;
+    utterance.lang = french ? 'fr-FR' : 'en-US';
+    utterance.rate = 1.04;
+    utterance.pitch = 1.03;
+    utterance.onend = () => {
+      if (!disposed && step < story.length - 1) nextTimer = window.setTimeout(() => setStep((current) => current + 1), 650);
+    };
+    window.speechSynthesis.speak(utterance);
+    return () => { disposed = true; window.clearTimeout(nextTimer); window.speechSynthesis.cancel(); };
+  }, [step, started, muted, french, line, story.length]);
+  useEffect(() => () => { if (typeof window !== 'undefined') window.speechSynthesis?.cancel(); }, []);
+
+  const toggleSound = () => { setMuted((current) => { const next = !current; if (next) window.speechSynthesis?.cancel(); return next; }); };
 
   return <section className={styles.section}>
     <div className={styles.shell}>
-      <header className={styles.header}><p>{copy.eyebrow}</p><h1>{copy.title}</h1><span>{copy.intro}</span></header>
-      <div ref={galleryRef} className={`${styles.gallery} ${complete ? styles.complete : ''}`} onPointerMove={explore} onPointerDown={explore} style={{ '--light-x': `${light.x}%`, '--light-y': `${light.y}%` }}>
-        <div className={styles.ceiling} aria-hidden="true"><i /><i /><i /><i /></div>
-        <div className={styles.shelves} aria-hidden="true"><i /><i /><i /><i /><i /></div>
-        <div className={styles.arch} aria-hidden="true"><div /><span /></div>
-        {artifacts.map(({ id, x, y, Icon }) => {
-          const found = discovered.includes(id);
-          return <div key={id} className={`${styles.artifact} ${styles[id]} ${found ? styles.discovered : ''}`} style={{ left: `${x}%`, top: `${y}%` }}>
-            <div><Icon /></div><span>{copy[id]}</span>
-          </div>;
-        })}
-        <div className={styles.shade} aria-hidden="true" />
-        <div className={styles.wand} aria-hidden="true"><i /><b /></div>
-        <div className={styles.spellHint}>{complete ? copy.open : <><i>{String(discovered.length).padStart(2, '0')}</i> {copy.hint}</>}</div>
-        <div className={styles.portal} aria-hidden="true"><b>RB</b><span>RIHAM BOUCHIHA · PORTFOLIO</span></div>
-      </div>
-      <footer className={styles.footer}><button type="button" onClick={onOpen}>{copy.skip}<FiArrowRight /></button><span>{artifacts.map((item) => <i key={item.id} className={discovered.includes(item.id) ? styles.active : ''} />)}</span></footer>
+      <header className={styles.header}><p>{copy.eyebrow}</p><h1>{copy.title}</h1></header>
+      <main className={styles.scene}>
+        <div className={styles.sceneOverlay} aria-hidden="true" /><div className={styles.grain} aria-hidden="true" />
+        <div className={styles.storyPanel}>
+          {!started ? <button type="button" className={styles.start} onClick={() => setStarted(true)}><FiVolume2 /><span>{copy.start}</span><FiArrowRight /></button> : <>
+            <div className={styles.panelMeta}><span>{copy.speaker}</span><i>{String(step + 1).padStart(2, '0')} / {String(story.length).padStart(2, '0')}</i></div>
+            <p className={styles.dialogue} aria-live="polite">{line.slice(0, typed)}<b className={complete ? styles.cursorStill : ''}>|</b></p>
+            <div className={styles.panelFooter}><span><i /> <i /> <i /> <i /> <i /></span><div><button type="button" className={styles.sound} onClick={toggleSound} aria-label={muted ? 'Activer le son' : 'Couper le son'}>{muted ? <FiVolumeX /> : <FiVolume2 />}</button></div></div>
+            {final && <button type="button" className={styles.enter} onClick={onOpen}>{copy.enter}<FiArrowRight /></button>}
+          </>}
+        </div>
+        <p className={styles.credit}>RIHAM BOUCHIHA · DESIGN / CODE / AI</p>
+      </main>
+      <footer className={styles.footer}><button type="button" onClick={onOpen}>{copy.skip}<FiArrowRight /></button><span>01 — 05</span></footer>
     </div>
   </section>;
 }
