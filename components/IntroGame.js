@@ -47,14 +47,17 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   const [step, setStep] = useState(0);
   const [typed, setTyped] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [autoStartMuted, setAutoStartMuted] = useState(true);
   const [narrationDone, setNarrationDone] = useState(false);
   const audioRef = useRef(null);
+  const mutedRef = useRef(muted);
   const line = story[step];
   const complete = typed >= line.length;
   const final = step === story.length - 1 && complete;
   const lineDurations = french ? FRENCH_LINE_DURATIONS : ENGLISH_LINE_DURATIONS;
 
   useEffect(() => setTyped(0), [step]);
+  useEffect(() => { mutedRef.current = muted; }, [muted]);
 
   useEffect(() => {
     if (complete) return undefined;
@@ -70,14 +73,24 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   }, [step, story.length, lineDurations]);
 
   useEffect(() => {
+    let unmuteTimer;
     const audio = audioRef.current;
     if (!audio) return undefined;
     audio.playbackRate = 1;
     audio.preservesPitch = true;
     audio.currentTime = 0;
-    if (!muted) audio.play().catch(() => {});
+    audio.muted = true;
+    audio.play().then(() => {
+      unmuteTimer = window.setTimeout(() => {
+        if (!mutedRef.current) {
+          audio.muted = false;
+          setAutoStartMuted(false);
+        }
+      }, 120);
+    }).catch(() => {});
 
     return () => {
+      window.clearTimeout(unmuteTimer);
       audio.pause();
     };
   }, [french]);
@@ -90,7 +103,8 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         ref={audioRef}
         autoPlay
         preload="auto"
-        muted={muted}
+        muted={muted || autoStartMuted}
+        playsInline
         onEnded={() => setNarrationDone(true)}
         src={`/audio/story-${french ? 'fr' : 'en'}-full.wav?v=20260804`}
       />
