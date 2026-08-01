@@ -20,11 +20,18 @@ function tacticalMove(board, symbol) {
   return null;
 }
 
-function studioMove(board) {
+function studioMove(board, givePlayerAnOpening = false) {
   const win = tacticalMove(board, 'O');
   if (win !== null) return win;
   const block = tacticalMove(board, 'X');
-  if (block !== null) return block;
+  if (block !== null && !givePlayerAnOpening) return block;
+
+  const available = board.map((cell, index) => cell ? null : index).filter((index) => index !== null && index !== block);
+  if (givePlayerAnOpening && available.length) {
+    const strategicAlternatives = available.filter((index) => index === 4 || [0, 2, 6, 8].includes(index));
+    const choices = strategicAlternatives.length ? strategicAlternatives : available;
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
   if (!board[4]) return 4;
 
   const corners = [0, 2, 6, 8].filter((index) => !board[index]);
@@ -44,6 +51,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
   const [state, setState] = useState('playing');
   const [thinking, setThinking] = useState(false);
   const moveTimer = useRef(null);
+  const openingGiven = useRef(false);
   const line = winnerOf(board);
 
   useEffect(() => () => window.clearTimeout(moveTimer.current), []);
@@ -53,6 +61,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
     setBoard(Array(9).fill(''));
     setState('playing');
     setThinking(false);
+    openingGiven.current = false;
   };
 
   const play = (index) => {
@@ -67,7 +76,10 @@ export default function PortfolioPlayground({ language = 'fr' }) {
     setThinking(true);
     moveTimer.current = window.setTimeout(() => {
       setBoard((current) => {
-        const selected = studioMove(current);
+        const blockingMove = tacticalMove(current, 'X');
+        const offerOpening = !openingGiven.current && blockingMove !== null && Math.random() < 0.62;
+        const selected = studioMove(current, offerOpening);
+        if (offerOpening && selected !== blockingMove) openingGiven.current = true;
         const computerBoard = [...current];
         computerBoard[selected] = 'O';
         if (winnerOf(computerBoard)) setState('lost');
