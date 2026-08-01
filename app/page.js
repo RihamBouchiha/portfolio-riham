@@ -10,6 +10,7 @@ import ExperiencesSection from '@/components/ExperiencesSection';
 import ContactSection from '@/components/ContactSection';
 import IntroGame from '@/components/IntroGame';
 import PortfolioChatbot from '@/components/PortfolioChatbot';
+import PortfolioPlayground from '@/components/PortfolioPlayground';
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState('Home');
@@ -40,6 +41,7 @@ export default function Home() {
 
       <HeroSection setActiveItem={setActiveItem} language={language} />
       <AboutSection language={language} />
+      <PortfolioPlayground language={language} />
       <SkillsSection language={language} />
       <EducationSection language={language} />
       <PortfolioSection language={language} />
