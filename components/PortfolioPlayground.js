@@ -12,6 +12,27 @@ const winningLines = [
 
 const winnerOf = (board) => winningLines.find(([a, b, c]) => board[a] && board[a] === board[b] && board[a] === board[c])?.map(String).join('-') || null;
 
+function tacticalMove(board, symbol) {
+  for (const line of winningLines) {
+    const empty = line.filter((index) => !board[index]);
+    if (empty.length === 1 && line.filter((index) => board[index] === symbol).length === 2) return empty[0];
+  }
+  return null;
+}
+
+function studioMove(board) {
+  const win = tacticalMove(board, 'O');
+  if (win !== null) return win;
+  const block = tacticalMove(board, 'X');
+  if (block !== null) return block;
+  if (!board[4]) return 4;
+
+  const corners = [0, 2, 6, 8].filter((index) => !board[index]);
+  const edges = [1, 3, 5, 7].filter((index) => !board[index]);
+  const options = corners.length ? corners : edges;
+  return options[Math.floor(Math.random() * options.length)];
+}
+
 export default function PortfolioPlayground({ language = 'fr' }) {
   const french = language === 'fr';
   const copy = french ? {
@@ -46,9 +67,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
     setThinking(true);
     moveTimer.current = window.setTimeout(() => {
       setBoard((current) => {
-        const available = current.map((cell, cellIndex) => cell ? null : cellIndex).filter((cellIndex) => cellIndex !== null);
-        const preferred = available.filter((cellIndex) => cellIndex !== 4);
-        const selected = (preferred.length ? preferred : available)[Math.floor(Math.random() * (preferred.length ? preferred.length : available.length))];
+        const selected = studioMove(current);
         const computerBoard = [...current];
         computerBoard[selected] = 'O';
         if (winnerOf(computerBoard)) setState('lost');
