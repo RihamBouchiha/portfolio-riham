@@ -60,7 +60,7 @@ export default function HeroSection({ setActiveItem, language }) {
       <div className="bp-hero-frame">
         <div className="bp-hero-copy">
           <span className="bp-hero-eyebrow">{copy.greeting}</span>
-          <h1 className="bp-hero-name"><span>{typedName}</span><span className="bp-typing-cursor" aria-hidden="true">|</span></h1>
+          <h1 className="bp-hero-name"><span className="bp-typed-name">{typedName}<span className="bp-typing-cursor" aria-hidden="true">|</span></span></h1>
           <p className="bp-hero-role">{copy.subtitle}</p>
           <p className="bp-hero-desc">{copy.description}</p>
           <div className="bp-hero-cta">
