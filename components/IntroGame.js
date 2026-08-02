@@ -34,7 +34,7 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         enter: 'Découvrir le portfolio',
         skip: 'Passer l’histoire',
         start: 'Toucher pour entrer dans l’histoire',
-        startHint: 'La narration commence avec le son',
+        startHint: 'Bienvenue dans le monde de riham',
         enableSound: 'Activer le son',
         muteSound: 'Couper le son',
       }
@@ -45,7 +45,7 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         enter: 'Discover the portfolio',
         skip: 'Skip the story',
         start: 'Tap to enter the story',
-        startHint: 'Narration starts with sound',
+        startHint: 'Welcome to Riham’s world',
         enableSound: 'Turn sound on',
         muteSound: 'Mute sound',
       };
