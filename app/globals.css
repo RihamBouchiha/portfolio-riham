@@ -1700,13 +1700,37 @@ body.dark-mode .bp-hero-scroll-line { background: linear-gradient(to bottom, #e6
 }
 
 .bp-typing-cursor {
-  display: inline-block;
-  margin-left: .06em;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  margin-left: .045em;
   color: #b65b72;
   font-family: 'IBM Plex Mono', monospace;
   font-size: .78em;
+  line-height: 1;
   font-weight: 400;
   animation: bp-cursor-blink .8s step-end infinite;
+}
+
+/* Keep the typing cursor attached to the name on narrow screens. */
+.bp-hero-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.bp-hero-name > span:first-child {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .bp-hero-name {
+    font-size: clamp(2.1rem, 10.2vw, 3.15rem);
+    letter-spacing: -.045em;
+  }
 }
 
 @keyframes bp-cursor-blink {

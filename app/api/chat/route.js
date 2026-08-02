@@ -116,7 +116,7 @@ export async function POST(request) {
     const data = await response.json();
     if (!response.ok) {
       console.error('Gemini chat error:', data?.error?.message || response.status);
-      return NextResponse.json({ error: 'Le guide IA est momentanément indisponible. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha@ump.ac.ma.' }, { status: 502 });
+      return NextResponse.json({ error: 'Le guide IA est momentanément indisponible. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha03@gmail.com.' }, { status: 502 });
     }
 
     const answer = data.candidates?.[0]?.content?.parts
