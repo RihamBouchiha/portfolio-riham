@@ -1876,6 +1876,8 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
   .about-slide h2 { font-size:2.25rem; }
 }
 
+.about-values li { grid-template-columns:28px 1fr; }
+
 /* ========================================================================== */
 /* Skills studio                                                               */
 /* ========================================================================== */
