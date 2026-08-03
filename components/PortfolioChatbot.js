@@ -89,6 +89,7 @@ export default function PortfolioChatbot({ language = 'fr' }) {
 
   return (
     <aside className={`${styles.widget} ${open ? styles.open : ''}`} aria-live="polite">
+      {open && <button type="button" className={styles.backdrop} onClick={() => setOpen(false)} aria-label={copy.ariaClose} />}
       {open && <div className={styles.window}>
         <header className={styles.header}>
           <span className={styles.avatar}>RB</span>
