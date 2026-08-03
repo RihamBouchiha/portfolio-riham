@@ -102,7 +102,6 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
         <span className={startStyles.mark}>RB<i>✦</i></span>
         <strong>{copy.start}</strong>
         <small>{copy.startHint}</small>
-        <em aria-hidden="true">↘</em>
       </button>}
       <div className={styles.shell}>
         <header className={styles.header}>
