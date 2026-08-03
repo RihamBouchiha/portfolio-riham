@@ -15,8 +15,7 @@ export default function ExperiencesSection({ language = 'fr' }) {
 
   return <section id="experiences" className={styles.section}><div className={styles.shell}>
     <header className={styles.header}><p>{copy.eyebrow}</p><h2>{copy.title}</h2><span>{copy.intro}</span></header>
-    <div className={styles.sectionLabel}><span>{copy.current}</span><i /></div>
-    <div className={styles.leads}>{experiences.slice(0, 2).map((item, index) => <article key={item.company} className={styles.lead} style={{ '--accent': item.accent }}><div className={styles.leadImage}><img src={item.image} alt={item.company} /><span>0{index + 1}</span></div><div className={styles.leadContent}><p>{item.period}</p><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.desc}</span><div>{item.tags.map((tag) => <em key={tag}>{tag}</em>)}</div></div></article>)}</div>
+    <div className={styles.leads}>{experiences.slice(0, 2).map((item, index) => <article key={item.company} className={styles.lead} style={{ '--accent': item.accent }}><div className={styles.leadImage}><img src={item.image} alt={item.company} /><span>0{index + 1}</span></div><div className={styles.leadContent}><h3>{item.company}</h3><strong>{item.role}</strong><span>{item.desc}</span><div>{item.tags.map((tag) => <em key={tag}>{tag}</em>)}</div></div></article>)}</div>
     <div className={styles.sectionLabel}><span>{copy.archive}</span><i /></div>
     <div className={styles.archive}>{experiences.slice(2).map((item, index) => <article key={item.company} className={styles.archiveCard} style={{ '--accent': item.accent }}><div className={styles.archiveImage}><img src={item.image} alt={item.company} /></div><div className={styles.archiveTitle}><span>0{index + 3}</span><h3>{item.company}</h3><strong>{item.role}</strong></div><p>{item.desc}</p><div className={styles.archiveBottom}><span>{item.period}</span></div></article>)}</div>
   </div></section>;
