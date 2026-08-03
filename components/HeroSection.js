@@ -7,6 +7,13 @@ export default function HeroSection({ setActiveItem, language }) {
   const [typedName, setTypedName] = useState('');
 
   useEffect(() => {
+    // On small touch screens, changing the title width can make some mobile
+    // browsers adjust the visual viewport. Keep the name stable there.
+    if (window.matchMedia('(max-width: 640px)').matches) {
+      setTypedName(fullName);
+      return undefined;
+    }
+
     let index = 0;
     let pauseTimer;
     const typeName = () => {
