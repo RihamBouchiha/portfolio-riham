@@ -1877,6 +1877,7 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
 }
 
 .about-values li { grid-template-columns:28px 1fr; }
+.about-values li i { display:none; }
 
 /* ========================================================================== */
 /* Skills studio                                                               */
