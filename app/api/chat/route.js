@@ -44,7 +44,7 @@ ENGAGEMENT
 - 2nd place in Public Speaking; 6th place out of 45 teams at the ESISA Senior Developers Hackathon (2025).
 
 CONTACT
-- Email: rihambouchiha@ump.ac.ma
+- Email: rihambouchiha03@gmail.com
 - LinkedIn: https://www.linkedin.com/in/rihambouchiha
 - GitHub: https://github.com/RihamBouchiha
 `;
@@ -124,12 +124,12 @@ export async function POST(request) {
       .join('')
       .trim();
     if (!answer) {
-      return NextResponse.json({ error: 'Le guide IA fait une petite pause. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha@ump.ac.ma.' }, { status: 502 });
+      return NextResponse.json({ error: 'Le guide IA fait une petite pause. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha03@gmail.com.' }, { status: 502 });
     }
 
     return NextResponse.json({ answer: answer.slice(0, 1800) });
   } catch (error) {
     console.error('Chat route error:', error);
-    return NextResponse.json({ error: 'Le guide IA est momentanément indisponible. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha@ump.ac.ma.' }, { status: 500 });
+    return NextResponse.json({ error: 'Le guide IA est momentanément indisponible. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha03@gmail.com.' }, { status: 500 });
   }
 }

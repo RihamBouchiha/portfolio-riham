@@ -12,7 +12,7 @@ const copyByLanguage = {
     greeting: 'Je suis ton guide personnel. Explore ses projets, son parcours ou sa façon de construire des expériences numériques qui comptent.',
     placeholder: 'Écris ta question…',
     sending: 'Réflexion…',
-    unavailable: 'Le guide IA fait une petite pause. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha@ump.ac.ma.',
+    unavailable: 'Le guide IA fait une petite pause. Tu peux continuer à explorer le portfolio ou écrire à Riham : rihambouchiha03@gmail.com.',
     helper: 'Par où souhaites-tu commencer ?',
     explore: 'Explorer',
     topics: [
@@ -31,7 +31,7 @@ const copyByLanguage = {
     greeting: 'I’m your personal guide. Explore her projects, background, or the way she builds digital experiences that matter.',
     placeholder: 'Write your question…',
     sending: 'Thinking…',
-    unavailable: 'The AI guide is taking a short break. You can keep exploring the portfolio or contact Riham at rihambouchiha@ump.ac.ma.',
+    unavailable: 'The AI guide is taking a short break. You can keep exploring the portfolio or contact Riham at rihambouchiha03@gmail.com.',
     helper: 'Where would you like to begin?',
     explore: 'Explore',
     topics: [
