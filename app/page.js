@@ -27,7 +27,7 @@ export default function Home() {
   }, [language]);
 
   if (!portfolioOpen) {
-    return <IntroGame key={language} language={language} setLanguage={setLanguage} onOpen={() => setPortfolioOpen(true)} />;
+    return <IntroGame language={language} setLanguage={setLanguage} onOpen={() => setPortfolioOpen(true)} />;
   }
 
   return (
