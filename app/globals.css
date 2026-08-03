@@ -1847,8 +1847,9 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
   .bp-hero-copy { width:100%; }
   .bp-hero-eyebrow { font-size:.63rem; letter-spacing:.14em; }
   .bp-hero-name { display:flex; align-items:baseline; justify-content:center; width:100%; min-height:1.08em; max-width:100%; font-size:clamp(1.9rem,9.2vw,2.8rem); line-height:1.04; letter-spacing:-.045em; }
-  .bp-typed-name { display:inline-block; max-width:100%; min-height:1.08em; white-space:nowrap; }
-  .bp-typing-cursor { margin-left:0; vertical-align:baseline; }
+  .bp-typed-name { display:inline-block; max-width:100%; min-height:1.08em; font-size:0; white-space:nowrap; }
+  .bp-typed-name::before { content:'Riham Bouchiha.'; font-size:clamp(1.9rem,9.2vw,2.8rem); }
+  .bp-typing-cursor { display:none; }
   .bp-hero-role { margin-top:1rem; padding-left:.8rem; font-size:.82rem; line-height:1.45; }
   .bp-hero-desc { max-width:31rem; margin-top:1rem; font-size:.94rem; line-height:1.65; }
   .bp-hero-cta { display:grid; grid-template-columns:1fr; width:min(100%,20rem); gap:.65rem; margin-top:1.45rem; }
@@ -1870,6 +1871,7 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
 @media (max-width: 380px) {
   .bp-hero { padding-left:1rem; padding-right:1rem; }
   .bp-hero-name { font-size:clamp(1.82rem,9vw,2.25rem); }
+  .bp-typed-name::before { font-size:clamp(1.82rem,9vw,2.25rem); }
   .bp-hero-desc { font-size:.9rem; }
   .about-slide { padding:1.55rem 1rem; }
   .about-slide h2 { font-size:2.25rem; }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 import styles from './PortfolioPlayground.module.css';
 
@@ -52,9 +52,20 @@ export default function PortfolioPlayground({ language = 'fr' }) {
   const [thinking, setThinking] = useState(false);
   const moveTimer = useRef(null);
   const openingGiven = useRef(false);
+  const preservedScrollY = useRef(null);
   const line = winnerOf(board);
 
   useEffect(() => () => window.clearTimeout(moveTimer.current), []);
+
+  const preserveMobileScroll = () => {
+    if (window.matchMedia('(max-width: 760px)').matches) preservedScrollY.current = window.scrollY;
+  };
+
+  useLayoutEffect(() => {
+    if (preservedScrollY.current === null) return;
+    window.scrollTo(0, preservedScrollY.current);
+    preservedScrollY.current = null;
+  }, [board, state, thinking]);
 
   const reset = () => {
     window.clearTimeout(moveTimer.current);
@@ -66,6 +77,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
 
   const play = (index) => {
     if (board[index] || state !== 'playing' || thinking) return;
+    preserveMobileScroll();
     const next = [...board];
     next[index] = 'X';
     const playerLine = winnerOf(next);
@@ -75,6 +87,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
 
     setThinking(true);
     moveTimer.current = window.setTimeout(() => {
+      preserveMobileScroll();
       setBoard((current) => {
         const blockingMove = tacticalMove(current, 'X');
         const offerOpening = !openingGiven.current && blockingMove !== null && Math.random() < 0.62;
@@ -108,7 +121,7 @@ export default function PortfolioPlayground({ language = 'fr' }) {
             {board.map((cell, index) => <button key={index} type="button" onClick={() => play(index)} disabled={Boolean(cell) || state !== 'playing' || thinking} className={`${cell === 'X' ? styles.cross : cell === 'O' ? styles.circle : ''} ${line?.includes(String(index)) ? styles.winning : ''}`} aria-label={`Case ${index + 1}`}>{cell}</button>)}
           </div>
           <div className={styles.status}><span className={state === 'won' ? styles.success : ''}>{status}</span>{state !== 'playing' && <button type="button" onClick={reset}><FiRefreshCw />{copy.reset}</button>}</div>
-          {state === 'won' && <p className={styles.reveal}>✦ {copy.reveal}</p>}
+          <p className={`${styles.reveal} ${state === 'won' ? styles.revealVisible : styles.revealHidden}`}>✦ {copy.reveal}</p>
         </div>
       </div>
     </section>
