@@ -1846,8 +1846,8 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
   .bp-hero-frame { max-width:34rem; }
   .bp-hero-copy { width:100%; }
   .bp-hero-eyebrow { font-size:.63rem; letter-spacing:.14em; }
-  .bp-hero-name { width:100%; max-width:100%; font-size:clamp(1.9rem,9.2vw,2.8rem); line-height:1.04; letter-spacing:-.045em; }
-  .bp-typed-name { display:inline-block; max-width:100%; white-space:nowrap; }
+  .bp-hero-name { display:flex; align-items:baseline; justify-content:center; width:100%; min-height:1.08em; max-width:100%; font-size:clamp(1.9rem,9.2vw,2.8rem); line-height:1.04; letter-spacing:-.045em; }
+  .bp-typed-name { display:inline-block; max-width:100%; min-height:1.08em; white-space:nowrap; }
   .bp-typing-cursor { margin-left:0; vertical-align:baseline; }
   .bp-hero-role { margin-top:1rem; padding-left:.8rem; font-size:.82rem; line-height:1.45; }
   .bp-hero-desc { max-width:31rem; margin-top:1rem; font-size:.94rem; line-height:1.65; }
