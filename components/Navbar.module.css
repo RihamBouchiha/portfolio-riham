@@ -3,3 +3,6 @@
 @media (max-width:1120px) { .desktop { display:none; }.menu { display:grid; place-items:center; }.nav { padding:1rem 5%; } }
 
 .flags img { display:block; width:16px; height:12px; border-radius:1px; object-fit:cover; box-shadow:0 0 0 1px rgba(76,43,57,.15); }
+
+/* Phone layout: keep the navigation compact without shrinking touch targets. */
+@media (max-width:560px) { .nav { padding:calc(.72rem + env(safe-area-inset-top)) 1rem .72rem; }.brand { gap:.42rem; }.brand b { width:35px; height:35px; font-size:.88rem; }.brand span { font-size:.47rem; letter-spacing:.1em; }.menu { width:40px; height:40px; font-size:1.16rem; }.mobilePanel { padding:calc(1rem + env(safe-area-inset-top)) 1.25rem calc(1rem + env(safe-area-inset-bottom)); }.mobileLinks { margin:2.2rem 0 auto; }.mobileLinks a { grid-template-columns:34px 1fr 18px; padding:.72rem 0; font-size:clamp(1.55rem,8vw,2.05rem); }.mobileUtilities { padding-top:1.2rem; } }
