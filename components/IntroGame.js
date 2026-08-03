@@ -55,12 +55,34 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
   const [entered, setEntered] = useState(false);
   const [narrationDone, setNarrationDone] = useState(false);
   const audioRef = useRef(null);
+  const previousLanguage = useRef(language);
   const line = story[step];
   const complete = typed >= line.length;
   const final = step === story.length - 1 && complete;
   const lineDurations = french ? FRENCH_LINE_DURATIONS : ENGLISH_LINE_DURATIONS;
 
   useEffect(() => setTyped(0), [step]);
+
+  useEffect(() => {
+    if (previousLanguage.current === language) return undefined;
+    previousLanguage.current = language;
+    setStep(0);
+    setTyped(0);
+    setNarrationDone(false);
+
+    if (!entered || muted || !audioRef.current) return undefined;
+    const audio = audioRef.current;
+    const replay = () => audio.play().catch(() => {});
+    audio.pause();
+    audio.currentTime = 0;
+    audio.addEventListener('canplay', replay, { once: true });
+    audio.load();
+    return () => audio.removeEventListener('canplay', replay);
+  }, [language, entered, muted]);
+
+  const changeLanguage = (nextLanguage) => {
+    if (nextLanguage !== language) setLanguage?.(nextLanguage);
+  };
 
   useEffect(() => {
     if (!entered || complete) return undefined;
@@ -108,8 +130,8 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
           <div className={languageStyles.topline}>
             <p className={languageStyles.eyebrow}>{copy.eyebrow}</p>
             <div className={languageStyles.languages} aria-label="Language">
-              <button type="button" onClick={() => setLanguage?.('fr')} aria-pressed={french} aria-label="Français"><img src="/flags/fr.svg" alt="" /></button>
-              <button type="button" onClick={() => setLanguage?.('en')} aria-pressed={!french} aria-label="English"><img src="/flags/us.svg" alt="" /></button>
+              <button type="button" onClick={() => changeLanguage('fr')} aria-pressed={french} aria-label="Français"><img src="/flags/fr.svg" alt="" /></button>
+              <button type="button" onClick={() => changeLanguage('en')} aria-pressed={!french} aria-label="English"><img src="/flags/us.svg" alt="" /></button>
             </div>
           </div>
           <h1>{copy.title}</h1>
