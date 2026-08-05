@@ -15,19 +15,27 @@ import PortfolioPlayground from '@/components/PortfolioPlayground';
 export default function Home() {
   const [activeItem, setActiveItem] = useState('Home');
   const [language, setLanguage] = useState('fr');
-  const [portfolioOpen, setPortfolioOpen] = useState(false);
+  const [portfolioOpen, setPortfolioOpen] = useState(null);
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem('portfolio-language');
     if (savedLanguage === 'fr' || savedLanguage === 'en') setLanguage(savedLanguage);
+    setPortfolioOpen(window.localStorage.getItem('portfolio-intro-seen') === 'true');
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem('portfolio-language', language);
   }, [language]);
 
+  const openPortfolio = () => {
+    window.localStorage.setItem('portfolio-intro-seen', 'true');
+    setPortfolioOpen(true);
+  };
+
+  if (portfolioOpen === null) return <main aria-busy="true" />;
+
   if (!portfolioOpen) {
-    return <IntroGame language={language} setLanguage={setLanguage} onOpen={() => setPortfolioOpen(true)} />;
+    return <IntroGame language={language} setLanguage={setLanguage} onOpen={openPortfolio} />;
   }
 
   return (
