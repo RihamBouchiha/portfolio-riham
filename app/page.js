@@ -17,10 +17,23 @@ export default function Home() {
   const [language, setLanguage] = useState('fr');
   const [portfolioOpen, setPortfolioOpen] = useState(null);
 
+  const markIntroSeen = () => {
+    try { window.localStorage.setItem('portfolio-intro-seen', 'true'); } catch {}
+    document.cookie = 'portfolio-intro-seen=true; max-age=31536000; path=/; SameSite=Lax';
+  };
+
   useEffect(() => {
-    const savedLanguage = window.localStorage.getItem('portfolio-language');
+    let savedLanguage = null;
+    let seenInStorage = false;
+    try {
+      savedLanguage = window.localStorage.getItem('portfolio-language');
+      seenInStorage = window.localStorage.getItem('portfolio-intro-seen') === 'true';
+    } catch {}
     if (savedLanguage === 'fr' || savedLanguage === 'en') setLanguage(savedLanguage);
-    setPortfolioOpen(window.localStorage.getItem('portfolio-intro-seen') === 'true');
+    const seenInCookie = document.cookie.split('; ').includes('portfolio-intro-seen=true');
+    const hasSeenIntro = seenInStorage || seenInCookie;
+    if (!hasSeenIntro) markIntroSeen();
+    setPortfolioOpen(hasSeenIntro);
   }, []);
 
   useEffect(() => {
@@ -28,14 +41,14 @@ export default function Home() {
   }, [language]);
 
   const openPortfolio = () => {
-    window.localStorage.setItem('portfolio-intro-seen', 'true');
+    markIntroSeen();
     setPortfolioOpen(true);
   };
 
   if (portfolioOpen === null) return <main aria-busy="true" />;
 
   if (!portfolioOpen) {
-    return <IntroGame language={language} setLanguage={setLanguage} onStart={() => window.localStorage.setItem('portfolio-intro-seen', 'true')} onOpen={openPortfolio} />;
+    return <IntroGame language={language} setLanguage={setLanguage} onStart={markIntroSeen} onOpen={openPortfolio} />;
   }
 
   return (
