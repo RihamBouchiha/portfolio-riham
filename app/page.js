@@ -35,7 +35,7 @@ export default function Home() {
   if (portfolioOpen === null) return <main aria-busy="true" />;
 
   if (!portfolioOpen) {
-    return <IntroGame language={language} setLanguage={setLanguage} onOpen={openPortfolio} />;
+    return <IntroGame language={language} setLanguage={setLanguage} onStart={() => window.localStorage.setItem('portfolio-intro-seen', 'true')} onOpen={openPortfolio} />;
   }
 
   return (

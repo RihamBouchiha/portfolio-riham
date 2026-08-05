@@ -9,7 +9,7 @@ import startStyles from './IntroGameStart.module.css';
 const FRENCH_LINE_DURATIONS = [2100, 2500, 3200, 3400];
 const ENGLISH_LINE_DURATIONS = [1900, 2300, 2900, 3300];
 
-export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
+export default function IntroGame({ onOpen, onStart, language = 'fr', setLanguage }) {
   const french = language === 'fr';
   const story = french
     ? [
@@ -98,6 +98,7 @@ export default function IntroGame({ onOpen, language = 'fr', setLanguage }) {
 
   const toggleSound = () => setMuted((current) => !current);
   const enterStory = () => {
+    onStart?.();
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = 0;
