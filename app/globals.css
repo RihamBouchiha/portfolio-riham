@@ -1879,6 +1879,11 @@ body.dark-mode .about-carousel-progress, html.dark-mode .about-carousel-progress
 .about-values li { grid-template-columns:28px 1fr; }
 .about-values li i { display:none; }
 
+/* Keep every About carousel card at the exact same height. */
+.about-slide { height:clamp(34rem, 52vw, 36rem); min-height:clamp(34rem, 52vw, 36rem); }
+@media (max-width:640px) { .about-slide { height:34rem; min-height:34rem; } }
+@media (max-width:380px) { .about-slide { height:35rem; min-height:35rem; } }
+
 /* ========================================================================== */
 /* Skills studio                                                               */
 /* ========================================================================== */
