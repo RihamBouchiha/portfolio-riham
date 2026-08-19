@@ -19,6 +19,19 @@ export default function ContactSection({ language = 'fr' }) {
 
   const sendEmail = (event) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get('user_name') || '').trim();
+    const email = String(formData.get('user_email') || '').trim();
+    const message = String(formData.get('message') || '').trim();
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    // This validation is intentionally independent from the HTML `required` attributes.
+    // It still rejects altered or whitespace-only fields from browser inspector edits.
+    if (name.length < 2 || !isValidEmail || message.length < 10) {
+      setStatus('invalid');
+      return;
+    }
+
     setLoading(true);
     emailjs.sendForm('service_s9ifgkf', 'template_cter9zv', form.current, 'R_GxkHkcRIYCfvqdf').then(() => {
       setLoading(false); setStatus('success'); form.current?.reset(); window.setTimeout(() => setStatus(null), 5000);
@@ -30,7 +43,7 @@ export default function ContactSection({ language = 'fr' }) {
     <div className={styles.postcard}>
       <aside className={styles.addressSide}><div className={styles.stamp}><span>RB</span><small>{copy.stamp}</small></div><p className={styles.to}>{copy.to}</p><strong>{copy.address}</strong><span>{copy.place}</span><p className={styles.note}>{copy.note}</p><div className={styles.route}><i /><i /><i /></div><div className={styles.socials}><p>{copy.social}</p><div><a href="https://www.linkedin.com/in/rihambouchiha" target="_blank" rel="noreferrer"><SiLinkedin /> LinkedIn <FiArrowUpRight /></a><a href="https://github.com/RihamBouchiha" target="_blank" rel="noreferrer"><SiGithub /> GitHub <FiArrowUpRight /></a></div></div></aside>
       <div className={styles.divider} aria-hidden="true" />
-      <div className={styles.formSide}><div className={styles.formHeading}><span>✦</span><h3>{copy.formTitle}</h3></div><form ref={form} onSubmit={sendEmail}><label><span>{copy.name}</span><input name="user_name" required /></label><label><span>{copy.email}</span><input type="email" name="user_email" required /></label><label><span>Message</span><textarea name="message" rows="5" required placeholder={copy.message} /></label><button type="submit" disabled={loading}>{loading ? copy.sending : copy.send}<FiSend /></button>{status && <p className={`${styles.status} ${status === 'success' ? styles.success : styles.error}`}>{status === 'success' ? copy.success : copy.error}</p>}</form></div>
+      <div className={styles.formSide}><div className={styles.formHeading}><span>✦</span><h3>{copy.formTitle}</h3></div><form ref={form} onSubmit={sendEmail}><label><span>{copy.name}</span><input name="user_name" required minLength="2" /></label><label><span>{copy.email}</span><input type="email" name="user_email" required /></label><label><span>Message</span><textarea name="message" rows="5" required minLength="10" placeholder={copy.message} /></label><button type="submit" disabled={loading}>{loading ? copy.sending : copy.send}<FiSend /></button>{status && <p className={`${styles.status} ${status === 'success' ? styles.success : styles.error}`}>{status === 'success' ? copy.success : status === 'invalid' ? (french ? 'Merci de remplir tous les champs avec un message d’au moins 10 caractères.' : 'Please complete every field with a message of at least 10 characters.') : copy.error}</p>}</form></div>
     </div>
     <footer>{copy.footer}</footer>
   </div></section>;
