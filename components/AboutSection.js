@@ -24,7 +24,7 @@ export default function AboutSection({ language }) {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setActiveSlide((currentSlide) => (currentSlide + 1) % slides.length);
-    }, 6500);
+    }, 10000);
     return () => window.clearTimeout(timer);
   }, [activeSlide, slides.length]);
 
