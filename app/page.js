@@ -18,20 +18,11 @@ export default function Home() {
   const [portfolioOpen, setPortfolioOpen] = useState(null);
 
   useEffect(() => {
-    let savedLanguage = null;
-    try {
-      savedLanguage = window.localStorage.getItem('portfolio-language');
-    } catch {}
-    if (savedLanguage === 'fr' || savedLanguage === 'en') setLanguage(savedLanguage);
     fetch('/api/intro-visit', { cache: 'no-store' })
       .then((response) => response.ok ? response.json() : Promise.reject())
       .then(({ showIntro }) => setPortfolioOpen(!showIntro))
       .catch(() => setPortfolioOpen(true));
   }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('portfolio-language', language);
-  }, [language]);
 
   const openPortfolio = () => {
     setPortfolioOpen(true);
