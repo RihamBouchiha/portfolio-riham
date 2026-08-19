@@ -42,7 +42,7 @@ export default function AboutSection({ language }) {
           <h2>{slide.title}</h2>
           <p className="about-body">{slide.text}</p>
           {slide.values && <ul className="about-values">{slide.values.map((value, index) => <li key={value}><span>0{index + 1}</span>{value}</li>)}</ul>}
-          {activeSlide === 0 && <div className="about-actions"><a href="#portfolio" className="about-btn about-btn--primary">{isFrench ? 'Voir mes projets' : 'View my projects'} <span>↗</span></a><a href="#contact" className="about-btn about-btn--secondary">{isFrench ? 'Me contacter' : 'Contact me'}</a></div>}
+          {activeSlide === 0 && <div className="about-actions"><a href="#skills" className="about-btn about-btn--primary">{isFrench ? 'Explorer mes compétences' : 'Explore my skills'} <span>↗</span></a><a href="#education" className="about-btn about-btn--secondary">{isFrench ? 'Découvrir mon parcours' : 'Discover my journey'}</a></div>}
         </article>
         <div className="about-carousel-controls">
           <button type="button" onClick={previous} aria-label={isFrench ? 'Diapositive précédente' : 'Previous slide'}>←</button>
