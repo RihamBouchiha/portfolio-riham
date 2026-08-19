@@ -17,23 +17,16 @@ export default function Home() {
   const [language, setLanguage] = useState('fr');
   const [portfolioOpen, setPortfolioOpen] = useState(null);
 
-  const markIntroSeen = () => {
-    try { window.localStorage.setItem('portfolio-intro-seen', 'true'); } catch {}
-    document.cookie = 'portfolio-intro-seen=true; max-age=31536000; path=/; SameSite=Lax';
-  };
-
   useEffect(() => {
     let savedLanguage = null;
-    let seenInStorage = false;
     try {
       savedLanguage = window.localStorage.getItem('portfolio-language');
-      seenInStorage = window.localStorage.getItem('portfolio-intro-seen') === 'true';
     } catch {}
     if (savedLanguage === 'fr' || savedLanguage === 'en') setLanguage(savedLanguage);
-    const seenInCookie = document.cookie.split('; ').includes('portfolio-intro-seen=true');
-    const hasSeenIntro = seenInStorage || seenInCookie;
-    if (!hasSeenIntro) markIntroSeen();
-    setPortfolioOpen(hasSeenIntro);
+    fetch('/api/intro-visit', { cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : Promise.reject())
+      .then(({ showIntro }) => setPortfolioOpen(!showIntro))
+      .catch(() => setPortfolioOpen(true));
   }, []);
 
   useEffect(() => {
@@ -41,14 +34,13 @@ export default function Home() {
   }, [language]);
 
   const openPortfolio = () => {
-    markIntroSeen();
     setPortfolioOpen(true);
   };
 
   if (portfolioOpen === null) return <main aria-busy="true" />;
 
   if (!portfolioOpen) {
-    return <IntroGame language={language} setLanguage={setLanguage} onStart={markIntroSeen} onOpen={openPortfolio} />;
+    return <IntroGame language={language} setLanguage={setLanguage} onOpen={openPortfolio} />;
   }
 
   return (
