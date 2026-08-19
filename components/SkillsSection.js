@@ -4,28 +4,28 @@ import { useState } from 'react';
 import styles from './SkillsSection.module.css';
 import SkillMatchGame from './SkillMatchGame';
 import {
-  SiC, SiCplusplus, SiPython, SiJavascript, SiPhp, SiR, SiTypescript,
+  SiC, SiCplusplus, SiPython, SiJavascript, SiPhp, SiTypescript,
   SiReact, SiNextdotjs, SiNodedotjs, SiTailwindcss, SiBootstrap,
-  SiExpress, SiChartdotjs, SiPrisma, SiJson, SiPostman,
-  SiApache, SiBabel, SiLinux, SiDotnet, SiFlutter, SiSpringboot,
-  SiMysql, SiPostgresql, SiMongodb, SiSqlite, SiMariadb, SiFirebase, SiGit, SiGithub, SiGithubactions, SiJenkins, SiDocker, SiFigma, SiCanva, SiTensorflow, SiPytorch, SiScikitlearn, SiPandas, SiNumpy, SiRabbitmq, SiN8N, SiKubernetes, SiPrometheus, SiGrafana, SiNginx, SiTrello
+  SiExpress, SiPrisma, SiPostman,
+  SiLinux, SiDotnet, SiFlutter, SiSpringboot,
+  SiMysql, SiPostgresql, SiMongodb, SiSqlite, SiGit, SiGithub, SiGithubactions, SiJenkins, SiDocker, SiFigma, SiCanva, SiTensorflow, SiPytorch, SiScikitlearn, SiPandas, SiNumpy, SiRabbitmq, SiN8N, SiKubernetes, SiPrometheus, SiGrafana, SiNginx, SiTrello
 } from 'react-icons/si';
 import { FaJava, FaChartBar } from 'react-icons/fa';
 import { TbBrandCSharp, TbSql, TbBrandMongodb } from 'react-icons/tb';
 
 const hardSkills = {
-  Languages: [{ name: 'C', icon: <SiC /> }, { name: 'C++', icon: <SiCplusplus /> }, { name: 'C#', icon: <TbBrandCSharp /> }, { name: 'Java', icon: <FaJava /> }, { name: 'JavaScript', icon: <SiJavascript /> }, { name: 'TypeScript', icon: <SiTypescript /> }, { name: 'Python', icon: <SiPython /> }, { name: 'PHP', icon: <SiPhp /> }, { name: 'R', icon: <SiR /> }],
-  Frameworks: [{ name: 'React', icon: <SiReact /> }, { name: 'React Native', icon: <SiReact /> }, { name: 'Next.js', icon: <SiNextdotjs /> }, { name: 'Node.js', icon: <SiNodedotjs /> }, { name: 'Express.js', icon: <SiExpress /> }, { name: 'Flutter', icon: <SiFlutter /> }, { name: 'Spring Boot', icon: <SiSpringboot /> }, { name: '.NET', icon: <SiDotnet /> }, { name: 'ASP.NET Core', icon: <SiDotnet /> }, { name: 'Entity Framework Core', icon: <SiDotnet /> }, { name: 'Bootstrap', icon: <SiBootstrap /> }, { name: 'Tailwind', icon: <SiTailwindcss /> }, { name: 'Prisma', icon: <SiPrisma /> }, { name: 'Mongoose', icon: <TbBrandMongodb /> }, { name: 'Chart.js', icon: <SiChartdotjs /> }, { name: 'JSON', icon: <SiJson /> }],
-  Databases: [{ name: 'PostgreSQL', icon: <SiPostgresql /> }, { name: 'MySQL', icon: <SiMysql /> }, { name: 'MongoDB', icon: <SiMongodb /> }, { name: 'Firebase', icon: <SiFirebase /> }, { name: 'SQLite', icon: <SiSqlite /> }, { name: 'MariaDB', icon: <SiMariadb /> }, { name: 'SQL Server', icon: <TbSql /> }],
-  Tools: [{ name: 'Git', icon: <SiGit /> }, { name: 'Docker', icon: <SiDocker /> }, { name: 'Figma', icon: <SiFigma /> }, { name: 'Canva', icon: <SiCanva /> }, { name: 'Power BI', icon: <FaChartBar /> }, { name: 'Postman', icon: <SiPostman /> }, { name: 'Apache', icon: <SiApache /> }, { name: 'Babel', icon: <SiBabel /> }, { name: 'Linux', icon: <SiLinux /> }],
+  Languages: [{ name: 'C', icon: <SiC /> }, { name: 'C++', icon: <SiCplusplus /> }, { name: 'C#', icon: <TbBrandCSharp /> }, { name: 'Java', icon: <FaJava /> }, { name: 'JavaScript', icon: <SiJavascript /> }, { name: 'TypeScript', icon: <SiTypescript /> }, { name: 'Python', icon: <SiPython /> }, { name: 'PHP', icon: <SiPhp /> }],
+  Frameworks: [{ name: 'React', icon: <SiReact /> }, { name: 'React Native', icon: <SiReact /> }, { name: 'Next.js', icon: <SiNextdotjs /> }, { name: 'Node.js', icon: <SiNodedotjs /> }, { name: 'Express.js', icon: <SiExpress /> }, { name: 'Flutter', icon: <SiFlutter /> }, { name: 'Spring Boot', icon: <SiSpringboot /> }, { name: '.NET', icon: <SiDotnet /> }, { name: 'ASP.NET Core', icon: <SiDotnet /> }, { name: 'Entity Framework Core', icon: <SiDotnet /> }, { name: 'Bootstrap', icon: <SiBootstrap /> }, { name: 'Tailwind', icon: <SiTailwindcss /> }, { name: 'Prisma', icon: <SiPrisma /> }, { name: 'Mongoose', icon: <TbBrandMongodb /> }],
+  Databases: [{ name: 'PostgreSQL', icon: <SiPostgresql /> }, { name: 'MySQL', icon: <SiMysql /> }, { name: 'MongoDB', icon: <SiMongodb /> }, { name: 'SQLite', icon: <SiSqlite /> }, { name: 'SQL Server', icon: <TbSql /> }],
+  Tools: [{ name: 'Git', icon: <SiGit /> }, { name: 'Figma', icon: <SiFigma /> }, { name: 'Canva', icon: <SiCanva /> }, { name: 'Power BI', icon: <FaChartBar /> }, { name: 'Postman', icon: <SiPostman /> }, { name: 'Linux', icon: <SiLinux /> }],
   DevOps: [{ name: 'Git', icon: <SiGit /> }, { name: 'GitHub', icon: <SiGithub /> }, { name: 'GitHub Actions', icon: <SiGithubactions /> }, { name: 'Jenkins', icon: <SiJenkins /> }, { name: 'Docker', icon: <SiDocker /> }, { name: 'Kubernetes', icon: <SiKubernetes /> }, { name: 'RabbitMQ', icon: <SiRabbitmq /> }, { name: 'n8n', icon: <SiN8N /> }, { name: 'Prometheus', icon: <SiPrometheus /> }, { name: 'Grafana', icon: <SiGrafana /> }, { name: 'Nginx', icon: <SiNginx /> }, { name: 'Trello', icon: <SiTrello /> }],
-  AI: [{ name: 'Python', icon: <SiPython /> }, { name: 'TensorFlow', icon: <SiTensorflow /> }, { name: 'PyTorch', icon: <SiPytorch /> }, { name: 'Scikit-learn', icon: <SiScikitlearn /> }, { name: 'Pandas', icon: <SiPandas /> }, { name: 'NumPy', icon: <SiNumpy /> }],
+  AI: [{ name: 'Machine Learning', icon: <SiScikitlearn /> }, { name: 'Deep Learning', icon: <SiTensorflow /> }, { name: 'LLM', icon: <SiPython /> }, { name: 'RAG', icon: <SiNumpy /> }, { name: 'Reinforcement Learning', icon: <SiPytorch /> }, { name: 'TensorFlow', icon: <SiTensorflow /> }, { name: 'PyTorch', icon: <SiPytorch /> }, { name: 'Scikit-learn', icon: <SiScikitlearn /> }, { name: 'Pandas', icon: <SiPandas /> }, { name: 'NumPy', icon: <SiNumpy /> }],
 };
 
 const technologyColors = {
-  C: '#5c6bc0', 'C++': '#00599c', 'C#': '#8b4bc1', Java: '#e76f00', JavaScript: '#f0bf21', TypeScript: '#3178c6', Python: '#3776ab', PHP: '#777bb4', R: '#276dc3',
-  React: '#149eca', 'React Native': '#149eca', 'Next.js': '#1d1d1d', 'Node.js': '#4b9d3e', 'Express.js': '#444', Flutter: '#42a5f5', 'Spring Boot': '#6db33f', '.NET': '#6d3fb5', 'ASP.NET Core': '#6d3fb5', 'Entity Framework Core': '#6d3fb5', Bootstrap: '#7952b3', Tailwind: '#22a9c8', Prisma: '#2d3748', Mongoose: '#8f2020', 'Chart.js': '#e85878', JSON: '#333',
-  PostgreSQL: '#336791', MySQL: '#4479a1', MongoDB: '#47a248', Firebase: '#f5a300', SQLite: '#1689c0', MariaDB: '#003545', 'SQL Server': '#cc2927', Git: '#f05032', GitHub: '#24292e', Jenkins: '#d24939', Docker: '#2496ed', 'GitHub Actions': '#2088ff', Kubernetes: '#326ce5', RabbitMQ: '#ff6600', n8n: '#ea4b71', Prometheus: '#e6522c', Grafana: '#f46800', Nginx: '#009639', Trello: '#0052cc', Figma: '#f24e1e', Canva: '#00c4cc', 'Power BI': '#f2c811', Postman: '#ff6c37', Apache: '#d22128', Babel: '#f9c928', Linux: '#d6a900', TensorFlow: '#ff6f00', PyTorch: '#ee4c2c', 'Scikit-learn': '#f7931e', Pandas: '#150458', NumPy: '#4dabcf',
+  C: '#5c6bc0', 'C++': '#00599c', 'C#': '#8b4bc1', Java: '#e76f00', JavaScript: '#f0bf21', TypeScript: '#3178c6', Python: '#3776ab', PHP: '#777bb4',
+  React: '#149eca', 'React Native': '#149eca', 'Next.js': '#1d1d1d', 'Node.js': '#4b9d3e', 'Express.js': '#444', Flutter: '#42a5f5', 'Spring Boot': '#6db33f', '.NET': '#6d3fb5', 'ASP.NET Core': '#6d3fb5', 'Entity Framework Core': '#6d3fb5', Bootstrap: '#7952b3', Tailwind: '#22a9c8', Prisma: '#2d3748', Mongoose: '#8f2020',
+  PostgreSQL: '#336791', MySQL: '#4479a1', MongoDB: '#47a248', SQLite: '#1689c0', 'SQL Server': '#cc2927', Git: '#f05032', GitHub: '#24292e', Jenkins: '#d24939', Docker: '#2496ed', 'GitHub Actions': '#2088ff', Kubernetes: '#326ce5', RabbitMQ: '#ff6600', n8n: '#ea4b71', Prometheus: '#e6522c', Grafana: '#f46800', Nginx: '#009639', Trello: '#0052cc', Figma: '#f24e1e', Canva: '#00c4cc', 'Power BI': '#f2c811', Postman: '#ff6c37', Linux: '#d6a900', 'Machine Learning': '#f7931e', 'Deep Learning': '#ff6f00', LLM: '#7c4d99', RAG: '#4dabcf', 'Reinforcement Learning': '#ee4c2c', TensorFlow: '#ff6f00', PyTorch: '#ee4c2c', 'Scikit-learn': '#f7931e', Pandas: '#150458', NumPy: '#4dabcf',
 };
 
 export default function SkillsSection({ language }) {

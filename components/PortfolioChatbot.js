@@ -52,12 +52,19 @@ export default function PortfolioChatbot({ language = 'fr' }) {
   const [sending, setSending] = useState(false);
   const [messages, setMessages] = useState([{ role: 'assistant', content: copy.greeting }]);
   const scrollRef = useRef(null);
+  const sendingRef = useRef(false);
+  const requestControllerRef = useRef(null);
   const topicIcons = [FiCode, FiUser, FiBriefcase];
 
   useEffect(() => {
+    requestControllerRef.current?.abort();
+    sendingRef.current = false;
+    setSending(false);
     setMessages([{ role: 'assistant', content: copy.greeting }]);
     setInput('');
   }, [language, copy.greeting]);
+
+  useEffect(() => () => requestControllerRef.current?.abort(), []);
 
   useEffect(() => {
     if (open) scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -65,25 +72,44 @@ export default function PortfolioChatbot({ language = 'fr' }) {
 
   const ask = async (question) => {
     const content = question.trim();
-    if (!content || sending) return;
+    if (!content || sendingRef.current) return;
 
     const nextMessages = [...messages, { role: 'user', content }];
     setMessages(nextMessages);
     setInput('');
+    sendingRef.current = true;
     setSending(true);
+
+    const controller = new AbortController();
+    requestControllerRef.current = controller;
+    let timedOut = false;
+    const timeoutId = window.setTimeout(() => { timedOut = true; controller.abort(); }, 30000);
 
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: nextMessages }),
+        signal: controller.signal,
       });
-      const data = await response.json();
-      setMessages((current) => [...current, { role: 'assistant', content: data.answer || data.error || copy.unavailable }]);
+      const data = await response.json().catch(() => ({}));
+      const reply = typeof data.answer === 'string' && data.answer.trim()
+        ? data.answer.trim()
+        : typeof data.error === 'string' && data.error.trim()
+          ? data.error.trim()
+          : copy.unavailable;
+      setMessages((current) => [...current, { role: 'assistant', content: reply }]);
     } catch {
-      setMessages((current) => [...current, { role: 'assistant', content: copy.unavailable }]);
+      if (!controller.signal.aborted || timedOut) {
+        setMessages((current) => [...current, { role: 'assistant', content: copy.unavailable }]);
+      }
     } finally {
-      setSending(false);
+      window.clearTimeout(timeoutId);
+      if (requestControllerRef.current === controller) {
+        requestControllerRef.current = null;
+        sendingRef.current = false;
+        setSending(false);
+      }
     }
   };
 
@@ -92,8 +118,9 @@ export default function PortfolioChatbot({ language = 'fr' }) {
       {open && <button type="button" className={styles.backdrop} onClick={() => setOpen(false)} aria-label={copy.ariaClose} />}
       {open && <div className={styles.window}>
         <header className={styles.header}>
-          <span className={styles.avatar}>RB</span>
-          <div><strong>{copy.title}</strong><small><i />{copy.status}</small></div>
+          <span className={styles.headerGlow} aria-hidden="true" />
+          <span className={styles.avatar}><i aria-hidden="true" />RB</span>
+          <div><em className={styles.consoleLabel}>RB STUDIO · 01</em><strong>{copy.title}</strong><small><i />{copy.status}</small></div>
           <button type="button" onClick={() => setOpen(false)} aria-label={copy.ariaClose}><FiX /></button>
         </header>
         <div className={styles.messages} ref={scrollRef}>
